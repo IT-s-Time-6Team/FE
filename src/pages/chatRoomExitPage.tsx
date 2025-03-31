@@ -39,6 +39,7 @@ const ChatRoomExitPage = () => {
         <FeedbackText>서비스 피드백을 부탁드려도 될까요?</FeedbackText>
         <FormLink>https://docs.google.com/forms/435432</FormLink>
       </FeedbackBox>
+      <Button>메인으로 돌아가기</Button>
     </Container>
   );
 };
@@ -151,5 +152,16 @@ const FeedbackBox = styled.div`
   align-self: center;
   padding: 20px 0;
   box-sizing: border-box;
-  margin-top: 10px;
+  margin: 10px 0;
+`;
+const Button = styled.button`
+  width: 253px;
+  height: 57px;
+  background-color: #ff7913;
+  color: white;
+  border-radius: 15px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  align-self: center;
 `;
