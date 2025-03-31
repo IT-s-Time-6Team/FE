@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Layout from '@layout/Layout';
 import Home from '@pages/Home/Home';
-import ChatRoomPage from '@pages/ChatRoomPage';
+import ChatRoomCreatedPage from '@pages/chatRoomCreatedPage';
 import GlobalStyles from '../src/styles/GlobalStyles';
 
 function App() {
@@ -10,9 +10,12 @@ function App() {
       <GlobalStyles />
       <BrowserRouter>
         <Routes>
+          <Route>
+            <Route path='/chatRoomCreate' element={<ChatRoomCreatedPage />} />
+          </Route>
+
           <Route element={<Layout />}>
             <Route index element={<Home />} />
-            <Route path='/chatRoom' element={<ChatRoomPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
