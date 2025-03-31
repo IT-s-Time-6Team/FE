@@ -2,8 +2,10 @@ import styled from '@emotion/styled';
 const ChatRoomExitPage = () => {
   return (
     <Container>
-      <Title>채팅룸이 종료되었습니다!</Title>
-      <SubTitle>대화는 즐거우셨나요? 요약 결과를 보여드릴게요.</SubTitle>
+      <Header>
+        <Title>채팅룸이 종료되었습니다!</Title>
+        <SubTitle>대화는 즐거우셨나요? 요약 결과를 보여드릴게요.</SubTitle>
+      </Header>
       <Box>
         <Wrapper>
           <MainText>공감한 키워드</MainText>
@@ -33,6 +35,10 @@ const ChatRoomExitPage = () => {
         <CheckInput type='checkbox' />
         <SaveText>저장</SaveText>
       </SaveWrapper>
+      <FeedbackBox>
+        <FeedbackText>서비스 피드백을 부탁드려도 될까요?</FeedbackText>
+        <FormLink>https://docs.google.com/forms/435432</FormLink>
+      </FeedbackBox>
     </Container>
   );
 };
@@ -40,6 +46,12 @@ export default ChatRoomExitPage;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+`;
+const Header = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin: 25px 0;
 `;
 const Title = styled.p`
   font-size: 20px;
@@ -52,6 +64,18 @@ const SubTitle = styled.p`
   color: #7c7c7c;
   text-align: center;
 `;
+const FeedbackText = styled.p`
+  font-size: 14px;
+  font-weight: 600;
+  color: #7c7c7c;
+  text-align: center;
+`;
+const FormLink = styled.p`
+  font-size: 14px;
+  font-weight: 400;
+  color: #7c7c7c;
+  text-align: center;
+`;
 const MainText = styled.p`
   font-size: 16px;
   font-weight: 500;
@@ -60,7 +84,7 @@ const Box = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
   width: 342px;
   height: 376px;
   flex-shrink: 0;
@@ -68,6 +92,7 @@ const Box = styled.div`
   border: 1px solid #e4e4e4;
   box-sizing: border-box;
   align-self: center;
+  padding: 25px 0;
 `;
 const Wrapper = styled.div`
   display: flex;
@@ -113,4 +138,18 @@ const SaveText = styled.p`
   color: #7c7c7c;
   font-size: 12px;
   font-weight: 500;
+  margin: 10px 0;
+`;
+const FeedbackBox = styled.div`
+  width: 299px;
+  height: 78px;
+  border-radius: 12px;
+  background: rgba(240, 240, 240, 0.4);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-self: center;
+  padding: 20px 0;
+  box-sizing: border-box;
+  margin-top: 10px;
 `;
