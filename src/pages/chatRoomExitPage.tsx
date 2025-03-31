@@ -29,6 +29,10 @@ const ChatRoomExitPage = () => {
           <Title>1위: 하나(2개)</Title>
         </Wrapper>
       </Box>
+      <SaveWrapper>
+        <CheckInput type='checkbox' />
+        <SaveText>저장</SaveText>
+      </SaveWrapper>
     </Container>
   );
 };
@@ -36,16 +40,17 @@ export default ChatRoomExitPage;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
 `;
 const Title = styled.p`
   font-size: 20px;
   font-weight: 600;
+  text-align: center;
 `;
 const SubTitle = styled.p`
   font-size: 14px;
   font-weight: 500;
   color: #7c7c7c;
+  text-align: center;
 `;
 const MainText = styled.p`
   font-size: 16px;
@@ -62,6 +67,7 @@ const Box = styled.div`
   border-radius: 12px;
   border: 1px solid #e4e4e4;
   box-sizing: border-box;
+  align-self: center;
 `;
 const Wrapper = styled.div`
   display: flex;
@@ -79,4 +85,32 @@ const TagWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+`;
+const SaveWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: flex-end;
+  padding-right: 29px;
+`;
+const CheckInput = styled.input`
+  width: 18px;
+  height: 18px;
+  appearance: none; /* 기본 체크박스 스타일 제거 */
+  background: #d9d9d9;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &:checked {
+  }
+  &:checked::after {
+    content: '✔'; /* 체크 표시 */
+  }
+`;
+const SaveText = styled.p`
+  color: #7c7c7c;
+  font-size: 12px;
+  font-weight: 500;
 `;
