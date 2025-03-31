@@ -11,7 +11,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route>
-            <Route path='/chatRoomCreate' element={<ChatRoomCreatedPage />} />
+            <Route path='/chatRoomCreated' element={<ChatRoomCreatedPage />} />
           </Route>
 
           <Route element={<Layout />}>
