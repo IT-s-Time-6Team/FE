@@ -108,9 +108,10 @@ const Box = styled.div`
 const Wrapper = styled.div`
   display: flex;
   width: 299px;
+  height: 61px;
   flex-direction: column;
   align-items: flex-start;
-  gap: 7px;
+  justify-content: space-between;
 `;
 const Divider = styled.div`
   width: 299px;

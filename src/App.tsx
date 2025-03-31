@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Layout from '@layout/Layout';
 import Home from '@pages/Home/Home';
 import GlobalStyles from '../src/styles/GlobalStyles';
-import ChatRoomExitPage from '@pages/ChatRoomExitPage';
+import ChatRoomExitPage from '@pages/chatRoomExitPage';
 
 function App() {
   return (
