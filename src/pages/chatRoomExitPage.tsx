@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import Button from '@components/chatRoomExit/Button';
 const ChatRoomExitPage = () => {
   return (
     <Container>
@@ -39,7 +40,7 @@ const ChatRoomExitPage = () => {
         <FeedbackText>서비스 피드백을 부탁드려도 될까요?</FeedbackText>
         <FormLink>https://docs.google.com/forms/435432</FormLink>
       </FeedbackBox>
-      <Button>메인으로 돌아가기</Button>
+      <Button text='메인으로 돌아가기' />
     </Container>
   );
 };
@@ -52,7 +53,7 @@ const Header = styled.div`
   display: flex;
   flex-direction: column;
   gap: 7px;
-  margin: 25px 0;
+  margin: 100px 0 25px 0;
 `;
 const Title = styled.p`
   font-size: 20px;
@@ -93,14 +94,14 @@ const Box = styled.div`
   border: 1px solid #e4e4e4;
   box-sizing: border-box;
   align-self: center;
-  padding: 25px 0;
+  padding: 27px 0;
 `;
 const Wrapper = styled.div`
   display: flex;
   width: 299px;
   flex-direction: column;
   align-items: flex-start;
-  gap: 9px;
+  gap: 7px;
 `;
 const Divider = styled.div`
   width: 299px;
@@ -152,16 +153,5 @@ const FeedbackBox = styled.div`
   align-self: center;
   padding: 20px 0;
   box-sizing: border-box;
-  margin: 10px 0;
-`;
-const Button = styled.button`
-  width: 253px;
-  height: 57px;
-  background-color: #ff7913;
-  color: white;
-  border-radius: 15px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  align-self: center;
+  margin: 20px 0;
 `;
