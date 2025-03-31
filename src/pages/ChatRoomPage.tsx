@@ -1,6 +1,17 @@
 import styled from '@emotion/styled';
+import SendIcon from '../assets/send.svg?react'; // default import
+import { useEffect, useState } from 'react';
 
 const ChatRoomPage = () => {
+  const [isInput, setIsInput] = useState(false);
+  const [input, setInput] = useState<string>('');
+  useEffect(() => {
+    if (input.length > 0) {
+      setIsInput(true);
+    } else {
+      setIsInput(false);
+    }
+  }, [input]);
   return (
     <>
       <ChatRoomContainer>
@@ -15,11 +26,63 @@ const ChatRoomPage = () => {
           <KeyWord>내 키워드</KeyWord>
           <KeyWordDetail>#롤 #애니</KeyWordDetail>
         </KeyWordContainer>
+        <ChatContainer>
+          <UserEntry>하나님이 입장하셨습니다.</UserEntry>
+        </ChatContainer>
       </ChatRoomContainer>
+      <ChatInputContainer>
+        <ChatInput value={input} onChange={(e) => setInput(e.target.value)} />
+        <SendButton isInput={isInput}>
+          <SendIcon />
+        </SendButton>
+      </ChatInputContainer>
     </>
   );
 };
 export default ChatRoomPage;
+const ChatInput = styled.textarea`
+  width: 80%;
+  border: none;
+  font-size: 14px;
+`;
+const SendButton = styled.button<{ isInput: boolean }>`
+  background-color: transparent;
+  color: ${(props) => (props.isInput ? '#ff7913' : '#dadada')};
+  height: 35px;
+  svg {
+    width: 35px;
+    height: 35px;
+    transition: color 0.1s ease;
+  }
+  &:hover {
+    color: #ff7913;
+  }
+`;
+const ChatInputContainer = styled.div`
+  position: fixed;
+  bottom: 0;
+  border: none;
+  border-top: 1px solid #e4e4e4;
+  width: 100%;
+  height: 125px;
+  padding: 19px 24px;
+  display: flex;
+  justify-content: space-between;
+`;
+const UserEntry = styled.div`
+  width: 100%;
+  background-color: #f0f0f066;
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-size: 10px;
+  font-weight: 500;
+  color: #7c7c7c;
+`;
+const ChatContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
 const KeyWordDivider = styled.div`
   width: 100%;
   height: 1px;
@@ -67,7 +130,7 @@ const ChatRoomContainer = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100dvw;
-  height: 100vh;
+  height: calc(100dvh - 124px);
   padding: 24px;
   background-color: rgb(255, 255, 255);
   gap: 11px;
