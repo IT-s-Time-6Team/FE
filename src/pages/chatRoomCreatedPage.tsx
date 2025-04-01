@@ -45,7 +45,7 @@ const ChatRoomCreatedPage = () => {
               <NicknameInput
                 type='text'
                 name='nickname'
-                placeholder='채팅방에서 사용할 닉네임을 입력해주세요'
+                placeholder='채팅방에서 사용할 닉네임을 입력해주세요.'
                 autoComplete='on'
                 required
               />
@@ -67,11 +67,11 @@ const ChatRoomCreatedPage = () => {
             <PasswordText>영문 소문자, 특수문자 포함(../.)6글자</PasswordText>
           </InputContainer>
 
-          <ButtonText>*닉네임과 비밀번호는 이번 채팅방에서만 사용돼요.</ButtonText>   
+          <ButtonText>*닉네임과 비밀번호는 이번 채팅방에서만 사용돼요.</ButtonText>
           <button />
         </LoginForm>
       </LoginContainer>
-      <Button text='입장하기'/>
+      <Button text='입장하기' />
     </ChatRoomCreatedContainer>
   );
 };
@@ -82,7 +82,7 @@ const ChatRoomCreatedContainer = styled.div`
   flex-direction: column;
   align-items: center;
 
-  padding: 30px;
+  padding: 100px 60px 0 60px;
   gap: 20px;
 `;
 const ChatRoomCreatedHeader = styled.div`
@@ -110,20 +110,16 @@ const QRCodeWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
   gap: 5px;
 `;
 const QRActionGroup = styled.div`
   display: flex;
   flex-direction: row;
-
-  margin: 10px 0;
   gap: 15px;
 `;
 const QRActionItem = styled.div`
   display: flex;
   flex-direction: row;
-
   gap: 5px;
 
   color: #7c7c7c;
@@ -135,10 +131,10 @@ const ActionIcon = styled.span`
   height: 18px;
 
   display: inline-block;
-
   background-color: #d9d9d9;
 `;
 const QRText = styled.p`
+  margin-top: 10px;
   color: #3e3333;
   text-align: center;
 
@@ -146,20 +142,23 @@ const QRText = styled.p`
   font-weight: 500;
 `;
 const QRSubText = styled.p`
+  margin-bottom: 25px;
   color: #b7b7b7;
 
   font-size: 12px;
   font-weight: 500;
-
-  margin-bottom: 25px;
 `;
 
 const QRLine = styled.hr`
   width: 235px;
   margin-bottom: 20px;
+
+  background-color: #f0f0f0;
 `;
 
 const LoginContainer = styled.div`
+  width: 100%;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -169,7 +168,7 @@ const LoginForm = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 20px;
+  gap: 30px;
 `;
 
 const InputContainer = styled.div``;
@@ -207,11 +206,11 @@ const NicknameText = styled.p`
 const PasswordInput = styled(NicknameInput)``;
 const PasswordText = styled(NicknameText)``;
 const ButtonText = styled.p`
-  padding-Top:30px;
-  
-  color: #B7B7B7;
+  padding-top: 25px;
+
+  color: #b7b7b7;
   font-size: 10px;
   font-weight: 500;
-  `;
 
-
+  text-align: center;
+`;
