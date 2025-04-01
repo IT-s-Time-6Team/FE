@@ -1,7 +1,16 @@
 import styled from '@emotion/styled';
+import React, { useState } from 'react';
 import Button from '@components/chatRoomExit/Button';
 import SummaryModal from '@components/chatRoomExit/SummaryModal';
+import { ModalPortal } from '@components/shared/ModalPortal';
 const ChatRoomExitPage = () => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const handleOpenModal = () => {
+    setIsOpen(true);
+  };
+  const handleCloseModal = () => {
+    setIsOpen(false);
+  };
   return (
     <Container>
       <Header>
@@ -34,7 +43,7 @@ const ChatRoomExitPage = () => {
             <Title>1위: 하나(2개)</Title>
           </Wrapper>
         </Box>
-        <SaveWrapper>
+        <SaveWrapper onClick={handleOpenModal}>
           <CheckButton />
           <SaveText>저장</SaveText>
         </SaveWrapper>
@@ -44,7 +53,11 @@ const ChatRoomExitPage = () => {
         <FormLinkText>https://docs.google.com/forms/435432</FormLinkText>
       </FeedbackBox>
       <Button text='메인으로 돌아가기' />
-      <SummaryModal />
+      {isOpen && (
+        <ModalPortal>
+          <SummaryModal onClose={handleCloseModal} />
+        </ModalPortal>
+      )}
     </Container>
   );
 };

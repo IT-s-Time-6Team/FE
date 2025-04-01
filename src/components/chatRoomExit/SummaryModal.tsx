@@ -1,7 +1,12 @@
 import styled from '@emotion/styled';
-const SummaryModal = () => {
+interface SummaryModalProps {
+  onClose: () => void;
+}
+
+const SummaryModal = ({ onClose }: SummaryModalProps) => {
   return (
-    <Mask>
+    <>
+      <Mask onClick={onClose} />
       <ModalBody>
         <ProfileContainer>
           <ProfileImage />
@@ -35,8 +40,9 @@ const SummaryModal = () => {
             <Keyword>1위: 하나(2개)</Keyword>
           </KeywordContainer>
         </InfoContainer>
+        <SaveInstruction>이미지를 꾹 눌러 저장해 보세요.</SaveInstruction>
       </ModalBody>
-    </Mask>
+    </>
   );
 };
 export default SummaryModal;
@@ -46,7 +52,7 @@ const Mask = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.4);
 `;
 const ModalBody = styled.div`
   width: 303px;
@@ -138,4 +144,12 @@ const Divider = styled.div`
   width: 257px;
   height: 1px;
   background-color: #f0f0f0;
+`;
+const SaveInstruction = styled.p`
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  position: absolute;
+  bottom: -28px;
+  left: 64px;
 `;
