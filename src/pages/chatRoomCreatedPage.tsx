@@ -1,10 +1,39 @@
 import styled from '@emotion/styled';
 import { QRCodeCanvas } from 'qrcode.react';
 import Button from '@components/chatRoomCreated/Button';
+import { useState, useRef } from 'react';
 
 const ChatRoomCreatedPage = () => {
   const roomId = '1234';
   const chatRoomUrl = `${roomId}`;
+
+  const [qrValue, setQrValue] = useState(chatRoomUrl);
+  const qrRef = useRef<HTMLCanvasElement | null>(null);
+
+  const handleGenerateQR = () => {
+    setQrValue(`${chatRoomUrl}?t=${Date.now()}`);
+  };
+
+  const handleDownloadQR = () => {
+    const canvas = qrRef.current;
+    if (!canvas) return;
+
+    const url = canvas.toDataURL('image/png');
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'QRcode.png';
+    link.click();
+  };
+
+  const handleCopyLink = async () => {
+    try {
+      const url = qrValue;
+      await navigator.clipboard.writeText(url);
+      alert('링크가 복사되었습니다!');
+    } catch {
+      alert('복사에 실패했어요');
+    }
+  };
 
   return (
     <ChatRoomCreatedContainer>
@@ -15,24 +44,25 @@ const ChatRoomCreatedPage = () => {
 
       <QRCodeWrapper>
         <QRCodeCanvas
-          value={chatRoomUrl}
+          ref={qrRef}
+          value={qrValue}
           size={150}
           bgColor='#ffffff'
           fgColor='#000000'
           level='H'
         />
         <QRActionGroup>
-          <QRActionItem>
+          <QRActionItem onClick={handleGenerateQR}>
             <ActionIcon />
             다시 생성
           </QRActionItem>
-          <QRActionItem>
+          <QRActionItem onClick={handleDownloadQR}>
             <ActionIcon />
             저장
           </QRActionItem>
         </QRActionGroup>
 
-        <QRText>초대 링크</QRText>
+        <QRText onClick={handleCopyLink}>초대 링크</QRText>
         <QRSubText>링크를 클릭하여 복사할 수 있어요</QRSubText>
         <QRLine />
       </QRCodeWrapper>
@@ -78,30 +108,27 @@ const ChatRoomCreatedPage = () => {
 
 export default ChatRoomCreatedPage;
 const ChatRoomCreatedContainer = styled.div`
+  padding: 100px 60px 0 60px;
+
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  padding: 100px 60px 0 60px;
   gap: 20px;
 `;
 const ChatRoomCreatedHeader = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
   gap: 5px;
 `;
-const Title = styled.h2`
+const Title = styled.p`
   color: #3e3333;
-  text-align: center;
-
   font-size: 20px;
   font-weight: 600;
+  text-align: center;
 `;
 const SubTitle = styled.p`
   color: #7c7c7c;
-
   font-size: 14px;
   font-weight: 500;
 `;
@@ -113,9 +140,11 @@ const QRCodeWrapper = styled.div`
   gap: 5px;
 `;
 const QRActionGroup = styled.div`
+  width: 138px;
+
   display: flex;
   flex-direction: row;
-  gap: 15px;
+  gap: 25px;
 `;
 const QRActionItem = styled.div`
   display: flex;
@@ -125,6 +154,8 @@ const QRActionItem = styled.div`
   color: #7c7c7c;
   font-size: 12px;
   font-weight: 500;
+
+  cursor: pointer;
 `;
 const ActionIcon = styled.span`
   width: 18px;
@@ -140,6 +171,8 @@ const QRText = styled.p`
 
   font-size: 14px;
   font-weight: 500;
+
+  cursor: pointer;
 `;
 const QRSubText = styled.p`
   margin-bottom: 25px;
@@ -152,12 +185,11 @@ const QRSubText = styled.p`
 const QRLine = styled.hr`
   width: 235px;
   margin-bottom: 20px;
-
   background-color: #f0f0f0;
 `;
 
 const LoginContainer = styled.div`
-  width: 100%;
+  width: 273px;
 
   display: flex;
   flex-direction: column;
@@ -196,21 +228,19 @@ const NicknameInput = styled.input`
     font-weight: 500;
   }
 `;
-
 const NicknameText = styled.p`
   color: #b7b7b7;
   font-size: 10px;
   font-weight: 500;
 `;
-
 const PasswordInput = styled(NicknameInput)``;
 const PasswordText = styled(NicknameText)``;
+
 const ButtonText = styled.p`
   padding-top: 25px;
 
   color: #b7b7b7;
   font-size: 10px;
   font-weight: 500;
-
   text-align: center;
 `;
