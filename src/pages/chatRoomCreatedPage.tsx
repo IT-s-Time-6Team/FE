@@ -1,7 +1,13 @@
 import styled from '@emotion/styled';
-import { QRCodeCanvas } from 'qrcode.react';
-import Button from '@components/chatRoomCreated/Button';
 import { useState, useRef } from 'react';
+import { QRCodeCanvas } from 'qrcode.react';
+
+import RedCircle from '@assets/RedCircle.svg?react';
+import GreenCirle from '@assets/GreenCircle.svg?react';
+import XMark from '@assets/XMark.svg?react';
+import Check from '@assets/WhiteCheck.svg?react';
+import Button from '@components/chatRoomCreated/Button';
+
 
 const ChatRoomCreatedPage = () => {
   const roomId = '1234';
@@ -78,7 +84,8 @@ const ChatRoomCreatedPage = () => {
                 placeholder='채팅방에서 사용할 닉네임을 입력해주세요.'
                 autoComplete='on'
                 required
-              />
+              /> <RedCircleIcon/>
+              <XMarkIcon/>
             </InputLabel>
             <NicknameText>특수문자, 이모티콘 제외 1글자 이상</NicknameText>
           </InputContainer>
@@ -92,9 +99,10 @@ const ChatRoomCreatedPage = () => {
                 placeholder='채팅방에서 사용할 비밀번호를 입력해 주세요.'
                 autoComplete='current-password'
                 required
-              />
+              /><GreenCircleIcon/>
+              <CheckIcon/>
             </InputLabel>
-            <PasswordText>영문 소문자, 특수문자 포함(../.)6글자</PasswordText>
+            <PasswordText>영문 소문자, 특수문자 포함(,./~) 6글자</PasswordText>
           </InputContainer>
 
           <ButtonText>*닉네임과 비밀번호는 이번 채팅방에서만 사용돼요.</ButtonText>
@@ -185,7 +193,10 @@ const QRSubText = styled.p`
 const QRLine = styled.hr`
   width: 235px;
   margin-bottom: 20px;
-  background-color: #f0f0f0;
+
+  border:none;
+  height: 1px;
+  background-color:#F0F0F0;
 `;
 
 const LoginContainer = styled.div`
@@ -203,7 +214,9 @@ const LoginForm = styled.form`
   gap: 30px;
 `;
 
-const InputContainer = styled.div``;
+const InputContainer = styled.div`
+  position: relative;
+`;
 
 const InputLabel = styled.label`
   display: flex;
@@ -216,6 +229,7 @@ const InputLabel = styled.label`
 `;
 const NicknameInput = styled.input`
   margin-bottom: 12px;
+  padding-right:35px;
   padding-bottom: 15px;
 
   border: none;
@@ -233,6 +247,7 @@ const NicknameText = styled.p`
   font-size: 10px;
   font-weight: 500;
 `;
+
 const PasswordInput = styled(NicknameInput)``;
 const PasswordText = styled(NicknameText)``;
 
@@ -244,3 +259,40 @@ const ButtonText = styled.p`
   font-weight: 500;
   text-align: center;
 `;
+
+const RedCircleIcon = styled(RedCircle)`
+  width:19px;
+  height:19px;
+
+  position: absolute;
+  top:36px;
+  right:10px;
+  transform: translate(50%, -50%);
+`
+const XMarkIcon = styled(XMark)`
+  width:9px;
+  height:9px;
+  
+  position: absolute;
+  top:36px;
+  right:10px;
+  transform: translate(50%, -50%);
+`
+const GreenCircleIcon =styled(GreenCirle)`
+  width:19px;
+  height:19px;
+
+  position: absolute;
+  top:36px;
+  right:10px;
+  transform: translate(50%, -50%);
+`
+const CheckIcon =styled(Check)`
+  width:9px;
+  height:9px;
+  
+  position: absolute;
+  top:36px;
+  right:10px;
+  transform: translate(50%, -50%);
+`
