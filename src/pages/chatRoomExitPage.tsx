@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import Button from '@components/chatRoomExit/Button';
+import SummaryModal from '@components/chatRoomExit/SummaryModal';
 const ChatRoomExitPage = () => {
   return (
     <Container>
@@ -43,6 +44,7 @@ const ChatRoomExitPage = () => {
         <FormLinkText>https://docs.google.com/forms/435432</FormLinkText>
       </FeedbackBox>
       <Button text='메인으로 돌아가기' />
+      <SummaryModal />
     </Container>
   );
 };
