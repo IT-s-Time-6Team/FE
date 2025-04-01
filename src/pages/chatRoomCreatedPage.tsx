@@ -33,7 +33,41 @@ const ChatRoomCreatedPage = () => {
 
         <QRText>초대 링크</QRText>
         <QRSubText>링크를 클릭하여 복사할 수 있어요</QRSubText>
+        <QRLine />
       </QRCodeWrapper>
+
+      <LoginContainer>
+        <LoginForm>
+          <InputContainer>
+            <InputLabel>
+              닉네임
+              <NicknameInput
+                type='text'
+                name='nickname'
+                placeholder='채팅방에서 사용할 닉네임을 입력해주세요'
+                autoComplete='on'
+                required
+              />
+            </InputLabel>
+            <NicknameText>특수문자, 이모티콘 제외 1글자 이상</NicknameText>
+          </InputContainer>
+
+          <InputContainer>
+            <InputLabel>
+              비밀번호
+              <PasswordInput
+                type='password'
+                name='password'
+                placeholder='채팅방에서 사용할 비밀번호를 입력해 주세요.'
+                autoComplete='current-password'
+                required
+              />
+            </InputLabel>
+            <PasswordText>영문 소문자, 특수문자 포함(../.)6글자</PasswordText>
+          </InputContainer>
+          <button />
+        </LoginForm>
+      </LoginContainer>
     </ChatRoomCreatedContainer>
   );
 };
@@ -112,4 +146,59 @@ const QRSubText = styled.p`
 
   font-size: 12px;
   font-weight: 500;
+
+  margin-bottom: 25px;
 `;
+
+const QRLine = styled.hr`
+  width: 235px;
+  margin-bottom: 20px;
+`;
+
+const LoginContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+
+const LoginForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+`;
+
+const InputContainer = styled.div``;
+
+const InputLabel = styled.label`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  color: #3e3333;
+  font-size: 16px;
+  font-weight: 600;
+`;
+const NicknameInput = styled.input`
+  margin-bottom: 12px;
+  padding-bottom: 15px;
+
+  border: none;
+  border-bottom: 1px solid #f0f0f0;
+  outline: none;
+
+  &::placeholder {
+    color: #b7b7b7;
+    font-size: 12px;
+    font-weight: 500;
+  }
+`;
+
+const NicknameText = styled.p`
+  color: #b7b7b7;
+  font-size: 10px;
+  font-weight: 500;
+`;
+
+const PasswordInput = styled(NicknameInput)``;
+const PasswordText = styled(NicknameText)``;
