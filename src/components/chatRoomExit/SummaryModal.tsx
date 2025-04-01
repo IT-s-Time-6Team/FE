@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 interface SummaryModalProps {
   onClose: () => void;
 }
-
+// 채팅룸 종료 페이지에 보여지는 요약 카드 모달
 const SummaryModal = ({ onClose }: SummaryModalProps) => {
   return (
     <>

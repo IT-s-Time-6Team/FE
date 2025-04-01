@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Button from '@components/chatRoomExit/Button';
 import SummaryModal from '@components/chatRoomExit/SummaryModal';
 import { ModalPortal } from '@components/shared/ModalPortal';
+// 채팅룸 종료 페이지
 const ChatRoomExitPage = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const handleOpenModal = () => {
