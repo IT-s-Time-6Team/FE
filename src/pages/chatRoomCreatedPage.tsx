@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { QRCodeCanvas } from 'qrcode.react';
+import Button from '@components/chatRoomCreated/Button';
 
 const ChatRoomCreatedPage = () => {
   const roomId = '1234';
@@ -65,9 +66,12 @@ const ChatRoomCreatedPage = () => {
             </InputLabel>
             <PasswordText>영문 소문자, 특수문자 포함(../.)6글자</PasswordText>
           </InputContainer>
+
+          <ButtonText>*닉네임과 비밀번호는 이번 채팅방에서만 사용돼요.</ButtonText>   
           <button />
         </LoginForm>
       </LoginContainer>
+      <Button text='입장하기'/>
     </ChatRoomCreatedContainer>
   );
 };
@@ -202,3 +206,12 @@ const NicknameText = styled.p`
 
 const PasswordInput = styled(NicknameInput)``;
 const PasswordText = styled(NicknameText)``;
+const ButtonText = styled.p`
+  padding-Top:30px;
+  
+  color: #B7B7B7;
+  font-size: 10px;
+  font-weight: 500;
+  `;
+
+
