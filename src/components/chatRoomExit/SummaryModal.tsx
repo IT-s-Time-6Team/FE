@@ -60,7 +60,7 @@ const ModalBody = styled.div`
   border-radius: 12px;
   background: #fff;
   position: fixed;
-  top: 50%;
+  top: 45%;
   left: 50%;
   transform: translate(-50%, -50%);
   padding: 36px 23px;

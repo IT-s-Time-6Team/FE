@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Button from '@components/chatRoomExit/Button';
 import SummaryModal from '@components/chatRoomExit/SummaryModal';
 import { ModalPortal } from '@components/shared/ModalPortal';
@@ -78,7 +78,7 @@ const Header = styled.div`
   display: flex;
   flex-direction: column;
   gap: 7px;
-  margin: 50px 0 25px 0;
+  margin: 100px 0 25px 0;
 `;
 const Title = styled.p`
   font-size: 20px;
