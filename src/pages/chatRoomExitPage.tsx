@@ -34,7 +34,7 @@ const ChatRoomExitPage = () => {
           </Wrapper>
         </Box>
         <SaveWrapper>
-          <CheckInput type='checkbox' />
+          <CheckButton />
           <SaveText>저장</SaveText>
         </SaveWrapper>
       </StatsContainer>
@@ -128,22 +128,17 @@ const SaveWrapper = styled.div`
   align-items: center;
   gap: 6px;
   justify-content: flex-end;
+  cursor: pointer;
 `;
-const CheckInput = styled.input`
+const CheckButton = styled.div`
   width: 18px;
   height: 18px;
   appearance: none; /* 기본 체크박스 스타일 제거 */
   background: #d9d9d9;
   border: none;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  &:checked {
-  }
-  &:checked::after {
-    content: '✔'; /* 체크 표시 */
-  }
 `;
 const SaveText = styled.p`
   color: #7c7c7c;
