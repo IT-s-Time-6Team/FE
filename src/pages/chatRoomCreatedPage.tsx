@@ -13,8 +13,10 @@ import {
   NicknameText,
   PasswordInput,
   PasswordText,
+  CircleIcon,
+  CheckIcon,
+  XMarkIcon,
 } from '@components/shared/LoginStyle';
-import { CircleIcon, CheckIcon, XMarkIcon } from '@components/shared/ValidationIconStyle';
 import Button from '@components/chatRoomCreated/Button';
 
 const ChatRoomCreatedPage = () => {
@@ -100,8 +102,6 @@ const ChatRoomCreatedPage = () => {
                 autoComplete='on'
                 required
               />
-              <CircleIcon $valid={isNicknameValid} />
-              <CheckIcon $show={isNicknameValid === true} />
               <CircleIcon $valid={isNicknameValid} />
               <CheckIcon $show={isNicknameValid === true} />
               <XMarkIcon $show={isNicknameValid === false} />
