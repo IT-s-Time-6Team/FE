@@ -10,13 +10,12 @@ import {
   InputContainer,
   InputLabel,
   NicknameInput,
-  NicknameText,
   PasswordInput,
-  PasswordText,
   CircleIcon,
   CheckIcon,
   XMarkIcon,
 } from '@components/shared/LoginStyle';
+import ValidationMessage from '@components/chatRoomCreated/ValidationMessage';
 import Button from '@components/chatRoomCreated/Button';
 
 const ChatRoomCreatedPage = () => {
@@ -106,7 +105,7 @@ const ChatRoomCreatedPage = () => {
               <CheckIcon $show={isNicknameValid === true} />
               <XMarkIcon $show={isNicknameValid === false} />
             </InputLabel>
-            <NicknameText>특수문자, 이모티콘 제외 1글자 이상</NicknameText>
+            <ValidationMessage valid={isNicknameValid} type='nickname' />
           </InputContainer>
 
           <InputContainer>
@@ -126,7 +125,7 @@ const ChatRoomCreatedPage = () => {
               <CheckIcon $show={isPasswordValid === true} />
               <XMarkIcon $show={isPasswordValid === false} />
             </InputLabel>
-            <PasswordText>영문 소문자, 특수문자 포함(,./~) 6글자</PasswordText>
+            <ValidationMessage valid={isPasswordValid} type='password' />
           </InputContainer>
 
           <ButtonText>*닉네임과 비밀번호는 이번 채팅방에서만 사용돼요.</ButtonText>

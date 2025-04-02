@@ -49,14 +49,7 @@ export const NicknameInput = styled.input<{ $valid: boolean | null }>`
     font-weight: 500;
   }
 `;
-
-export const NicknameText = styled.p`
-  color: #b7b7b7;
-  font-size: 10px;
-  font-weight: 500;
-`;
 export const PasswordInput = styled(NicknameInput)``;
-export const PasswordText = styled(NicknameText)``;
 
 const iconBaseStyle = css`
   width: 9px;
