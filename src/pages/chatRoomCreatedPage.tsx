@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 import { useState, useRef } from 'react';
 import { QRCodeCanvas } from 'qrcode.react';
+import ReloadIcon from '@assets/ReloadIcon.svg?react';
+import DownloadIcon from '@assets/DownloadIcon.svg?react';
 
 import useNicknameValidation from '@hooks/Validation/NicknameValid';
 import usePasswordValidation from '@hooks/Validation/PasswordValid';
@@ -72,11 +74,11 @@ const ChatRoomCreatedPage = () => {
         />
         <QRActionGroup>
           <QRActionItem onClick={handleGenerateQR}>
-            <ActionIcon />
+            <Reload />
             다시 생성
           </QRActionItem>
           <QRActionItem onClick={handleDownloadQR}>
-            <ActionIcon />
+            <Download />
             저장
           </QRActionItem>
         </QRActionGroup>
@@ -170,7 +172,7 @@ const QRCodeWrapper = styled.div`
   gap: 5px;
 `;
 const QRActionGroup = styled.div`
-  width: 138px;
+  width: 145px;
 
   display: flex;
   flex-direction: row;
@@ -179,6 +181,7 @@ const QRActionGroup = styled.div`
 const QRActionItem = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
   gap: 5px;
 
   color: #7c7c7c;
@@ -187,12 +190,13 @@ const QRActionItem = styled.div`
 
   cursor: pointer;
 `;
-const ActionIcon = styled.span`
-  width: 18px;
-  height: 18px;
-
-  display: inline-block;
-  background-color: #d9d9d9;
+const Reload = styled(ReloadIcon)`
+  width: 20px;
+  height: 20px;
+`;
+const Download = styled(DownloadIcon)`
+  width: 20px;
+  height: 20px;
 `;
 const QRText = styled.p`
   margin-top: 10px;
