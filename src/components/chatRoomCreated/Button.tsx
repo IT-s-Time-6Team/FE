@@ -1,27 +1,27 @@
 import styled from '@emotion/styled';
 
-const Button = ({ text }: { text: string }) => {
+const Button = ({ text, active = false }: { text: string; active?: boolean }) => {
   return (
     <>
-      <NaviButton>{text}</NaviButton>
+      <NaviButton $active={active}>{text}</NaviButton>
     </>
   );
 };
 export default Button;
-const NaviButton = styled.button`
+
+const NaviButton = styled.button<{ $active: boolean }>`
   width: 253px;
   height: 57px;
 
-  background-color: #dadada;
-  color: #939393;
-
   border-radius: 15px;
-
   font-size: 16px;
   font-weight: 600;
-
-  cursor: pointer;
   align-self: center;
   position: absolute;
   bottom: 47px;
+
+  background-color: ${({ $active }) => ($active ? '#FF7913' : '#DADADA')};
+  color: ${({ $active }) => ($active ? '#FFFFFF' : '#939393')};
+  transition: background-color 0.2s ease;
+  cursor: ${({ $active }) => ($active ? 'pointer' : 'not-allowed')};
 `;

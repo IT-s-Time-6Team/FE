@@ -26,6 +26,8 @@ const ChatRoomCreatedPage = () => {
 
   const { nickname, isNicknameValid, handleNicknameChange } = useNicknameValidation();
   const { password, isPasswordValid, handlePasswordChange } = usePasswordValidation();
+  const isFormValid = isNicknameValid === true && isPasswordValid === true;
+
   const handleGenerateQR = () => {
     setQrValue(`${chatRoomUrl}?t=${Date.now()}`);
   };
@@ -130,7 +132,7 @@ const ChatRoomCreatedPage = () => {
           <ButtonText>*닉네임과 비밀번호는 이번 채팅방에서만 사용돼요.</ButtonText>
         </LoginForm>
       </LoginContainer>
-      <Button text='입장하기' />
+      <Button text='입장하기' active={isFormValid} />
     </ChatRoomCreatedContainer>
   );
 };
