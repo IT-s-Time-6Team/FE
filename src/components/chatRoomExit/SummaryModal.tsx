@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { SubTitle, Title } from '@components/shared/TextStyles';
 interface SummaryModalProps {
   onClose: () => void;
 }
@@ -11,14 +12,14 @@ const SummaryModal = ({ onClose }: SummaryModalProps) => {
         <ProfileContainer>
           <ProfileImage />
           <ProfileTextContainer>
-            <Label>이름</Label>
-            <Name>하나</Name>
+            <SubTitle>이름</SubTitle>
+            <Title>하나</Title>
           </ProfileTextContainer>
         </ProfileContainer>
         <Divider />
         <InfoContainer>
           <KeywordContainer>
-            <Label>공감한 키워드</Label>
+            <SubTitle>공감한 키워드</SubTitle>
             <KeywordList>
               <KeywordWrapper>
                 <Keyword>#LOL</Keyword>
@@ -28,15 +29,15 @@ const SummaryModal = ({ onClose }: SummaryModalProps) => {
             </KeywordList>
           </KeywordContainer>
           <KeywordContainer>
-            <Label>총 대화시간</Label>
+            <SubTitle>총 대화시간</SubTitle>
             <Keyword>30분 12초</Keyword>
           </KeywordContainer>
           <KeywordContainer>
-            <Label>가장 많은 키워드를 작성한 사람</Label>
+            <SubTitle>가장 많은 키워드를 작성한 사람</SubTitle>
             <Keyword>1위: 하나(3개)</Keyword>
           </KeywordContainer>
           <KeywordContainer>
-            <Label>취미가 가장 많이 겹친 사람</Label>
+            <SubTitle>취미가 가장 많이 겹친 사람</SubTitle>
             <Keyword>1위: 하나(2개)</Keyword>
           </KeywordContainer>
         </InfoContainer>
@@ -85,17 +86,6 @@ const ProfileTextContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4px;
-`;
-
-const Label = styled.p`
-  font-size: 14px;
-  color: #7c7c7c;
-  font-weight: 500;
-`;
-
-const Name = styled.p`
-  font-size: 20px;
-  font-weight: 600;
 `;
 
 const InfoContainer = styled.div`
