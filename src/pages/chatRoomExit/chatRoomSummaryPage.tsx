@@ -1,10 +1,12 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
 import Button from '@components/chatRoomExit/Button';
+import { Container, Header } from '@components/shared/UIStyles';
+import { Title, SubTitle } from '@components/shared/TextStyles';
 import SummaryModal from '@components/chatRoomExit/SummaryModal';
 import { ModalPortal } from '@components/shared/ModalPortal';
-// 채팅룸 종료 페이지
-const ChatRoomExitPage = () => {
+// 채팅룸 종료 요약 페이지
+const ChatRoomSummaryPage = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const handleOpenModal = () => {
     setIsOpen(true);
@@ -14,10 +16,10 @@ const ChatRoomExitPage = () => {
   };
   return (
     <Container>
-      <Header>
+      <SummaryHeader>
         <Title>채팅룸이 종료되었습니다!</Title>
         <SubTitle>대화는 즐거우셨나요? 요약 결과를 보여드릴게요.</SubTitle>
-      </Header>
+      </SummaryHeader>
       <StatsContainer>
         <Box>
           <Wrapper>
@@ -62,10 +64,9 @@ const ChatRoomExitPage = () => {
     </Container>
   );
 };
-export default ChatRoomExitPage;
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
+export default ChatRoomSummaryPage;
+const SummaryHeader = styled(Header)`
+  margin-top: 97px;
 `;
 const StatsContainer = styled.div`
   width: 342px;
@@ -75,23 +76,6 @@ const StatsContainer = styled.div`
   gap: 2px;
 `;
 
-const Header = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-  margin: 100px 0 25px 0;
-`;
-const Title = styled.p`
-  font-size: 20px;
-  font-weight: 600;
-  text-align: center;
-`;
-const SubTitle = styled.p`
-  font-size: 14px;
-  font-weight: 500;
-  color: #7c7c7c;
-  text-align: center;
-`;
 const FeedbackText = styled.p`
   font-size: 14px;
   font-weight: 600;
@@ -120,6 +104,7 @@ const Box = styled.div`
   border: 1px solid #e4e4e4;
   box-sizing: border-box;
   padding: 27px 0;
+  margin-top: 25px;
 `;
 const Wrapper = styled.div`
   display: flex;
