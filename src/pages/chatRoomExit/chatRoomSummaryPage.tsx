@@ -1,9 +1,10 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
 import Button from '@components/chatRoomExit/Button';
+import { Container, Header } from '@components/chatRoomExit/UIStyles';
 import SummaryModal from '@components/chatRoomExit/SummaryModal';
 import { ModalPortal } from '@components/shared/ModalPortal';
-
+// 채팅룸 종료 요약 페이지
 const ChatRoomSummaryPage = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const handleOpenModal = () => {
@@ -63,10 +64,7 @@ const ChatRoomSummaryPage = () => {
   );
 };
 export default ChatRoomSummaryPage;
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
+
 const StatsContainer = styled.div`
   width: 342px;
   align-self: center;
@@ -75,12 +73,6 @@ const StatsContainer = styled.div`
   gap: 2px;
 `;
 
-const Header = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-  margin: 100px 0 25px 0;
-`;
 const Title = styled.p`
   font-size: 20px;
   font-weight: 600;
@@ -120,6 +112,7 @@ const Box = styled.div`
   border: 1px solid #e4e4e4;
   box-sizing: border-box;
   padding: 27px 0;
+  margin-top: 25px;
 `;
 const Wrapper = styled.div`
   display: flex;
