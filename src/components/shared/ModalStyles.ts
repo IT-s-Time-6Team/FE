@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+// 모달에 사용되는 공용 스타일 컴포넌트
 export const Mask = styled.div`
   position: fixed;
   top: 0;

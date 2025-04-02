@@ -16,4 +16,6 @@ export default MessageModal;
 
 const MessageModalBody = styled(ModalBody)`
   align-items: center;
+  width: 342px;
+  height: 122px;
 `;
