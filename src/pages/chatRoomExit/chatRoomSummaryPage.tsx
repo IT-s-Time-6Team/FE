@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import Button from '@components/chatRoomExit/Button';
 import { Container, Header } from '@components/chatRoomExit/UIStyles';
+import { Title, SubTitle } from '@components/shared/TextStyles';
 import SummaryModal from '@components/chatRoomExit/SummaryModal';
 import { ModalPortal } from '@components/shared/ModalPortal';
 // 채팅룸 종료 요약 페이지
@@ -73,17 +74,6 @@ const StatsContainer = styled.div`
   gap: 2px;
 `;
 
-const Title = styled.p`
-  font-size: 20px;
-  font-weight: 600;
-  text-align: center;
-`;
-const SubTitle = styled.p`
-  font-size: 14px;
-  font-weight: 500;
-  color: #7c7c7c;
-  text-align: center;
-`;
 const FeedbackText = styled.p`
   font-size: 14px;
   font-weight: 600;
