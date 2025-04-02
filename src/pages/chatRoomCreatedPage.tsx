@@ -1,8 +1,20 @@
 import styled from '@emotion/styled';
 import { useState, useRef } from 'react';
 import { QRCodeCanvas } from 'qrcode.react';
-import useNicknameValidation from '@hooks/NicknameValid';
-import { CircleIcon, CheckIcon, XMarkIcon } from '@components/shared/ValidationIcon';
+
+import useNicknameValidation from '@hooks/Validation/NicknameValid';
+import usePasswordValidation from '@hooks/Validation/PasswordValid';
+import {
+  LoginContainer,
+  LoginForm,
+  InputContainer,
+  InputLabel,
+  NicknameInput,
+  NicknameText,
+  PasswordInput,
+  PasswordText,
+} from '@components/shared/LoginStyle';
+import { CircleIcon, CheckIcon, XMarkIcon } from '@components/shared/ValidationIconStyle';
 import Button from '@components/chatRoomCreated/Button';
 
 const ChatRoomCreatedPage = () => {
@@ -13,7 +25,7 @@ const ChatRoomCreatedPage = () => {
   const qrRef = useRef<HTMLCanvasElement | null>(null);
 
   const { nickname, isNicknameValid, handleNicknameChange } = useNicknameValidation();
-
+  const { password, isPasswordValid, handlePasswordChange } = usePasswordValidation();
   const handleGenerateQR = () => {
     setQrValue(`${chatRoomUrl}?t=${Date.now()}`);
   };
@@ -88,6 +100,8 @@ const ChatRoomCreatedPage = () => {
               />
               <CircleIcon $valid={isNicknameValid} />
               <CheckIcon $show={isNicknameValid === true} />
+              <CircleIcon $valid={isNicknameValid} />
+              <CheckIcon $show={isNicknameValid === true} />
               <XMarkIcon $show={isNicknameValid === false} />
             </InputLabel>
             <NicknameText>특수문자, 이모티콘 제외 1글자 이상</NicknameText>
@@ -99,11 +113,16 @@ const ChatRoomCreatedPage = () => {
               <PasswordInput
                 type='password'
                 name='password'
-                $valid={null}
+                value={password}
+                $valid={isPasswordValid}
+                onChange={(e) => handlePasswordChange(e.target.value)}
                 placeholder='채팅방에서 사용할 비밀번호를 입력해 주세요.'
                 autoComplete='current-password'
                 required
               />
+              <CircleIcon $valid={isPasswordValid} />
+              <CheckIcon $show={isPasswordValid === true} />
+              <XMarkIcon $show={isPasswordValid === false} />
             </InputLabel>
             <PasswordText>영문 소문자, 특수문자 포함(,./~) 6글자</PasswordText>
           </InputContainer>
@@ -200,62 +219,6 @@ const QRLine = styled.hr`
   height: 1px;
   background-color: #f0f0f0;
 `;
-
-const LoginContainer = styled.div`
-  width: 273px;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`;
-
-const LoginForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 30px;
-`;
-
-const InputContainer = styled.div`
-  position: relative;
-`;
-
-const InputLabel = styled.label`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-
-  color: #3e3333;
-  font-size: 16px;
-  font-weight: 600;
-`;
-
-const NicknameInput = styled.input<{ $valid: boolean | null }>`
-  margin-bottom: 12px;
-  padding-right: 35px;
-  padding-bottom: 13px;
-
-  border: none;
-  border-bottom: 1px solid
-    ${({ $valid }) => ($valid === true ? '#87E543' : $valid === false ? '#FF7676' : '#f0f0f0')};
-  transition: border-color 0.2s ease;
-
-  outline: none;
-  &::placeholder {
-    color: #b7b7b7;
-    font-size: 12px;
-    font-weight: 500;
-  }
-`;
-
-const NicknameText = styled.p`
-  color: #b7b7b7;
-  font-size: 10px;
-  font-weight: 500;
-`;
-
-const PasswordInput = styled(NicknameInput)``;
-const PasswordText = styled(NicknameText)``;
 
 const ButtonText = styled.p`
   padding-top: 25px;
