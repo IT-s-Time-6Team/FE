@@ -1,13 +1,9 @@
 import styled from '@emotion/styled';
 import { useState, useRef } from 'react';
 import { QRCodeCanvas } from 'qrcode.react';
-
-import RedCircle from '@assets/RedCircle.svg?react';
-import GreenCirle from '@assets/GreenCircle.svg?react';
-import XMark from '@assets/XMark.svg?react';
-import Check from '@assets/WhiteCheck.svg?react';
+import useNicknameValidation from '@hooks/NicknameValid';
+import { CircleIcon, CheckIcon, XMarkIcon } from '@components/shared/ValidationIcon';
 import Button from '@components/chatRoomCreated/Button';
-
 
 const ChatRoomCreatedPage = () => {
   const roomId = '1234';
@@ -15,6 +11,8 @@ const ChatRoomCreatedPage = () => {
 
   const [qrValue, setQrValue] = useState(chatRoomUrl);
   const qrRef = useRef<HTMLCanvasElement | null>(null);
+
+  const { nickname, isNicknameValid, handleNicknameChange } = useNicknameValidation();
 
   const handleGenerateQR = () => {
     setQrValue(`${chatRoomUrl}?t=${Date.now()}`);
@@ -81,11 +79,16 @@ const ChatRoomCreatedPage = () => {
               <NicknameInput
                 type='text'
                 name='nickname'
+                value={nickname}
+                $valid={isNicknameValid}
+                onChange={(e) => handleNicknameChange(e.target.value)}
                 placeholder='채팅방에서 사용할 닉네임을 입력해주세요.'
                 autoComplete='on'
                 required
-              /> <RedCircleIcon/>
-              <XMarkIcon/>
+              />
+              <CircleIcon $valid={isNicknameValid} />
+              <CheckIcon $show={isNicknameValid === true} />
+              <XMarkIcon $show={isNicknameValid === false} />
             </InputLabel>
             <NicknameText>특수문자, 이모티콘 제외 1글자 이상</NicknameText>
           </InputContainer>
@@ -96,17 +99,16 @@ const ChatRoomCreatedPage = () => {
               <PasswordInput
                 type='password'
                 name='password'
+                $valid={null}
                 placeholder='채팅방에서 사용할 비밀번호를 입력해 주세요.'
                 autoComplete='current-password'
                 required
-              /><GreenCircleIcon/>
-              <CheckIcon/>
+              />
             </InputLabel>
             <PasswordText>영문 소문자, 특수문자 포함(,./~) 6글자</PasswordText>
           </InputContainer>
 
           <ButtonText>*닉네임과 비밀번호는 이번 채팅방에서만 사용돼요.</ButtonText>
-          <button />
         </LoginForm>
       </LoginContainer>
       <Button text='입장하기' />
@@ -194,9 +196,9 @@ const QRLine = styled.hr`
   width: 235px;
   margin-bottom: 20px;
 
-  border:none;
+  border: none;
   height: 1px;
-  background-color:#F0F0F0;
+  background-color: #f0f0f0;
 `;
 
 const LoginContainer = styled.div`
@@ -227,21 +229,25 @@ const InputLabel = styled.label`
   font-size: 16px;
   font-weight: 600;
 `;
-const NicknameInput = styled.input`
+
+const NicknameInput = styled.input<{ $valid: boolean | null }>`
   margin-bottom: 12px;
-  padding-right:35px;
-  padding-bottom: 15px;
+  padding-right: 35px;
+  padding-bottom: 13px;
 
   border: none;
-  border-bottom: 1px solid #f0f0f0;
-  outline: none;
+  border-bottom: 1px solid
+    ${({ $valid }) => ($valid === true ? '#87E543' : $valid === false ? '#FF7676' : '#f0f0f0')};
+  transition: border-color 0.2s ease;
 
+  outline: none;
   &::placeholder {
     color: #b7b7b7;
     font-size: 12px;
     font-weight: 500;
   }
 `;
+
 const NicknameText = styled.p`
   color: #b7b7b7;
   font-size: 10px;
@@ -259,40 +265,3 @@ const ButtonText = styled.p`
   font-weight: 500;
   text-align: center;
 `;
-
-const RedCircleIcon = styled(RedCircle)`
-  width:19px;
-  height:19px;
-
-  position: absolute;
-  top:36px;
-  right:10px;
-  transform: translate(50%, -50%);
-`
-const XMarkIcon = styled(XMark)`
-  width:9px;
-  height:9px;
-  
-  position: absolute;
-  top:36px;
-  right:10px;
-  transform: translate(50%, -50%);
-`
-const GreenCircleIcon =styled(GreenCirle)`
-  width:19px;
-  height:19px;
-
-  position: absolute;
-  top:36px;
-  right:10px;
-  transform: translate(50%, -50%);
-`
-const CheckIcon =styled(Check)`
-  width:9px;
-  height:9px;
-  
-  position: absolute;
-  top:36px;
-  right:10px;
-  transform: translate(50%, -50%);
-`
