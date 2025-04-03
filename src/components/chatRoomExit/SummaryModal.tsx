@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { SubTitle, Title } from '@components/shared/TextStyles';
+import rabbitIcon from '../../assets/summary_rabbit_icon.svg';
 interface SummaryModalProps {
   onClose: () => void;
 }
@@ -10,7 +11,7 @@ const SummaryModal = ({ onClose }: SummaryModalProps) => {
       <Mask onClick={onClose} />
       <ModalBody>
         <ProfileContainer>
-          <ProfileImage />
+          <ProfileImage src={rabbitIcon} />
           <ProfileTextContainer>
             <SubTitle>이름</SubTitle>
             <Title>하나</Title>
@@ -75,9 +76,7 @@ const ProfileContainer = styled.div`
   align-items: center;
 `;
 
-const ProfileImage = styled.div`
-  width: 51px;
-  height: 51px;
+const ProfileImage = styled.img`
   background-color: #d9d9d9;
   border-radius: 8px;
 `;
