@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import Button from '@components/chatRoomExit/Button';
 import { Container, Header } from '@components/shared/UIStyles';
 import { Title, SubTitle } from '@components/shared/TextStyles';
+
 // 채팅룸 종료 오류 페이지
 const ChatRoomExpiredPage = () => {
   return (
