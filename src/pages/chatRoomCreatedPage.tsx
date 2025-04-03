@@ -30,12 +30,12 @@ const ChatRoomCreatedPage = () => {
   const { nickname, isNicknameValid, handleNicknameChange } = useNicknameValidation();
   const { password, isPasswordValid, handlePasswordChange } = usePasswordValidation();
   const isFormValid = isNicknameValid === true && isPasswordValid === true;
-  
+
   //QR코드 재생성
   const handleGenerateQR = () => {
     setQrValue(`${chatRoomUrl}?t=${Date.now()}`);
   };
-  
+
   //QR코드 다운로드
   const handleDownloadQR = () => {
     const canvas = qrRef.current;
