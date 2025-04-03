@@ -14,6 +14,7 @@ const messages = {
   },
 };
 
+// 닉네임, 비밀번호 입력시 유효검사 메시지
 const ValidationMessage = ({
   valid,
   type = 'nickname',

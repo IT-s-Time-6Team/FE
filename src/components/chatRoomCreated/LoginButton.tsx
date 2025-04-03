@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 
+//채팅방 생성완료,사용자 입장 페이지에서 사용되는 버튼
 const Button = ({ text, active = false }: { text: string; active?: boolean }) => {
   return (
     <>
