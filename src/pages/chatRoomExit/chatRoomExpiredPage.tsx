@@ -3,6 +3,7 @@ import Button from '@components/chatRoomExit/Button';
 import { Container, Header } from '@components/shared/UIStyles';
 import { Title, SubTitle } from '@components/shared/TextStyles';
 import errorIcon from '../../assets/error_page_icon.svg';
+
 // 채팅룸 종료 오류 페이지
 const ChatRoomExpiredPage = () => {
   return (
