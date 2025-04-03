@@ -1,4 +1,6 @@
 import styled from '@emotion/styled';
+import { Title, SubTitle } from '@components/shared/TextStyles';
+import { Container, Header } from '@components/shared/UIStyles';
 import { useState, useRef } from 'react';
 import { QRCodeCanvas } from 'qrcode.react';
 import ReloadIcon from '@assets/ReloadIcon.svg?react';
@@ -141,32 +143,13 @@ const ChatRoomCreatedPage = () => {
 };
 
 export default ChatRoomCreatedPage;
-const ChatRoomCreatedContainer = styled.div`
+const ChatRoomCreatedContainer = styled(Container)`
   padding: 100px 60px 0 60px;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   gap: 20px;
 `;
-const ChatRoomCreatedHeader = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+const ChatRoomCreatedHeader = styled(Header)`
   gap: 5px;
 `;
-const Title = styled.p`
-  color: #3e3333;
-  font-size: 20px;
-  font-weight: 600;
-  text-align: center;
-`;
-const SubTitle = styled.p`
-  color: #7c7c7c;
-  font-size: 14px;
-  font-weight: 500;
-`;
-
 const QRCodeWrapper = styled.div`
   display: flex;
   flex-direction: column;
