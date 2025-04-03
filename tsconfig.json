@@ -27,7 +27,8 @@
       // 경로 별칭 설정
       "@components/*": ["src/components/*"],
       "@layout/*": ["src/layout/*"],
-      "@pages/*": ["src/pages/*"]
+      "@pages/*": ["src/pages/*"],
+      "@assets/*": ["src/assets/*"]
     }
   },
   "include": ["src"], // 타입 검사 포함 디렉토리

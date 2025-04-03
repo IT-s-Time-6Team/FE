@@ -3,6 +3,7 @@ import Layout from '@layout/Layout';
 import Home from '@pages/Home/Home';
 import GlobalStyles from '../src/styles/GlobalStyles';
 import ChatRoomExitPage from '@pages/chatRoomExit/chatRoomExitPage';
+import OnBoardingPage from '@pages/onBoarding/onBoardingPage';
 
 function App() {
   return (
@@ -10,6 +11,10 @@ function App() {
       <GlobalStyles />
       <BrowserRouter>
         <Routes>
+          <Route>
+            <Route path='/onBoarding' element={<OnBoardingPage />} />
+          </Route>
+
           <Route element={<Layout />}>
             <Route index element={<Home />} />
             <Route path='/chatRoom/exit' element={<ChatRoomExitPage />} />
