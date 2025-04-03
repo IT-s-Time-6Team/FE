@@ -1,0 +1,29 @@
+<svg width="51" height="51" viewBox="0 0 51 51" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="51" height="51" rx="5.17642" fill="#DFA573"/>
+<mask id="mask0_181_727" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="6" width="51" height="45">
+<rect y="6.79944" width="51" height="43.35" rx="6.3245" fill="#FFD4D4"/>
+</mask>
+<g mask="url(#mask0_181_727)">
+<ellipse cx="5.42103" cy="34.0475" rx="10.6417" ry="10.9407" fill="#F3BC8D"/>
+<ellipse cx="44.7736" cy="34.0475" rx="10.6417" ry="10.9407" fill="#F3BC8D"/>
+</g>
+<circle cx="13.7743" cy="19.8809" r="8.67471" fill="white"/>
+<circle cx="13.7747" cy="19.8817" r="4.76498" fill="#5E4E4E"/>
+<path d="M25.8711 27.823V29.7779" stroke="#AE7878" stroke-width="0.474338" stroke-linecap="round"/>
+<circle cx="37.7226" cy="19.881" r="8.67471" fill="white"/>
+<circle cx="37.723" cy="19.8817" r="4.76498" fill="#5E4E4E"/>
+<circle cx="25.8703" cy="25.6225" r="2.44358" fill="#5E4E4E"/>
+<ellipse cx="25.8835" cy="35.8879" rx="2.9323" ry="6.10895" fill="#5E4E4E"/>
+<mask id="mask1_181_727" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="22" y="29" width="7" height="13">
+<ellipse cx="25.8708" cy="35.8864" rx="2.9323" ry="6.10895" fill="#5E4E4E"/>
+</mask>
+<g mask="url(#mask1_181_727)">
+<ellipse cx="3.81031" cy="6.00565" rx="3.81031" ry="6.00565" transform="matrix(0.928279 0.371884 -0.248361 0.968668 25.5312 34.9089)" fill="#7F6E6E"/>
+</g>
+<circle cx="39.3107" cy="18.5373" r="1.22179" fill="#7F6E6E"/>
+<circle cx="26.6042" cy="24.8901" r="0.733074" fill="#7F6E6E"/>
+<circle cx="15.6075" cy="18.5373" r="1.22179" fill="#7F6E6E"/>
+<path d="M27.8262 43.4622C26.9802 44.1469 25.4255 44.6948 23.9164 43.4622" stroke="#D28E52" stroke-width="0.63245" stroke-linecap="round"/>
+<path d="M11.6963 7.05229C12.648 6.36764 14.3971 5.81977 16.0947 7.05229" stroke="#BE7B40" stroke-width="0.63245" stroke-linecap="round"/>
+<path d="M35.6455 7.05229C36.5972 6.36764 38.3463 5.81977 40.044 7.05229" stroke="#BE7B40" stroke-width="0.63245" stroke-linecap="round"/>
+</svg>
