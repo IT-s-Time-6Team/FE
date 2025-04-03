@@ -39,7 +39,7 @@ export const NicknameInput = styled.input<{ $valid: boolean | null }>`
 
   border: none;
   border-bottom: 1px solid
-    ${({ $valid }) => ($valid === true ? '#87E543' : $valid === false ? '#FF7676' : '#f0f0f0')};
+    ${({ $valid }) => ($valid === true ? '#87E543' : $valid === false ? '#FF7676' : '#F0F0F0')};
   transition: border-color 0.2s ease;
 
   outline: none;

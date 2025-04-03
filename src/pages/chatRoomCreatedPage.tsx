@@ -4,8 +4,8 @@ import { QRCodeCanvas } from 'qrcode.react';
 import ReloadIcon from '@assets/ReloadIcon.svg?react';
 import DownloadIcon from '@assets/DownloadIcon.svg?react';
 
-import useNicknameValidation from '@hooks/Validation/NicknameValid';
-import usePasswordValidation from '@hooks/Validation/PasswordValid';
+import useNicknameValidation from '@hooks/InputValidation/useNicknameValid';
+import usePasswordValidation from '@hooks/InputValidation/usePasswordValid';
 import {
   LoginContainer,
   LoginForm,
@@ -16,9 +16,9 @@ import {
   CircleIcon,
   CheckIcon,
   XMarkIcon,
-} from '@components/shared/LoginStyle';
+} from '@components/shared/LoginFormStyle';
 import ValidationMessage from '@components/chatRoomCreated/ValidationMessage';
-import Button from '@components/chatRoomCreated/Button';
+import Button from '@components/chatRoomCreated/LoginButton';
 
 const ChatRoomCreatedPage = () => {
   const roomId = '1234';

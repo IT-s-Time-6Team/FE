@@ -22,6 +22,8 @@ const NaviButton = styled.button<{ $active: boolean }>`
 
   background-color: ${({ $active }) => ($active ? '#FF7913' : '#DADADA')};
   color: ${({ $active }) => ($active ? '#FFFFFF' : '#939393')};
-  transition: background-color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
   cursor: ${({ $active }) => ($active ? 'pointer' : 'not-allowed')};
 `;

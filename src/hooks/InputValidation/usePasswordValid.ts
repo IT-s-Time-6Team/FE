@@ -1,4 +1,3 @@
-// usePasswordValidation.ts
 import { useState } from 'react';
 
 const passwordRegex = /^(?=.*[a-z])(?=.*[.,/~]).{6,}$/;
