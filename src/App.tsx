@@ -3,6 +3,7 @@ import Layout from '@layout/Layout';
 import Home from '@pages/Home/Home';
 import ChatRoomCreatedPage from '@pages/chatRoomCreatedPage';
 import GlobalStyles from '../src/styles/GlobalStyles';
+import ChatRoomExitPage from '@pages/chatRoomExit/chatRoomExitPage';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
 
           <Route element={<Layout />}>
             <Route index element={<Home />} />
+            <Route path='/chatRoom/exit' element={<ChatRoomExitPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
