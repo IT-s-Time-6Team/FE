@@ -11,12 +11,9 @@ function App() {
       <GlobalStyles />
       <BrowserRouter>
         <Routes>
-          <Route>
-            <Route path='/onBoarding' element={<OnBoardingPage />} />
-          </Route>
-
           <Route element={<Layout />}>
             <Route index element={<Home />} />
+            <Route path='/onBoarding' element={<OnBoardingPage />} />
             <Route path='/chatRoom/exit' element={<ChatRoomExitPage />} />
           </Route>
         </Routes>

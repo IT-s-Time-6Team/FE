@@ -46,20 +46,15 @@ const OnBoardingPage = () => {
     </OnBoardingContainer>
   );
 };
-
 export default OnBoardingPage;
 
 const OnBoardingContainer = styled(Container)`
   margin: 130px 43px 0 43px;
-
   gap: 94px;
-  align-self: stretch;
 `;
-
 const OnBoardingHeader = styled(Header)`
   gap: 10px;
 `;
-
 const OkiLogo = styled(OkiLogoIcon)`
   width: 156px;
   height: 62px;
@@ -67,10 +62,10 @@ const OkiLogo = styled(OkiLogoIcon)`
 const HeaderSubTitle = styled(SubTitle)`
   line-height: 140%;
 `;
-
 const MainContainer = styled.div`
   position: relative;
   width: 304px;
+  height: 360px;
 `;
 const BubbleWrapper = styled.div`
   position: absolute;
