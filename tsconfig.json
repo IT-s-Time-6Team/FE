@@ -28,7 +28,8 @@
       "@components/*": ["src/components/*"],
       "@layout/*": ["src/layout/*"],
       "@pages/*": ["src/pages/*"],
-      "@assets/*": ["src/assets/*"]
+      "@assets/*": ["src/assets/*"],
+      "@hooks/*": ["src/hooks/*"]
     }
   },
   "include": ["src"], // 타입 검사 포함 디렉토리
