@@ -2,19 +2,8 @@ import styled from '@emotion/styled';
 import { Container, Header } from '@components/shared/UIStyles';
 import { SubTitle } from '@components/shared/TextStyles';
 import Button from '@components/chatRoomExit/Button';
-
-import OkiLogoIcon from '@assets/icons/oki_logo.svg?react';
-import Bubble from '@assets/icons/buble_icon.svg?react';
-import Exclamation from '@assets/icons/exclamation_icon.svg?react';
-import ReverseBubble from '@assets/icons/reversbubble_icon.svg?react';
-import Heart from '@assets/icons/heart_icon.svg?react';
-import Rabbit from '@assets/icons/rabbit_icon.svg?react';
-import Chick from '@assets/icons/chick_icon.svg?react';
-import Turtle from '@assets/icons/turtle_icon.svg?react';
-import Bear from '@assets/icons/bear_icon.svg?react';
-import Panda from '@assets/icons/panda_icon.svg?react';
-import Pig from '@assets/icons/pig_icon.svg?react';
-import Fox from '@assets/icons/fox_icon.svg?react';
+import OkiLogoIcon from '@assets/oki_log.svg?react';
+import Icons from '@assets/icon_group.svg?react';
 
 const OnBoardingPage = () => {
   return (
@@ -25,21 +14,7 @@ const OnBoardingPage = () => {
       </OnBoardingHeader>
 
       <MainContainer>
-        <BubbleWrapper>
-          <BubbleIcon />
-          <ExclamationIcon />
-        </BubbleWrapper>
-        <RabbitIcon />
-        <ChickIcon />
-        <TurtleIcon />
-        <BearIcon />
-        <PandaIcon />
-        <PigIcon />
-        <FoxIcon />
-        <ReverseBubbleWrapper>
-          <ReverseBubbleIcon />
-          <HeartIcon />
-        </ReverseBubbleWrapper>
+        <IconGroup />
       </MainContainer>
 
       <Button text={'시작하기'} />
@@ -67,64 +42,6 @@ const MainContainer = styled.div`
   width: 304px;
   height: 360px;
 `;
-const BubbleWrapper = styled.div`
+const IconGroup = styled(Icons)`
   position: absolute;
-  top: 55px;
-  left: 6px;
-`;
-const BubbleIcon = styled(Bubble)`
-  display: block;
-`;
-const ExclamationIcon = styled(Exclamation)`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-`;
-const RabbitIcon = styled(Rabbit)`
-  position: absolute;
-  left: 81px;
-`;
-const ChickIcon = styled(Chick)`
-  position: absolute;
-  top: 52px;
-  left: 191px;
-`;
-const TurtleIcon = styled(Turtle)`
-  position: absolute;
-  top: 127px;
-`;
-const BearIcon = styled(Bear)`
-  position: absolute;
-  top: 131px;
-  left: 114px;
-`;
-const PandaIcon = styled(Panda)`
-  position: absolute;
-  top: 135px;
-  left: 210px;
-`;
-const PigIcon = styled(Pig)`
-  position: absolute;
-  top: 211px;
-  left: 41px;
-`;
-const FoxIcon = styled(Fox)`
-  position: absolute;
-  top: 211px;
-  left: 133px;
-`;
-const ReverseBubbleWrapper = styled.div`
-  position: absolute;
-  top: 228px;
-  left: 254px;
-`;
-const ReverseBubbleIcon = styled(ReverseBubble)`
-  display: block;
-`;
-const HeartIcon = styled(Heart)`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 `;
