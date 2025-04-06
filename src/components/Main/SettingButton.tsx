@@ -9,26 +9,25 @@ const SettingButton = ({
   unit = '명',
   onIncrease,
   onDecrease,
-  down = true,
-  up = true,
+  isDownActive = true,
+  isUpActive = true,
 }: {
   label: string;
-  value: number;
+  value: number |string;
   unit?: string;
   onIncrease: () => void;
   onDecrease: () => void;
-  down?: boolean;
-  up?: boolean;
+  isDownActive?: boolean;
+  isUpActive?: boolean;
 }) => (
   <CounterContainer>
     <InfoText>{label}</InfoText>
     <CounterControls>
-      <ChevronDown $down={down} onClick={onDecrease} />
+      <ChevronDown $isDownActive={isDownActive} onClick={onDecrease} />
       <Counter>
-        {value}
-        {unit}
+        {Number(value) === 0 ? '없음' :`${value}${unit}`}
       </Counter>
-      <ChevronUp $up={up} onClick={onIncrease} />
+      <ChevronUp $isUpActive={isUpActive} onClick={onIncrease} />
     </CounterControls>
   </CounterContainer>
 );
@@ -55,6 +54,8 @@ const CounterControls = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  white-space: nowrap;
+  
   gap: 17px;
 `;
 
@@ -63,17 +64,21 @@ const Counter = styled(SubTitle)`
   line-height: 140%;
 `;
 
-const ChevronDown = styled(ChevronDownIcon)<{ $down: boolean }>`
+const ChevronDown = styled(ChevronDownIcon, {
+  shouldForwardProp: (prop) => prop !== '$isDownActive',
+})<{ $isDownActive: boolean }>`
   path {
-    fill: ${({ $down }) => ($down ? '#F6F6F6' : '#DADADA')};
+    fill: ${({ $isDownActive }) => ($isDownActive ? '#F6F6F6' : '#DADADA')};
     transition: fill 0.2s ease;
   }
-  cursor: ${({ $down }) => ($down ? 'default' : 'pointer')};
+  cursor: ${({ $isDownActive }) => ($isDownActive ? 'default' : 'pointer')};
 `;
-const ChevronUp = styled(ChevronUpIcon)<{ $up: boolean }>`
+const ChevronUp = styled(ChevronUpIcon, {
+  shouldForwardProp: (prop) => prop !== '$isUpActive',
+})<{ $isUpActive: boolean }>`
   path {
-    fill: ${({ $up }) => ($up ? '#F6F6F6' : '#DADADA')};
+    fill: ${({ $isUpActive }) => ($isUpActive ? '#F6F6F6' : '#DADADA')};
     transition: fill 0.2s ease;
   }
-  cursor: ${({ $up }) => ($up ? 'default' : 'pointer')};
+  cursor: ${({ $isUpActive }) => ($isUpActive ? 'default' : 'pointer')};
 `;

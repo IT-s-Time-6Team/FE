@@ -32,6 +32,27 @@ const MainPage = () => {
     if (maxCount > empathyCount) setMaxCount(maxCount - 1);
   };
 
+  const getTimeStep = (minutes: number) => {
+    if (minutes < 10) return 5;
+    if (minutes < 60) return 10;
+    return 30;
+  };
+
+  const MAX_MINUTES = 360;
+  const [timeLimit, setTimeLimit] = useState(0); 
+
+  const increaseTime = () => {
+    const step = getTimeStep(timeLimit);
+    const newTime = Math.min(timeLimit + step, MAX_MINUTES);
+    setTimeLimit(newTime);
+  };
+
+  const decreaseTime = () => {
+    const step = getTimeStep(timeLimit);
+    const newTime = Math.max(timeLimit - step, 0);
+    setTimeLimit(newTime);
+  };
+
   return (
     <MainContainer>
       <MainHeader>
@@ -55,16 +76,25 @@ const MainPage = () => {
               value={empathyCount}
               onIncrease={increaseEmpathy}
               onDecrease={decreaseEmpathy}
-              down={empathyCount < 3}
-              up={empathyCount >= 20}
+              isDownActive={empathyCount < 3}
+              isUpActive={empathyCount >= 20}
             />
             <SettingButton
               label='최대 입장 인원'
               value={maxCount}
               onIncrease={increaseMax}
               onDecrease={decreaseMax}
-              down={maxCount < 3}
-              up={maxCount >= 20}
+              isDownActive={maxCount < 3}
+              isUpActive={maxCount >= 20}
+            />
+            <SettingButton
+               label="시간 제한"
+               value={timeLimit}
+               unit="분"
+               onIncrease={increaseTime}
+               onDecrease={decreaseTime}
+               isDownActive={timeLimit <=0}
+               isUpActive={timeLimit > 360}
             />
           </Selector>
         </KeyWordBox>
