@@ -1,10 +1,37 @@
 import styled from '@emotion/styled';
+import { useState } from 'react';
 import { Container, Header } from '@components/shared/UIStyles';
 import { Title, SubTitle } from '@components/shared/TextStyles';
+import SettingButton from '@components/Main/SettingButton';
 import Logo from '@assets/oki_log.svg?react';
 import MainIcon from '@assets/main_icon_group.svg?react';
 
 const MainPage = () => {
+  const MIN = 2;
+  const MAX = 20;
+  const [empathyCount, setEmpathyCount] = useState(2);
+  const [maxCount, setMaxCount] = useState(2);
+
+  const increaseEmpathy = () => {
+    if (empathyCount < MAX) {
+      const newCount = empathyCount + 1;
+      setEmpathyCount(newCount);
+      if (newCount > maxCount) setMaxCount(newCount);
+    }
+  };
+
+  const decreaseEmpathy = () => {
+    if (empathyCount > MIN) setEmpathyCount(empathyCount - 1);
+  };
+
+  const increaseMax = () => {
+    if (maxCount < MAX) setMaxCount(maxCount + 1);
+  };
+
+  const decreaseMax = () => {
+    if (maxCount > empathyCount) setMaxCount(maxCount - 1);
+  };
+
   return (
     <MainContainer>
       <MainHeader>
@@ -23,18 +50,22 @@ const MainPage = () => {
           </KeyWordHeader>
 
           <Selector>
-            <EmpathySelector>
-              <People>공감 기준 인원</People>
-              <Counter>2명</Counter>
-            </EmpathySelector>
-            <MaxParticipantsSelector>
-              <People>최대 입장 인원</People>
-              <Counter>2명</Counter>
-            </MaxParticipantsSelector>
-            <TimeLimitSelector>
-              <People>시간 제한</People>
-              <Counter>없음</Counter>
-            </TimeLimitSelector>
+            <SettingButton
+              label='공감 기준 인원'
+              value={empathyCount}
+              onIncrease={increaseEmpathy}
+              onDecrease={decreaseEmpathy}
+              down={empathyCount < 3}
+              up={empathyCount >= 20}
+            />
+            <SettingButton
+              label='최대 입장 인원'
+              value={maxCount}
+              onIncrease={increaseMax}
+              onDecrease={decreaseMax}
+              down={maxCount < 3}
+              up={maxCount >= 20}
+            />
           </Selector>
         </KeyWordBox>
       </KeyWordMode>
@@ -84,25 +115,6 @@ const KeyWordSubTitle = styled(SubTitle)`
   line-height: 140%;
 `;
 const Selector = styled(Container)`
+  margin-top: 9px;
   gap: 17px;
-`;
-const EmpathySelector = styled.div`
-  width: 220px;
-  margin-right: 15px;
-
-  display: flex;
-  flex-direction: row;
-  gap: 53px;
-`;
-const MaxParticipantsSelector = styled(EmpathySelector)``;
-const TimeLimitSelector = styled(EmpathySelector)``;
-
-const People = styled(Title)`
-  width: 80px;
-  font-size: 14px;
-  line-height: 140%;
-`;
-const Counter = styled(SubTitle)`
-  color: #3e3333;
-  line-height: 140%;
 `;
