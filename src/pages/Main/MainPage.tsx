@@ -1,11 +1,11 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
 import { Container, Header } from '@components/shared/UIStyles';
-import { Title, SubTitle } from '@components/shared/TextStyles';
-import Button from '@components/chatRoomCreated/LoginButton';
-import SettingButton from '@components/Main/SettingButton';
 import Logo from '@assets/oki_log.svg?react';
 import MainIcon from '@assets/main_icon_group.svg?react';
+import ChevronLeftIcon from '@assets/chevronleft_icon.svg?react';
+import ChevronRightIcon from '@assets/chevronright_icon.svg?react';
+import KeywordModeBox from '@components/Main/KeyWordMode';
 
 const MainPage = () => {
   const MIN = 2;
@@ -61,46 +61,21 @@ const MainPage = () => {
         <MainIcon />
       </MainHeader>
 
-      <KeyWordMode>
-        <KeyWordBox>
-          <KeyWordHeader>
-            <KeyWordTitle>키워드 모드</KeyWordTitle>
-            <KeyWordSubTitle>
-              입력한 키워드를 설정한 인원 이상이 작성하면 해당 키워드가 모두에게 공개되는
-              모드입니다.사람들과 겹치는 취향을 찾아보세요!
-            </KeyWordSubTitle>
-          </KeyWordHeader>
-
-          <Selector>
-            <SettingButton
-              label='공감 기준 인원'
-              value={empathyCount}
-              onIncrease={increaseEmpathy}
-              onDecrease={decreaseEmpathy}
-              isDownActive={empathyCount < 3}
-              isUpActive={empathyCount >= 20}
-            />
-            <SettingButton
-              label='최대 입장 인원'
-              value={maxCount}
-              onIncrease={increaseMax}
-              onDecrease={decreaseMax}
-              isDownActive={maxCount < 3}
-              isUpActive={maxCount >= 20}
-            />
-            <SettingButton
-              label='시간 제한'
-              value={timeLimit}
-              unit='분'
-              onIncrease={increaseTime}
-              onDecrease={decreaseTime}
-              isDownActive={timeLimit <= 0}
-              isUpActive={timeLimit > 360}
-            />
-          </Selector>
-          <Complete text={'방 생성하기'} active={timeLimit > 0} />
-        </KeyWordBox>
-      </KeyWordMode>
+      <ModeContainer>
+        <ChevronLeft />
+        <KeywordModeBox
+          empathyCount={empathyCount}
+          maxCount={maxCount}
+          timeLimit={timeLimit}
+          increaseEmpathy={increaseEmpathy}
+          decreaseEmpathy={decreaseEmpathy}
+          increaseMax={increaseMax}
+          decreaseMax={decreaseMax}
+          increaseTime={increaseTime}
+          decreaseTime={decreaseTime}
+        />
+        <ChevronRight />
+      </ModeContainer>
 
       <Footer>버전 정보</Footer>
     </MainContainer>
@@ -116,44 +91,22 @@ const MainContainer = styled(Container)`
 const MainHeader = styled(Header)`
   gap: 33px;
 `;
-const KeyWordMode = styled(Container)`
+const ModeContainer = styled(Container)`
+  position: relative;
   width: 347px;
   height: 343px;
 
-  position: relative;
+  flex-direction: row;
 `;
-const KeyWordBox = styled(Container)`
-  width: 287px;
-  height: 343px;
-  gap: 15px;
-
-  border-radius: 18px;
-  border: 1px solid #e4e4e4;
+const ChevronLeft = styled(ChevronLeftIcon)`
+  width: 28px;
+  height: 28px;
+  margin: 5px;
 `;
-const KeyWordHeader = styled(Header)`
-  margin: 0 26px;
-  gap: 15px;
-
-  border-bottom: 1px solid #e4e4e4;
-  text-align: center;
-`;
-const KeyWordTitle = styled(Title)`
-  margin-top: 21px;
-`;
-const KeyWordSubTitle = styled(SubTitle)`
-  margin-bottom: 15px;
-
-  font-size: 12px;
-  line-height: 140%;
-`;
-const Selector = styled(Container)`
-  margin-top: 9px;
-  gap: 17px;
-`;
-
-const Complete = styled(Button)`
-  position: absolute;
-  bottom: 18px;
+const ChevronRight = styled(ChevronRightIcon)`
+  width: 28px;
+  height: 28px;
+  margin: 5px;
 `;
 const Footer = styled.p`
   color: #a0a0a0;

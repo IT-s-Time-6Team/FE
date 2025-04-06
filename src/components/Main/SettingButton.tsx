@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { Title, SubTitle } from '@components/shared/TextStyles';
-import ChevronUpIcon from '@assets/cheveronup_icon.svg?react';
-import ChevronDownIcon from '@assets/cheverdown_icon.svg?react';
+import ChevronUpIcon from '@assets/chevronup_icon.svg?react';
+import ChevronDownIcon from '@assets/chevrondown_icon.svg?react';
 
 const SettingButton = ({
   label,
