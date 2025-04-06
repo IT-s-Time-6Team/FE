@@ -13,7 +13,7 @@ const SettingButton = ({
   isUpActive = true,
 }: {
   label: string;
-  value: number |string;
+  value: number | string;
   unit?: string;
   onIncrease: () => void;
   onDecrease: () => void;
@@ -24,9 +24,7 @@ const SettingButton = ({
     <InfoText>{label}</InfoText>
     <CounterControls>
       <ChevronDown $isDownActive={isDownActive} onClick={onDecrease} />
-      <Counter>
-        {Number(value) === 0 ? '없음' :`${value}${unit}`}
-      </Counter>
+      <Counter>{Number(value) === 0 ? '없음' : `${value}${unit}`}</Counter>
       <ChevronUp $isUpActive={isUpActive} onClick={onIncrease} />
     </CounterControls>
   </CounterContainer>

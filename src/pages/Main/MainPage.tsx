@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { Container, Header } from '@components/shared/UIStyles';
 import { Title, SubTitle } from '@components/shared/TextStyles';
+import Button from '@components/chatRoomCreated/LoginButton';
 import SettingButton from '@components/Main/SettingButton';
 import Logo from '@assets/oki_log.svg?react';
 import MainIcon from '@assets/main_icon_group.svg?react';
@@ -39,7 +40,7 @@ const MainPage = () => {
   };
 
   const MAX_MINUTES = 360;
-  const [timeLimit, setTimeLimit] = useState(0); 
+  const [timeLimit, setTimeLimit] = useState(0);
 
   const increaseTime = () => {
     const step = getTimeStep(timeLimit);
@@ -88,19 +89,20 @@ const MainPage = () => {
               isUpActive={maxCount >= 20}
             />
             <SettingButton
-               label="시간 제한"
-               value={timeLimit}
-               unit="분"
-               onIncrease={increaseTime}
-               onDecrease={decreaseTime}
-               isDownActive={timeLimit <=0}
-               isUpActive={timeLimit > 360}
+              label='시간 제한'
+              value={timeLimit}
+              unit='분'
+              onIncrease={increaseTime}
+              onDecrease={decreaseTime}
+              isDownActive={timeLimit <= 0}
+              isUpActive={timeLimit > 360}
             />
           </Selector>
+          <Complete text={'방 생성하기'} active={timeLimit > 0} />
         </KeyWordBox>
       </KeyWordMode>
 
-      <div></div>
+      <Footer>버전 정보</Footer>
     </MainContainer>
   );
 };
@@ -147,4 +149,15 @@ const KeyWordSubTitle = styled(SubTitle)`
 const Selector = styled(Container)`
   margin-top: 9px;
   gap: 17px;
+`;
+
+const Complete = styled(Button)`
+  position: absolute;
+  bottom: 18px;
+`;
+const Footer = styled.p`
+  color: #a0a0a0;
+  font-size: 10px;
+  line-height: 150%;
+  margin-top: -18px;
 `;
