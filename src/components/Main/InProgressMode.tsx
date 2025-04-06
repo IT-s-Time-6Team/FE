@@ -17,7 +17,7 @@ const InProgressContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  
   border-radius: 18px;
   border: 1px solid #e4e4e4;
 `;

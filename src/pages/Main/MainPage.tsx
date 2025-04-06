@@ -6,6 +6,7 @@ import MainIcon from '@assets/main_icon_group.svg?react';
 import ChevronLeftIcon from '@assets/chevronleft_icon.svg?react';
 import ChevronRightIcon from '@assets/chevronright_icon.svg?react';
 import KeywordModeBox from '@components/Main/KeyWordMode';
+import InprogresssModeBox from '@components/Main/InProgressMode';
 
 const MainPage = () => {
   const MIN = 2;
@@ -53,6 +54,8 @@ const MainPage = () => {
     const newTime = Math.max(timeLimit - step, 0);
     setTimeLimit(newTime);
   };
+  
+  const [activeMode, setActiveMode]=useState(0);
 
   return (
     <MainContainer>
@@ -62,19 +65,30 @@ const MainPage = () => {
       </MainHeader>
 
       <ModeContainer>
-        <ChevronLeft />
-        <KeywordModeBox
-          empathyCount={empathyCount}
-          maxCount={maxCount}
-          timeLimit={timeLimit}
-          increaseEmpathy={increaseEmpathy}
-          decreaseEmpathy={decreaseEmpathy}
-          increaseMax={increaseMax}
-          decreaseMax={decreaseMax}
-          increaseTime={increaseTime}
-          decreaseTime={decreaseTime}
-        />
-        <ChevronRight />
+      <ChevronLeft $isLeftActive={activeMode===0} onClick={() => setActiveMode(0)} />
+        <SliderWrapper>
+          <SlideInner $activeIndex={activeMode}>
+            <SlideBox>
+              <KeywordModeBox
+                empathyCount={empathyCount}
+                maxCount={maxCount}
+                timeLimit={timeLimit}
+                increaseEmpathy={increaseEmpathy}
+                decreaseEmpathy={decreaseEmpathy}
+                increaseMax={increaseMax}
+                decreaseMax={decreaseMax}
+                increaseTime={increaseTime}
+                decreaseTime={decreaseTime}
+              />
+            </SlideBox>
+
+            <SlideBox>
+              <InprogresssModeBox />
+            </SlideBox>
+          </SlideInner>
+        </SliderWrapper>
+        
+        <ChevronRight $isRightActive={activeMode===1} onClick={() => setActiveMode(1)} />
       </ModeContainer>
 
       <Footer>버전 정보</Footer>
@@ -98,16 +112,47 @@ const ModeContainer = styled(Container)`
 
   flex-direction: row;
 `;
-const ChevronLeft = styled(ChevronLeftIcon)`
-  width: 28px;
-  height: 28px;
-  margin: 5px;
+const SliderWrapper = styled.div`
+  width: 287px;
+  height: 343px;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+`
+const SlideInner = styled.div<{ $activeIndex: number }>`
+  display: flex;
+  width: 200%;
+  transition: transform 0.3s ease-in-out;
+  transform: translateX(${({ $activeIndex }) => `-${$activeIndex * 50}%`});
 `;
-const ChevronRight = styled(ChevronRightIcon)`
-  width: 28px;
-  height: 28px;
-  margin: 5px;
+const SlideBox = styled.div`
+  width: 287px;
+  height: 343px;
+  flex-shrink: 0;
 `;
+
+const ChevronLeft = styled(ChevronLeftIcon, {
+    shouldForwardProp: (prop) => prop !== '$isLeftActive',
+  })<{ $isLeftActive: boolean }>`
+    margin: 5px;
+
+    path {
+      fill: ${({ $isLeftActive }) => ($isLeftActive ? '#F6F6F6' : '#DADADA')};
+      transition: fill 0.2s ease;
+    }
+    cursor: ${({ $isLeftActive }) => ($isLeftActive ? 'default' : 'pointer')};
+  `;
+const ChevronRight = styled(ChevronRightIcon, {
+    shouldForwardProp: (prop) => prop !== '$isRightActive',
+  })<{ $isRightActive: boolean }>`
+    margin: 5px;
+
+    path {
+      fill: ${({ $isRightActive }) => ($isRightActive ? '#F6F6F6' : '#DADADA')};
+      transition: fill 0.2s ease;
+    }
+    cursor: ${({ $isRightActive }) => ($isRightActive ? 'default' : 'pointer')};
+  `;
 const Footer = styled.p`
   color: #a0a0a0;
   font-size: 10px;
