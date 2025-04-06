@@ -3,6 +3,7 @@ import { Title, SubTitle } from '@components/shared/TextStyles';
 import ChevronUpIcon from '@assets/chevronup_icon.svg?react';
 import ChevronDownIcon from '@assets/chevrondown_icon.svg?react';
 
+//키워드 모드 인원,시간 세팅 컴포넌트 
 const SettingButton = ({
   label,
   value,
@@ -47,14 +48,14 @@ const InfoText = styled(Title)`
 `;
 
 const CounterControls = styled.div`
-  width:  width: calc(100% - 80px - 53px);
+  width: calc(100% - 80px - 53px);
 
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
+
   white-space: nowrap;
-  
-  gap: 17px;
 `;
 
 const Counter = styled(SubTitle)`

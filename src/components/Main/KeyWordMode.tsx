@@ -16,6 +16,7 @@ interface KeywordModeBoxProps {
   decreaseTime: () => void;
 }
 
+//키워드 모드 화면
 const KeywordModeBox = ({
   empathyCount,
   maxCount,

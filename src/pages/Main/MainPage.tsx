@@ -54,8 +54,8 @@ const MainPage = () => {
     const newTime = Math.max(timeLimit - step, 0);
     setTimeLimit(newTime);
   };
-  
-  const [activeMode, setActiveMode]=useState(0);
+
+  const [activeMode, setActiveMode] = useState(0);
 
   return (
     <MainContainer>
@@ -65,7 +65,7 @@ const MainPage = () => {
       </MainHeader>
 
       <ModeContainer>
-      <ChevronLeft $isLeftActive={activeMode===0} onClick={() => setActiveMode(0)} />
+        <ChevronLeft $isLeftActive={activeMode === 0} onClick={() => setActiveMode(0)} />
         <SliderWrapper>
           <SlideInner $activeIndex={activeMode}>
             <SlideBox>
@@ -87,8 +87,8 @@ const MainPage = () => {
             </SlideBox>
           </SlideInner>
         </SliderWrapper>
-        
-        <ChevronRight $isRightActive={activeMode===1} onClick={() => setActiveMode(1)} />
+
+        <ChevronRight $isRightActive={activeMode === 1} onClick={() => setActiveMode(1)} />
       </ModeContainer>
 
       <Footer>버전 정보</Footer>
@@ -112,13 +112,15 @@ const ModeContainer = styled(Container)`
 
   flex-direction: row;
 `;
+
+//슬라이드 효과
 const SliderWrapper = styled.div`
   width: 287px;
   height: 343px;
   overflow: hidden;
   position: relative;
   flex-shrink: 0;
-`
+`;
 const SlideInner = styled.div<{ $activeIndex: number }>`
   display: flex;
   width: 200%;
@@ -132,27 +134,27 @@ const SlideBox = styled.div`
 `;
 
 const ChevronLeft = styled(ChevronLeftIcon, {
-    shouldForwardProp: (prop) => prop !== '$isLeftActive',
-  })<{ $isLeftActive: boolean }>`
-    margin: 5px;
+  shouldForwardProp: (prop) => prop !== '$isLeftActive',
+})<{ $isLeftActive: boolean }>`
+  margin: 5px;
 
-    path {
-      fill: ${({ $isLeftActive }) => ($isLeftActive ? '#F6F6F6' : '#DADADA')};
-      transition: fill 0.2s ease;
-    }
-    cursor: ${({ $isLeftActive }) => ($isLeftActive ? 'default' : 'pointer')};
-  `;
+  path {
+    fill: ${({ $isLeftActive }) => ($isLeftActive ? '#F6F6F6' : '#DADADA')};
+    transition: fill 0.2s ease;
+  }
+  cursor: ${({ $isLeftActive }) => ($isLeftActive ? 'default' : 'pointer')};
+`;
 const ChevronRight = styled(ChevronRightIcon, {
-    shouldForwardProp: (prop) => prop !== '$isRightActive',
-  })<{ $isRightActive: boolean }>`
-    margin: 5px;
+  shouldForwardProp: (prop) => prop !== '$isRightActive',
+})<{ $isRightActive: boolean }>`
+  margin: 5px;
 
-    path {
-      fill: ${({ $isRightActive }) => ($isRightActive ? '#F6F6F6' : '#DADADA')};
-      transition: fill 0.2s ease;
-    }
-    cursor: ${({ $isRightActive }) => ($isRightActive ? 'default' : 'pointer')};
-  `;
+  path {
+    fill: ${({ $isRightActive }) => ($isRightActive ? '#F6F6F6' : '#DADADA')};
+    transition: fill 0.2s ease;
+  }
+  cursor: ${({ $isRightActive }) => ($isRightActive ? 'default' : 'pointer')};
+`;
 const Footer = styled.p`
   color: #a0a0a0;
   font-size: 10px;

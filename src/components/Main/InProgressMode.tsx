@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 
+//개발 진행중 모드 화면
 const InprogresssModeBox = () => {
   return (
     <InProgressContainer>
@@ -17,7 +18,7 @@ const InProgressContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  
+
   border-radius: 18px;
   border: 1px solid #e4e4e4;
 `;
