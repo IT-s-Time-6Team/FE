@@ -1,21 +1,28 @@
 import styled from '@emotion/styled';
-import { ModalBody } from '@components/shared/ModalStyles';
 import { Title, SubTitle } from '@components/shared/TextStyles';
-const KeywordCard = () => {
+type KeywordCardProps = {
+  title: string;
+  question: string;
+};
+
+const KeywordCard = ({ title, question }: KeywordCardProps) => {
   return (
-    <KeywordModalBody>
-      <Title>#LOL</Title>
-      <KeywordSubTitle>Q. 롤에서 맞라인으로 나왔을 때 가장 싫은 챔피언은?</KeywordSubTitle>
-    </KeywordModalBody>
+    <KeywordBody>
+      <Title>{title}</Title>
+      <KeywordSubTitle>{question}</KeywordSubTitle>
+    </KeywordBody>
   );
 };
 export default KeywordCard;
-const KeywordModalBody = styled(ModalBody)`
+const KeywordBody = styled.div`
   width: 268px;
   height: 282px;
   align-items: center;
   padding: 34px 29px;
   padding-bottom: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;
 const KeywordSubTitle = styled(SubTitle)`
   text-align: center;
