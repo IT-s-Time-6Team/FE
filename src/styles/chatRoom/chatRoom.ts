@@ -94,7 +94,7 @@ export const CloseButton = styled.button`
   cursor: pointer;
   font-size: 16px;
 `;
-export const Characters = styled.div`
+export const CharactersContainer = styled.div`
   background-color: #f1f1f1;
   width: 175px;
   height: 175px;
