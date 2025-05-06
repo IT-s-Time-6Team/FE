@@ -1,10 +1,12 @@
 import styled from '@emotion/styled';
 import SendIcon from '../assets/send.svg?react'; // default import
 import { useEffect, useState } from 'react';
+import rabbit from '../assets/chatRoom/character/rabbit.svg';
 
 const ChatRoomPage = () => {
   const [isInput, setIsInput] = useState(false);
   const [input, setInput] = useState<string>('');
+  const CharacterImg = [`${rabbit}`];
   useEffect(() => {
     if (input.length > 0) {
       setIsInput(true);
@@ -20,15 +22,21 @@ const ChatRoomPage = () => {
           <CloseButton>종료</CloseButton>
         </ChatRoomHeader>
         <KeyWordContainer>
-          <KeyWord>키워드</KeyWord>
-          <KeyWordDetail>같은 키워드를 2명 이상 작성하면 공개됩니다.</KeyWordDetail>
+          <KeyWord>사람들이 공감한 키워드</KeyWord>
           <KeyWordDivider />
-          <KeyWord>내 키워드</KeyWord>
-          <KeyWordDetail>#롤 #애니</KeyWordDetail>
+          <KeyWordDetail>같은 키워드를 2명 이상 작성하면 공개됩니다.</KeyWordDetail>
         </KeyWordContainer>
         <ChatContainer>
-          <UserEntry>하나님이 입장하셨습니다.</UserEntry>
+          <UserEntry>하나님이 입력 중입니다...</UserEntry>
+          <Characters>
+            <img src={CharacterImg[0]} alt='character' />
+          </Characters>
         </ChatContainer>
+        <KeyWordContainer>
+          <KeyWord>내가 입력한 공감 키워드</KeyWord>
+          <KeyWordDivider />
+          <KeyWordDetail>아직 키워드를 입력하지 않았습니다.</KeyWordDetail>
+        </KeyWordContainer>
       </ChatRoomContainer>
       <ChatInputContainer>
         <ChatInput value={input} onChange={(e) => setInput(e.target.value)} />
@@ -68,10 +76,11 @@ const ChatInputContainer = styled.div`
   padding: 19px 24px;
   display: flex;
   justify-content: space-between;
+  background-color: white;
 `;
 const UserEntry = styled.div`
-  width: 100%;
   background-color: #f0f0f066;
+  margin: 30px auto;
   padding: 10px 22px;
   border-radius: 8px;
   font-size: 10px;
@@ -100,7 +109,7 @@ const KeyWordContainer = styled.div`
   width: 342px;
   height: content-fit;
   border-radius: 12px;
-  padding: 21px 22px;
+  padding: 18px 22px;
 `;
 const KeyWord = styled.div`
   display: flex;
@@ -124,6 +133,15 @@ const CloseButton = styled.button`
   padding: 8px 12px;
   cursor: pointer;
   font-size: 16px;
+`;
+const Characters = styled.div`
+  background-color: #f1f1f1;
+  width: 175px;
+  height: 175px;
+  border-radius: 50%;
+  margin: 0 auto;
+  margin-bottom: 30px;
+  position: relative;
 `;
 const ChatRoomContainer = styled.div`
   display: flex;
