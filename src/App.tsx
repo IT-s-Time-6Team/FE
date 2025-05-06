@@ -6,6 +6,7 @@ import GlobalStyles from '../src/styles/GlobalStyles';
 import ChatRoomExitPage from '@pages/chatRoomExit/chatRoomExitPage';
 import OnBoardingPage from '@pages/onBoarding/onBoardingPage';
 import MainPage from '@pages/Main/MainPage';
+import UserEnterChatRoom from '@pages/userEnterChatRoom/userEnterChatRoom';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Routes>
           <Route>
             <Route path='/chatRoomCreated' element={<ChatRoomCreatedPage />} />
+            <Route path='/userEnterChatRoom' element={<UserEnterChatRoom />} />
           </Route>
 
           <Route element={<Layout />}>
