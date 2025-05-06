@@ -51,7 +51,10 @@ const KeywordModal = () => {
               borderRadius: '12px',
             }}
           >
-            <Title>{item.title}</Title>
+            <Box>
+              <Title>{item.title}</Title>
+              <Divider />
+            </Box>
             <KeywordSubTitle>{item.question}</KeywordSubTitle>
           </SwiperSlide>
         ))}
@@ -63,4 +66,16 @@ export default KeywordModal;
 const KeywordSubTitle = styled(SubTitle)`
   line-height: 140%;
   text-align: center;
+  color: #3e3333;
+`;
+const Divider = styled.div`
+  height: 1px;
+  width: 106px;
+  background-color: #f0f0f0;
+`;
+const Box = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
 `;

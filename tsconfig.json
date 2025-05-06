@@ -31,6 +31,6 @@
       "@hooks/*": ["src/hooks/*"]
     }
   },
-  "include": ["src"], // 타입 검사 포함 디렉토리
+  "include": ["src", "swiper-css.d.ts"], // 타입 검사 포함 디렉토리
   "exclude": ["node_modules"] // 타입 검사 제외 디렉토리
 }
