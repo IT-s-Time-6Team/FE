@@ -1,7 +1,11 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
-import KeywordCard from './keywordCard';
+import 'swiper/css';
+import 'swiper/css/effect-cards';
 import { EffectCards } from 'swiper/modules';
 import { Mask } from '@components/shared/ModalStyles';
+import styled from '@emotion/styled';
+import { Title, SubTitle } from '@components/shared/TextStyles';
+
 const KeywordModal = () => {
   const keywords = [
     { title: '#LOL', question: 'Q. 롤에서 가장 싫은 챔피언은?' },
@@ -19,11 +23,36 @@ const KeywordModal = () => {
   return (
     <>
       <Mask />
-
-      <Swiper effect={'cards'} grabCursor={true} modules={[EffectCards]} className='mySwiper'>
+      <Swiper
+        style={{
+          width: '268px',
+          height: '282px',
+          position: 'fixed',
+          top: '45%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+        }}
+        effect={'cards'}
+        grabCursor={true}
+        modules={[EffectCards]}
+        className='mySwiper'
+      >
         {keywords.map((item, id) => (
-          <SwiperSlide key={id}>
-            <KeywordCard title={item.title} question={item.question} />
+          <SwiperSlide
+            key={id}
+            style={{
+              padding: '34px 29px',
+              paddingBottom: '90px',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              backgroundColor: 'white',
+              borderRadius: '12px',
+            }}
+          >
+            <Title>{item.title}</Title>
+            <KeywordSubTitle>{item.question}</KeywordSubTitle>
           </SwiperSlide>
         ))}
       </Swiper>
@@ -31,3 +60,7 @@ const KeywordModal = () => {
   );
 };
 export default KeywordModal;
+const KeywordSubTitle = styled(SubTitle)`
+  line-height: 140%;
+  text-align: center;
+`;
