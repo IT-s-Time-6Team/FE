@@ -66,7 +66,7 @@ export const KeyWordDetail = styled.div`
 export const KeyWordContainer = styled.div`
   border: 1px solid #e4e4e4;
   width: 342px;
-  height: content-fit;
+  height: fit-content;
   border-radius: 12px;
   padding: 18px 22px;
 `;
