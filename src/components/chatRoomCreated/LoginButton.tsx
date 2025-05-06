@@ -1,10 +1,20 @@
 import styled from '@emotion/styled';
 
 //채팅방 생성완료,사용자 입장 페이지에서 사용되는 버튼
-const Button = ({ text, active = false }: { text: string; active?: boolean }) => {
+const Button = ({
+  text,
+  active = false,
+  className,
+}: {
+  text: string;
+  active?: boolean;
+  className?: string;
+}) => {
   return (
     <>
-      <NaviButton $active={active}>{text}</NaviButton>
+      <NaviButton $active={active} className={className}>
+        {text}
+      </NaviButton>
     </>
   );
 };
@@ -18,8 +28,6 @@ const NaviButton = styled.button<{ $active: boolean }>`
   font-size: 16px;
   font-weight: 600;
   align-self: center;
-  position: absolute;
-  bottom: 47px;
 
   background-color: ${({ $active }) => ($active ? '#FF7913' : '#DADADA')};
   color: ${({ $active }) => ($active ? '#FFFFFF' : '#939393')};

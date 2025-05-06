@@ -1,0 +1,163 @@
+import styled from '@emotion/styled';
+import { useState } from 'react';
+import { Container, Header } from '@components/shared/UIStyles';
+import Logo from '@assets/oki_log.svg?react';
+import MainIcon from '@assets/main_icon_group.svg?react';
+import ChevronLeftIcon from '@assets/chevronleft_icon.svg?react';
+import ChevronRightIcon from '@assets/chevronright_icon.svg?react';
+import KeywordModeBox from '@components/Main/KeyWordMode';
+import InprogresssModeBox from '@components/Main/InProgressMode';
+
+const MainPage = () => {
+  const MIN = 2;
+  const MAX = 20;
+  const [empathyCount, setEmpathyCount] = useState(2);
+  const [maxCount, setMaxCount] = useState(2);
+
+  const increaseEmpathy = () => {
+    if (empathyCount < MAX) {
+      const newCount = empathyCount + 1;
+      setEmpathyCount(newCount);
+      if (newCount > maxCount) setMaxCount(newCount);
+    }
+  };
+
+  const decreaseEmpathy = () => {
+    if (empathyCount > MIN) setEmpathyCount(empathyCount - 1);
+  };
+
+  const increaseMax = () => {
+    if (maxCount < MAX) setMaxCount(maxCount + 1);
+  };
+
+  const decreaseMax = () => {
+    if (maxCount > empathyCount) setMaxCount(maxCount - 1);
+  };
+
+  const getTimeStep = (minutes: number) => {
+    if (minutes < 10) return 5;
+    if (minutes < 60) return 10;
+    return 30;
+  };
+
+  const MAX_MINUTES = 360;
+  const [timeLimit, setTimeLimit] = useState(0);
+
+  const increaseTime = () => {
+    const step = getTimeStep(timeLimit);
+    const newTime = Math.min(timeLimit + step, MAX_MINUTES);
+    setTimeLimit(newTime);
+  };
+
+  const decreaseTime = () => {
+    const step = getTimeStep(timeLimit);
+    const newTime = Math.max(timeLimit - step, 0);
+    setTimeLimit(newTime);
+  };
+
+  const [activeMode, setActiveMode] = useState(0);
+
+  return (
+    <MainContainer>
+      <MainHeader>
+        <Logo />
+        <MainIcon />
+      </MainHeader>
+
+      <ModeContainer>
+        <ChevronLeft $isLeftActive={activeMode === 0} onClick={() => setActiveMode(0)} />
+        <SliderWrapper>
+          <SlideInner $activeIndex={activeMode}>
+            <SlideBox>
+              <KeywordModeBox
+                empathyCount={empathyCount}
+                maxCount={maxCount}
+                timeLimit={timeLimit}
+                increaseEmpathy={increaseEmpathy}
+                decreaseEmpathy={decreaseEmpathy}
+                increaseMax={increaseMax}
+                decreaseMax={decreaseMax}
+                increaseTime={increaseTime}
+                decreaseTime={decreaseTime}
+              />
+            </SlideBox>
+
+            <SlideBox>
+              <InprogresssModeBox />
+            </SlideBox>
+          </SlideInner>
+        </SliderWrapper>
+
+        <ChevronRight $isRightActive={activeMode === 1} onClick={() => setActiveMode(1)} />
+      </ModeContainer>
+
+      <Footer>버전 정보</Footer>
+    </MainContainer>
+  );
+};
+export default MainPage;
+
+const MainContainer = styled(Container)`
+  margin: 95px 22px 73px 22px;
+  gap: 33px;
+`;
+
+const MainHeader = styled(Header)`
+  gap: 33px;
+`;
+const ModeContainer = styled(Container)`
+  position: relative;
+  width: 347px;
+  height: 343px;
+
+  flex-direction: row;
+`;
+
+//슬라이드 효과
+const SliderWrapper = styled.div`
+  width: 287px;
+  height: 343px;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+`;
+const SlideInner = styled.div<{ $activeIndex: number }>`
+  display: flex;
+  width: 200%;
+  transition: transform 0.3s ease-in-out;
+  transform: translateX(${({ $activeIndex }) => `-${$activeIndex * 50}%`});
+`;
+const SlideBox = styled.div`
+  width: 287px;
+  height: 343px;
+  flex-shrink: 0;
+`;
+
+const ChevronLeft = styled(ChevronLeftIcon, {
+  shouldForwardProp: (prop) => prop !== '$isLeftActive',
+})<{ $isLeftActive: boolean }>`
+  margin: 5px;
+
+  path {
+    fill: ${({ $isLeftActive }) => ($isLeftActive ? '#F6F6F6' : '#DADADA')};
+    transition: fill 0.2s ease;
+  }
+  cursor: ${({ $isLeftActive }) => ($isLeftActive ? 'default' : 'pointer')};
+`;
+const ChevronRight = styled(ChevronRightIcon, {
+  shouldForwardProp: (prop) => prop !== '$isRightActive',
+})<{ $isRightActive: boolean }>`
+  margin: 5px;
+
+  path {
+    fill: ${({ $isRightActive }) => ($isRightActive ? '#F6F6F6' : '#DADADA')};
+    transition: fill 0.2s ease;
+  }
+  cursor: ${({ $isRightActive }) => ($isRightActive ? 'default' : 'pointer')};
+`;
+const Footer = styled.p`
+  color: #a0a0a0;
+  font-size: 10px;
+  line-height: 150%;
+  margin-top: -18px;
+`;

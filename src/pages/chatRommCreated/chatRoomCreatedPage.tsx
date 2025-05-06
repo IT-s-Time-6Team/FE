@@ -137,7 +137,7 @@ const ChatRoomCreatedPage = () => {
           <ButtonText>*닉네임과 비밀번호는 이번 채팅방에서만 사용돼요.</ButtonText>
         </LoginForm>
       </LoginContainer>
-      <Button text='입장하기' active={isFormValid} />
+      <EntranceButton text='입장하기' active={isFormValid} />
     </ChatRoomCreatedContainer>
   );
 };
@@ -217,4 +217,9 @@ const ButtonText = styled.p`
   font-size: 10px;
   font-weight: 500;
   text-align: center;
+`;
+
+const EntranceButton = styled(Button)`
+  position: absolute;
+  bottom: 47px;
 `;
