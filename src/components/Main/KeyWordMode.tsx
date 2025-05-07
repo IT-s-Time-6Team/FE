@@ -107,4 +107,7 @@ const Selector = styled(Container)`
 const Complete = styled(Button)`
   position: absolute;
   bottom: 18px;
+
+  width: 253px;
+  height: 57px;
 `;
