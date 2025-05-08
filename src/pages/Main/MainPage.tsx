@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { Container, Header } from '@components/shared/UIStyles';
 import Logo from '@assets/oki_log.svg?react';
+import DLogo from '@assets/development_icon.svg?react';
 import MainIcon from '@assets/main_icon_group.svg?react';
 import ChevronLeftIcon from '@assets/chevronleft_icon.svg?react';
 import ChevronRightIcon from '@assets/chevronright_icon.svg?react';
@@ -61,7 +62,12 @@ const MainPage = () => {
     <MainContainer>
       <MainHeader>
         <Logo />
-        <MainIcon />
+        <IconStyle $visible={activeMode === 0}>
+          <MainIcon />
+        </IconStyle>
+        <IconStyle $visible={activeMode === 1}>
+          <DevelopmentLogo />
+        </IconStyle>
       </MainHeader>
 
       <ModeContainer>
@@ -99,18 +105,25 @@ export default MainPage;
 
 const MainContainer = styled(Container)`
   margin: 95px 22px 73px 22px;
-  gap: 33px;
 `;
 
 const MainHeader = styled(Header)`
   gap: 33px;
+  position: relative;
 `;
 const ModeContainer = styled(Container)`
-  position: relative;
-  width: 347px;
-  height: 343px;
-
   flex-direction: row;
+`;
+
+const IconStyle = styled.div<{ $visible: boolean }>`
+  transition: opacity 0.3s ease-in-out;
+  opacity: ${({ $visible }) => ($visible ? 1 : 0)};
+  pointer-events: none;
+`;
+const DevelopmentLogo = styled(DLogo)`
+  position: absolute;
+  top: 110px;
+  left: 0;
 `;
 
 //슬라이드 효과
