@@ -8,7 +8,11 @@ import ChevronRightIcon from '@assets/chevronright_icon.svg?react';
 import KeywordModeBox from '@components/Main/KeyWordMode';
 import InprogresssModeBox from '@components/Main/InProgressMode';
 
+import { useNavigate } from 'react-router-dom';
+import { createRoom } from '@api/chatRoomCreated';
 const MainPage = () => {
+  const navigate = useNavigate();
+
   const MIN = 2;
   const MAX = 20;
   const [empathyCount, setEmpathyCount] = useState(2);
@@ -57,6 +61,23 @@ const MainPage = () => {
 
   const [activeMode, setActiveMode] = useState(0);
 
+  const handleCreateRoom = async () => {
+    try {
+      const res = await createRoom({
+        requiredAgreements: empathyCount,
+        maxMember: maxCount,
+        durationMinutes: timeLimit === 0 ? 30 : timeLimit,
+        gameMode: 'NORMAL',
+      });
+
+      console.log('방 생성 성공:', res);
+      navigate(`/rooms/${res.data.roomKey}/member`);
+    } catch (err) {
+      console.error('방 생성 실패:', err);
+      alert('방 생성에 실패했습니다.');
+    }
+  };
+
   return (
     <MainContainer>
       <MainHeader>
@@ -79,6 +100,7 @@ const MainPage = () => {
                 decreaseMax={decreaseMax}
                 increaseTime={increaseTime}
                 decreaseTime={decreaseTime}
+                onCreateRoom={handleCreateRoom}
               />
             </SlideBox>
 

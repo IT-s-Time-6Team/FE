@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
 // 채팅룸 종료 페이지에서 사용되는 버튼
-const Button = ({ text }: { text: string }) => {
+const Button = ({ text, onClick }: { text: string; onClick: () => void }) => {
   return (
     <>
-      <NaviButton>{text}</NaviButton>
+      <NaviButton onClick={onClick}>{text}</NaviButton>
     </>
   );
 };
