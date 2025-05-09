@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { Title, SubTitle } from '@components/shared/TextStyles';
 import ChevronUpIcon from '@assets/chevronup_icon.svg?react';
 import ChevronDownIcon from '@assets/chevrondown_icon.svg?react';
+
 //키워드 모드 인원,시간 세팅 컴포넌트
 const SettingButton = ({
   label,

@@ -1,6 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Layout from '@layout/Layout';
-import Home from '@pages/Home/Home';
 import ChatRoomCreatedPage from '@pages/chatRommCreated/chatRoomCreatedPage';
 import GlobalStyles from '../src/styles/GlobalStyles';
 import ChatRoomExitPage from '@pages/chatRoomExit/chatRoomExitPage';
@@ -20,9 +19,9 @@ function App() {
           </Route>
 
           <Route element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path='/onBoarding' element={<OnBoardingPage />} />
-            <Route path='/main' element={<MainPage />} />
+            <Route index element={<OnBoardingPage />} />
+            <Route path='/rooms' element={<MainPage />} />
+            <Route path='/rooms/:roomKey/member' element={<UserEnterChatRoom />} />
             <Route path='/chatRoom/exit' element={<ChatRoomExitPage />} />
           </Route>
         </Routes>

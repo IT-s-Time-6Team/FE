@@ -14,6 +14,7 @@ interface KeywordModeBoxProps {
   decreaseMax: () => void;
   increaseTime: () => void;
   decreaseTime: () => void;
+  onCreateRoom: () => void;
 }
 
 //키워드 모드 화면
@@ -27,6 +28,7 @@ const KeywordModeBox = ({
   decreaseMax,
   increaseTime,
   decreaseTime,
+  onCreateRoom,
 }: KeywordModeBoxProps) => {
   return (
     <KeyWordBox>
@@ -66,7 +68,7 @@ const KeywordModeBox = ({
         />
       </Selector>
 
-      <Complete text='방 생성하기' active={timeLimit > 0} />
+      <Complete text='방 생성하기' active={timeLimit > 0} onClick={onCreateRoom} />
     </KeyWordBox>
   );
 };
@@ -107,4 +109,7 @@ const Selector = styled(Container)`
 const Complete = styled(Button)`
   position: absolute;
   bottom: 18px;
+
+  width: 253px;
+  height: 57px;
 `;

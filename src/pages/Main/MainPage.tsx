@@ -2,13 +2,18 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { Container, Header } from '@components/shared/UIStyles';
 import Logo from '@assets/oki_log.svg?react';
+import DLogo from '@assets/development_icon.svg?react';
 import MainIcon from '@assets/main_icon_group.svg?react';
 import ChevronLeftIcon from '@assets/chevronleft_icon.svg?react';
 import ChevronRightIcon from '@assets/chevronright_icon.svg?react';
 import KeywordModeBox from '@components/Main/KeyWordMode';
 import InprogresssModeBox from '@components/Main/InProgressMode';
 
+import { useNavigate } from 'react-router-dom';
+import { createRoom } from '@api/chatRoomCreated';
 const MainPage = () => {
+  const navigate = useNavigate();
+
   const MIN = 2;
   const MAX = 20;
   const [empathyCount, setEmpathyCount] = useState(2);
@@ -57,11 +62,33 @@ const MainPage = () => {
 
   const [activeMode, setActiveMode] = useState(0);
 
+  const handleCreateRoom = async () => {
+    try {
+      const res = await createRoom({
+        requiredAgreements: empathyCount,
+        maxMember: maxCount,
+        durationMinutes: timeLimit === 0 ? 30 : timeLimit,
+        gameMode: 'NORMAL',
+      });
+
+      console.log('방 생성 성공:', res);
+      navigate(`/rooms/${res.data.roomKey}/member`);
+    } catch (err: unknown) {
+      console.error('방 생성 실패:', err);
+      alert('방 생성에 실패했습니다.');
+    }
+  };
+
   return (
     <MainContainer>
       <MainHeader>
         <Logo />
-        <MainIcon />
+        <IconStyle $visible={activeMode === 0}>
+          <MainIcon />
+        </IconStyle>
+        <IconStyle $visible={activeMode === 1}>
+          <DevelopmentLogo />
+        </IconStyle>
       </MainHeader>
 
       <ModeContainer>
@@ -79,6 +106,7 @@ const MainPage = () => {
                 decreaseMax={decreaseMax}
                 increaseTime={increaseTime}
                 decreaseTime={decreaseTime}
+                onCreateRoom={handleCreateRoom}
               />
             </SlideBox>
 
@@ -99,18 +127,25 @@ export default MainPage;
 
 const MainContainer = styled(Container)`
   margin: 95px 22px 73px 22px;
-  gap: 33px;
 `;
 
 const MainHeader = styled(Header)`
   gap: 33px;
+  position: relative;
 `;
 const ModeContainer = styled(Container)`
-  position: relative;
-  width: 347px;
-  height: 343px;
-
   flex-direction: row;
+`;
+
+const IconStyle = styled.div<{ $visible: boolean }>`
+  transition: opacity 0.3s ease-in-out;
+  opacity: ${({ $visible }) => ($visible ? 1 : 0)};
+  pointer-events: none;
+`;
+const DevelopmentLogo = styled(DLogo)`
+  position: absolute;
+  top: 110px;
+  left: 0;
 `;
 
 //슬라이드 효과

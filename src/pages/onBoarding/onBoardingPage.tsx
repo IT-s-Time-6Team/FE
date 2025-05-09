@@ -4,8 +4,11 @@ import { SubTitle } from '@components/shared/TextStyles';
 import Button from '@components/chatRoomExit/Button';
 import OkiLogoIcon from '@assets/oki_log.svg?react';
 import Icons from '@assets/icon_group.svg?react';
+import { useNavigate } from 'react-router-dom';
 
 const OnBoardingPage = () => {
+  const navigate = useNavigate();
+
   return (
     <OnBoardingContainer>
       <OnBoardingHeader>
@@ -17,7 +20,7 @@ const OnBoardingPage = () => {
         <IconGroup />
       </MainContainer>
 
-      <Button text={'시작하기'} />
+      <Button text={'시작하기'} onClick={() => navigate('/rooms')} />
     </OnBoardingContainer>
   );
 };

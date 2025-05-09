@@ -5,14 +5,16 @@ const Button = ({
   text,
   active = false,
   className,
+  onClick,
 }: {
   text: string;
   active?: boolean;
   className?: string;
+  onClick?: () => void;
 }) => {
   return (
     <>
-      <NaviButton $active={active} className={className}>
+      <NaviButton $active={active} className={className} onClick={onClick}>
         {text}
       </NaviButton>
     </>

@@ -14,7 +14,6 @@
     "isolatedModules": true, // 개별 모듈 컴파일 설정 (Vite와 호환성)
     "noEmit": true, // 컴파일 시 결과 파일을 내보내지 않음
     "jsx": "react-jsx", // React 17 이상에서 JSX 변환 설정
-
     /* Linting */
     "strict": true,
     "noUnusedLocals": true, // 선언된 변수가 사용되지 않을 경우 오류를 발생
@@ -25,6 +24,7 @@
     "baseUrl": ".", // 경로 설정 기준
     "paths": {
       // 경로 별칭 설정
+      "@api/*": ["src/api/*"],
       "@components/*": ["src/components/*"],
       "@layout/*": ["src/layout/*"],
       "@pages/*": ["src/pages/*"],
@@ -32,6 +32,6 @@
       "@hooks/*": ["src/hooks/*"]
     }
   },
-  "include": ["src"], // 타입 검사 포함 디렉토리
+  "include": ["src", "swiper-css.d.ts"], // 타입 검사 포함 디렉토리
   "exclude": ["node_modules"] // 타입 검사 제외 디렉토리
 }
