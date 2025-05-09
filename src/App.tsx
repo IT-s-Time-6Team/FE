@@ -15,6 +15,7 @@ function App() {
         <Routes>
           <Route>
             <Route path='/chatRoomCreated' element={<ChatRoomCreatedPage />} />
+            <Route path='/userEnterChatRoom' element={<UserEnterChatRoom />} />
           </Route>
 
           <Route element={<Layout />}>
