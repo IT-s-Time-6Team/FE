@@ -73,7 +73,7 @@ const MainPage = () => {
 
       console.log('방 생성 성공:', res);
       navigate(`/rooms/${res.data.roomKey}/member`);
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('방 생성 실패:', err);
       alert('방 생성에 실패했습니다.');
     }
