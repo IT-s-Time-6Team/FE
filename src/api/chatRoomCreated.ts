@@ -9,7 +9,7 @@ export const createRoom = async (payload: {
   try {
     const res = await api.post('/rooms', payload);
     return res.data;
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('error: ', error);
     throw error;
   }

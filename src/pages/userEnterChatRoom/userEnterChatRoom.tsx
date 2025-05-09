@@ -16,11 +16,41 @@ import {
 } from '@components/shared/LoginFormStyle';
 import ValidationMessage from '@components/chatRoomCreated/ValidationMessage';
 import Button from '@components/chatRoomCreated/LoginButton';
+import axios from 'axios';
+import { useNavigate, useParams } from 'react-router-dom';
+import { joinRoom } from '@api/login';
 
 const UserEnterChatRoom = () => {
   const { nickname, isNicknameValid, handleNicknameChange } = useNicknameValidation();
   const { password, isPasswordValid, handlePasswordChange } = usePasswordValidation();
   const isFormValid = isNicknameValid === true && isPasswordValid === true;
+
+  const { roomKey } = useParams();
+  const navigate = useNavigate();
+
+  const handleJoin = async () => {
+    if (!roomKey) return;
+    try {
+      const res = await joinRoom(roomKey, { nickname, password });
+      console.log(res);
+      navigate(`/rooms/${roomKey}/chat`);
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        const status = err.response?.status;
+
+        if (status === 403) {
+          console.error(err);
+          alert('중복된 닉네임입니다. 다른 닉네임을 입력해주세요!');
+        } else {
+          console.error(err);
+          alert('서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.');
+        }
+      } else {
+        console.error(err);
+        alert('알 수 없는 오류가 발생했습니다.');
+      }
+    }
+  };
 
   return (
     <UserEnterContainer>
@@ -73,7 +103,7 @@ const UserEnterChatRoom = () => {
       </LoginContainer>
       <ButtonContainer>
         <ButtonText>*닉네임과 비밀번호는 이번 채팅방에서만 사용돼요.</ButtonText>
-        <EntranceButton text='키워드 입력하러 가기' active={isFormValid} />
+        <EntranceButton onClick={handleJoin} text='키워드 입력하러 가기' active={isFormValid} />
       </ButtonContainer>
     </UserEnterContainer>
   );
