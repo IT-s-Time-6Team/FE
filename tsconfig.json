@@ -25,6 +25,7 @@
     "baseUrl": ".", // 경로 설정 기준
     "paths": {
       // 경로 별칭 설정
+      "@api/*": ["src/api/*"],
       "@components/*": ["src/components/*"],
       "@layout/*": ["src/layout/*"],
       "@pages/*": ["src/pages/*"],
