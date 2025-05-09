@@ -5,6 +5,7 @@ import { Container, Header } from '@components/shared/UIStyles';
 import { Title, SubTitle } from '@components/shared/TextStyles';
 import SummaryModal from '@components/chatRoomExit/SummaryModal';
 import { ModalPortal } from '@components/shared/ModalPortal';
+import DownloadIcon from '@assets/DownloadIcon.svg?react';
 // 채팅룸 종료 요약 페이지
 const ChatRoomSummaryPage = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -47,7 +48,7 @@ const ChatRoomSummaryPage = () => {
           </Wrapper>
         </Box>
         <SaveWrapper onClick={handleOpenModal}>
-          <CheckButton />
+          <Download />
           <SaveText>저장</SaveText>
         </SaveWrapper>
       </StatsContainer>
@@ -131,16 +132,7 @@ const SaveWrapper = styled.div`
   justify-content: flex-end;
   cursor: pointer;
 `;
-const CheckButton = styled.div`
-  width: 18px;
-  height: 18px;
-  appearance: none; /* 기본 체크박스 스타일 제거 */
-  background: #d9d9d9;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
+
 const SaveText = styled.p`
   color: #7c7c7c;
   font-size: 12px;
@@ -159,4 +151,8 @@ const FeedbackBox = styled.div`
   padding: 20px 0;
   box-sizing: border-box;
   margin: 20px 0;
+`;
+const Download = styled(DownloadIcon)`
+  width: 20px;
+  height: 20px;
 `;
