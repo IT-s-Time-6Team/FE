@@ -1,20 +1,56 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Button from '@components/chatRoomExit/Button';
 import { Container, Header } from '@components/shared/UIStyles';
 import { Title, SubTitle } from '@components/shared/TextStyles';
 import SummaryModal from '@components/chatRoomExit/SummaryModal';
 import { ModalPortal } from '@components/shared/ModalPortal';
+/* import { getRoomResult } from '@api/chatRoomResult'; */
 import DownloadIcon from '@assets/DownloadIcon.svg?react';
+/* interface RoomResult {
+  sharedKeywords: string[];
+  totalDuration: string;
+  topKeywordContributorNames: string[];
+  topKeywordCount: number;
+  mostMatchedHobbyUserNames: string[];
+  matchedHobbyCount: number;
+  requestMemberName: string;
+  requestMemberCharacterId: number;
+} */
+
 // 채팅룸 종료 요약 페이지
 const ChatRoomSummaryPage = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  /*  const [roomResult, setRoomResult] = useState<RoomResult | null>(null); */
+  const roomResult = {
+    sharedKeywords: ['LOL', '애니'],
+    totalDuration: '30분 12초',
+    topKeywordContributorNames: ['하나'],
+    topKeywordCount: 3,
+    mostMatchedHobbyUserNames: ['하나'],
+    matchedHobbyCount: 2,
+    requestMemberName: 'member1',
+    requestMemberCharacterId: 1,
+  };
+  const navigate = useNavigate();
+  /*  const roomKey = '123'; */
   const handleOpenModal = () => {
     setIsOpen(true);
   };
   const handleCloseModal = () => {
     setIsOpen(false);
   };
+  /* const handleRoomResult = async () => {
+    if (!roomKey) return;
+    try {
+      const res = await getRoomResult(roomKey);
+      console.log('요약 결과 조회:', res);
+      setRoomResult(res.data);
+    } catch (err: unknown) {
+      console.error('요약 결과 조회 실패:', err);
+    }s
+  }; */
   return (
     <Container>
       <SummaryHeader>
@@ -27,24 +63,29 @@ const ChatRoomSummaryPage = () => {
             <MainText>공감한 키워드</MainText>
             <Divider />
             <TagWrapper>
-              <Title>#LOL</Title>
-              <Title>#애니</Title>
+              {roomResult.sharedKeywords.map((keyword, id) => (
+                <Title key={id}>{keyword}</Title>
+              ))}
             </TagWrapper>
           </Wrapper>
           <Wrapper>
             <MainText>총 대화 시간</MainText>
             <Divider />
-            <Title>30분 12초</Title>
+            <Title>{roomResult.totalDuration}</Title>
           </Wrapper>
           <Wrapper>
             <MainText>가장 많은 키워드를 작성한 사람</MainText>
             <Divider />
-            <Title>1위: 하나(3개)</Title>
+            <Title>
+              1위: {roomResult.topKeywordContributorNames}({roomResult.topKeywordCount}개)
+            </Title>
           </Wrapper>
           <Wrapper>
             <MainText>취미가 가장 많이 겹친 사람</MainText>
             <Divider />
-            <Title>1위: 하나(2개)</Title>
+            <Title>
+              1위: {roomResult.mostMatchedHobbyUserNames}({roomResult.matchedHobbyCount}개)
+            </Title>
           </Wrapper>
         </Box>
         <SaveWrapper onClick={handleOpenModal}>
@@ -56,7 +97,7 @@ const ChatRoomSummaryPage = () => {
         <FeedbackText>서비스 피드백을 부탁드려도 될까요?</FeedbackText>
         <FormLinkText>https://docs.google.com/forms/435432</FormLinkText>
       </FeedbackBox>
-      <Button text='메인으로 돌아가기' />
+      <Button text='메인으로 돌아가기' onClick={() => navigate('/rooms')} />
       {isOpen && (
         <ModalPortal>
           <SummaryModal onClose={handleCloseModal} />

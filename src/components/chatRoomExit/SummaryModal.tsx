@@ -4,6 +4,7 @@ import html2canvas from 'html2canvas';
 import { SubTitle, Title } from '@components/shared/TextStyles';
 import { Mask, ModalBody } from '@components/shared/ModalStyles';
 import rabbitIcon from '../../assets/summary_rabbit_icon.svg';
+
 interface SummaryModalProps {
   onClose: () => void;
 }
