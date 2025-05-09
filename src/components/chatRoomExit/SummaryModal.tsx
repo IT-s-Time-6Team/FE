@@ -1,4 +1,6 @@
 import styled from '@emotion/styled';
+import { useRef } from 'react';
+import html2canvas from 'html2canvas';
 import { SubTitle, Title } from '@components/shared/TextStyles';
 import { Mask, ModalBody } from '@components/shared/ModalStyles';
 import rabbitIcon from '../../assets/summary_rabbit_icon.svg';
@@ -7,10 +9,40 @@ interface SummaryModalProps {
 }
 // 채팅룸 종료 페이지에 보여지는 요약 카드 모달
 const SummaryModal = ({ onClose }: SummaryModalProps) => {
+  const modalRef = useRef<HTMLDivElement>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // 길게 누를 때 실행되는 함수
+  const handleLongPress = () => {
+    timerRef.current = setTimeout(async () => {
+      if (modalRef.current) {
+        const canvas = await html2canvas(modalRef.current);
+        const link = document.createElement('a');
+        const fileName = `채팅요약_${new Date().toISOString().split('T')[0]}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.download = fileName;
+        link.click();
+      }
+    }, 1000); // 1초 이상 눌렀을 때 캡처
+  };
+
+  // 터치나 마우스를 떼면 타이머를 취소
+  const handlePressEnd = () => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+  };
   return (
     <>
       <Mask onClick={onClose} />
-      <ModalBody>
+      <ModalBody
+        ref={modalRef}
+        onTouchStart={handleLongPress} // 모바일 터치 이벤트
+        onTouchEnd={handlePressEnd} // 터치 끝났을 때
+        onTouchCancel={handlePressEnd} // 터치 취소 시
+        onMouseDown={handleLongPress} // 데스크탑에서 마우스 클릭 시작
+        onMouseUp={handlePressEnd} // 마우스 클릭 끝났을 때
+        onMouseLeave={handlePressEnd} // 마우스 떠날 때
+        className='cursor-pointer'
+      >
         <ProfileContainer>
           <ProfileImage src={rabbitIcon} />
           <ProfileTextContainer>
