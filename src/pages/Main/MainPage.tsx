@@ -126,7 +126,7 @@ const MainPage = () => {
 export default MainPage;
 
 const MainContainer = styled(Container)`
-  margin: 95px 22px 73px 22px;
+  margin-top: 6dvh;
 `;
 
 const MainHeader = styled(Header)`
@@ -194,5 +194,5 @@ const Footer = styled.p`
   color: #a0a0a0;
   font-size: 10px;
   line-height: 150%;
-  margin-top: -18px;
+  margin-top: 10px;
 `;
