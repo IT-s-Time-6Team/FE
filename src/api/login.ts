@@ -6,6 +6,7 @@ export const joinRoom = async (
 ) => {
   try {
     const res = await api.post(`/rooms/${roomKey}/member`, payload);
+    console.log('로그인 성공');
     return res;
   } catch (error: unknown) {
     console.error('error:', error);

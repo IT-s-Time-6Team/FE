@@ -1,3 +1,4 @@
+import axios from 'axios';
 import api from './api';
 
 export const createRoom = async (payload: {
@@ -8,6 +9,17 @@ export const createRoom = async (payload: {
 }) => {
   try {
     const res = await api.post('/rooms', payload);
+    return res.data;
+  } catch (error: unknown) {
+    console.error('error: ', error);
+    throw error;
+  }
+};
+
+export const getRoom = async (roomKey: string) => {
+  try {
+    const res = await axios.get(`/api/rooms/${roomKey}`);
+    console.log('방 정보:', res);
     return res.data;
   } catch (error: unknown) {
     console.error('error: ', error);

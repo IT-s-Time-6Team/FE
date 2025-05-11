@@ -4,9 +4,7 @@ export const PeopleCount = styled.div`
   display: flex;
   font-weight: 300;
 `;
-export const CharacterImg = styled.img`
-  position: absolute;
-`;
+export const CharacterImg = styled.img``;
 export const ChatInput = styled.textarea`
   width: 80%;
   border: none;
