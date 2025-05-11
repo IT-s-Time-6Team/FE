@@ -2,15 +2,16 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { Container, Header } from '@components/shared/UIStyles';
 import Logo from '@assets/oki_log.svg?react';
-import DLogo from '@assets/development_icon.svg?react';
-import MainIcon from '@assets/main_icon_group.svg?react';
-import ChevronLeftIcon from '@assets/chevronleft_icon.svg?react';
-import ChevronRightIcon from '@assets/chevronright_icon.svg?react';
+import DLogo from '@assets/Main/development_icon.svg?react';
+import MainIcon from '@assets/Main/main_icon_group.svg?react';
+import ChevronLeftIcon from '@assets/Main/chevronleft_icon.svg?react';
+import ChevronRightIcon from '@assets/Main/chevronright_icon.svg?react';
 import KeywordModeBox from '@components/Main/KeyWordMode';
 import InprogresssModeBox from '@components/Main/InProgressMode';
 
 import { useNavigate } from 'react-router-dom';
 import { createRoom } from '@api/chatRoomCreated';
+
 const MainPage = () => {
   const navigate = useNavigate();
 
