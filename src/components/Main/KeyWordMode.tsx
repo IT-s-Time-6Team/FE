@@ -33,10 +33,9 @@ const KeywordModeBox = ({
   return (
     <KeyWordBox>
       <KeyWordHeader>
-        <KeyWordTitle>키워드 모드</KeyWordTitle>
+        <KeyWordTitle>공감 키워드 찾기</KeyWordTitle>
         <KeyWordSubTitle>
-          입력한 키워드를 설정한 인원 이상이 작성하면 해당 키워드가 모두에게 공개되는 모드입니다.
-          사람들과 겹치는 취향을 찾아보세요!
+          사람들과의 공통 관심사를 찾아 더 재미있는 대화를 시작하세요!
         </KeyWordSubTitle>
       </KeyWordHeader>
 
@@ -96,6 +95,7 @@ const KeyWordTitle = styled(Title)`
 `;
 
 const KeyWordSubTitle = styled(SubTitle)`
+  padding: 0px 40px;
   margin-bottom: 15px;
   font-size: 12px;
   line-height: 140%;
