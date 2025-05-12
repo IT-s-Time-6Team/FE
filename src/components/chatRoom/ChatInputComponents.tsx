@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import { ChatInput, ChatInputContainer, SendButton } from '../../styles/chatRoom/chatRoom';
 import SendIcon from '@assets/send.svg?react';
+
 interface ChatInputComponentsProps {
   input: string;
   setInput: (input: string) => void;

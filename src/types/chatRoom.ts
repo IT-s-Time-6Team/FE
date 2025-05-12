@@ -1,6 +1,6 @@
 export interface User {
-  id: number;
-  name: string;
+  state: string;
+  nickname: string;
 }
 export interface RoomInfo {
   roomKey: string;

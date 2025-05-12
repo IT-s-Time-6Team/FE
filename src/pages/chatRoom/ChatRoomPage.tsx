@@ -11,7 +11,7 @@ import { expireRoom, getRoom } from '@api/chatRoomCreated';
 import { useNavigate, useParams } from 'react-router-dom';
 import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
-import { User, RoomInfo, dataInfo } from '../../types/chatRoom';
+import { RoomInfo, User, dataInfo } from '../../types/chatRoom';
 import ChatInputComponents from '@components/chatRoom/ChatInputComponents';
 import KeyWordComponents from '@components/chatRoom/KeyWordComponents';
 import MyKeyWordComponents from '@components/chatRoom/MyKeyWordComponents';
@@ -21,18 +21,9 @@ const ChatRoomPage = () => {
   const [isInput, setIsInput] = useState(false);
   const [input, setInput] = useState<string>('');
   const [roomData, setRoomData] = useState<RoomInfo>();
-  const usersExp: User[] = [
-    { id: 1, name: 'rabbit' },
-    { id: 2, name: 'chick' },
-    { id: 3, name: 'pan' },
-    { id: 4, name: 'rabbit' },
-    { id: 5, name: 'chick' },
-    { id: 6, name: 'pan' },
-    { id: 7, name: 'rabbit' },
-  ];
-  const [users] = useState<User[]>(usersExp);
   const { roomKey } = useParams();
   const navigate = useNavigate();
+  const [users, setUsers] = useState<User[]>([]);
   const [stompClient, setStompClient] = useState<Client | null>(null);
   const [messages, setMessages] = useState<{ type: string; content: string }>();
   const [keyword, setKeyword] = useState('');
@@ -75,12 +66,15 @@ const ChatRoomPage = () => {
             const data = JSON.parse(message.body);
             if (data.type === 'ENTER') {
               setMessages({ type: 'SYSTEM', content: `${data.nickname}님이 입장하셨습니다.` });
-              setPeoplenum((prev) => prev + 1);
+              setPeoplenum(data.data.userCount);
+              setUsers((prev) => [...prev, { state: '', nickname: data.nickname }]);
               setInput('');
             } else if (data.type === 'REENTER') {
               setMessages({ type: 'SYSTEM', content: `${data.nickname}님이 재입장하셨습니다.` });
             } else if (data.type === `ERROR`) {
               alert('형식 오류');
+            } else if (data.type === 'kEY_EVENT') {
+              setUsers([...users, { state: 'typing', nickname: data.nickname }]);
             } else if (data.type === 'ANALYSIS_RESULT') {
               const matchedKeywords =
                 data.data?.filter(
@@ -180,7 +174,7 @@ const ChatRoomPage = () => {
         <KeyWordComponents keyword={keyword} peoplenum={peoplenum} />
         <ChatContainer>
           <UserEntry>{messages?.content}</UserEntry>
-          <Characters users={users} />
+          <Characters count={peoplenum} />
         </ChatContainer>
         <MyKeyWordComponents mykeyword={mykeyword} />
       </ChatRoomContainer>
