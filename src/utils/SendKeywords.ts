@@ -1,6 +1,6 @@
 import { Client } from '@stomp/stompjs';
 
-interface UseSendKeywordsProps {
+interface SendKeywordsProps {
   stompClient: Client | null;
   roomKey: string;
   input: string;
@@ -9,7 +9,7 @@ interface UseSendKeywordsProps {
   setMyKeyword: React.Dispatch<React.SetStateAction<string[]>>;
   mykeyword: string[];
 }
-const useSendKeywords = ({
+const SendKeywords = ({
   stompClient,
   roomKey,
   input,
@@ -17,7 +17,7 @@ const useSendKeywords = ({
   setKeyword,
   setMyKeyword,
   mykeyword,
-}: UseSendKeywordsProps) => {
+}: SendKeywordsProps) => {
   if (stompClient && input.trim()) {
     const keywords = input
       .split('#')
@@ -51,4 +51,4 @@ const useSendKeywords = ({
     setKeyword('');
   }
 };
-export default useSendKeywords;
+export default SendKeywords;

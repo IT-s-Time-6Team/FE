@@ -15,6 +15,7 @@ import { User, RoomInfo, dataInfo } from '../../types/chatRoom';
 import ChatInputComponents from '@components/chatRoom/ChatInputComponents';
 import KeyWordComponents from '@components/chatRoom/KeyWordComponents';
 import MyKeyWordComponents from '@components/chatRoom/MyKeyWordComponents';
+import SendKeywords from '../../utils/SendKeywords';
 
 const ChatRoomPage = () => {
   const [isInput, setIsInput] = useState(false);
@@ -38,6 +39,17 @@ const ChatRoomPage = () => {
   const [, setConnected] = useState(false);
   const [mykeyword, setMyKeyword] = useState<string[]>([]);
   const [peoplenum, setPeoplenum] = useState<number>(0);
+  const sendKeyword = () => {
+    SendKeywords({
+      stompClient,
+      roomKey: roomKey ?? '',
+      input,
+      setInput,
+      setKeyword,
+      setMyKeyword,
+      mykeyword,
+    });
+  };
 
   useEffect(() => {
     return () => {
@@ -139,46 +151,16 @@ const ChatRoomPage = () => {
     }
   };
 
-  const sendKeyword = () => {
-    if (stompClient && input.trim()) {
-      const keywords = input
-        .split('#')
-        .map((s) => s.trim())
-        .filter((s) => s.length > 0);
-
-      if (keywords.length === 0) {
-        setInput('');
-        setKeyword('');
-        return;
-      }
-
-      const newKeywords = keywords.filter((k) => !mykeyword.includes(k));
-
-      if (newKeywords.length === 0) {
-        setInput('');
-        setKeyword('');
-        return;
-      }
-
-      // 서버 전송
-      newKeywords.forEach((keyword) => {
-        stompClient.publish({
-          destination: `/app/room/${roomKey}/keyword`,
-          body: JSON.stringify({ keyword }),
-        });
-      });
-
-      setMyKeyword((prev) => [...prev, ...newKeywords]);
-      setInput('');
-      setKeyword('');
-    }
-  };
-
   useEffect(() => {
     const fetchRoomData = async () => {
       if (!roomKey) return;
-      const res = await getRoom(roomKey);
-      setRoomData(res.data);
+      try {
+        const res = await getRoom(roomKey);
+        setRoomData(res.data);
+      } catch (error) {
+        console.error('Error fetching room data:', error);
+        navigate('/');
+      }
     };
     fetchRoomData();
   }, [roomKey]);
