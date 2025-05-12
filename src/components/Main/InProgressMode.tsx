@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import Lock from '@assets/lock_icon.svg?react';
+import Lock from '@assets/Main/lock_icon.svg?react';
 import { Container } from '@components/shared/UIStyles';
 import { SubTitle, Title } from '@components/shared/TextStyles';
 

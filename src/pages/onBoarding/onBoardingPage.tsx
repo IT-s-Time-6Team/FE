@@ -27,7 +27,7 @@ const OnBoardingPage = () => {
 export default OnBoardingPage;
 
 const OnBoardingContainer = styled(Container)`
-  margin: 130px 43px 0 43px;
+  margin-top: 10dvh;
   gap: 94px;
 `;
 const OnBoardingHeader = styled(Header)`
@@ -42,8 +42,13 @@ const HeaderSubTitle = styled(SubTitle)`
 `;
 const MainContainer = styled.div`
   position: relative;
-  width: 304px;
-  height: 360px;
+  width: 75%;
+  max-width: 500px;
+
+  @media (max-height: 775px) {
+    width: 75%;
+    margin-top: -4dvh;
+  }
 `;
 const IconGroup = styled(Icons)`
   position: absolute;

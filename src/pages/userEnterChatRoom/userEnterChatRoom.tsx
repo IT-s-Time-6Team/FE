@@ -55,7 +55,7 @@ const UserEnterChatRoom = () => {
   return (
     <UserEnterContainer>
       <UserEnterHeader>
-        <TitleText>키워드를 입력하러 가 볼까요</TitleText>
+        <TitleText>키워드를 입력하러 가 볼까요?</TitleText>
         <SubTitleText>사용할 닉네임과 비밀번호를 입력해주세요</SubTitleText>
       </UserEnterHeader>
       <LoginContainer>
