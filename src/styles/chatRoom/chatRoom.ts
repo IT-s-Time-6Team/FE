@@ -14,6 +14,7 @@ export const SendButton = styled.button<{ isInput: boolean }>`
   background-color: transparent;
   color: ${(props) => (props.isInput ? '#ff7913' : '#dadada')};
   height: 35px;
+  cursor: pointer;
   svg {
     width: 35px;
     height: 35px;
@@ -111,12 +112,20 @@ export const ChatRoomContainer = styled.div`
   background-color: rgb(255, 255, 255);
   gap: 11px;
   overflow: auto;
+  margin-top: 90px;
 `;
 export const ChatRoomHeader = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 10px 24px;
+  padding-top: 30px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   color: white;
+  background-color: #f9f9f9;
+  border-bottom: 1px solid #e4e4e4;
   width: 100%;
   font-size: 16px;
 `;
