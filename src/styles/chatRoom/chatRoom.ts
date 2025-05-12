@@ -38,7 +38,8 @@ export const ChatInputContainer = styled.div`
 `;
 export const UserEntry = styled.div`
   background-color: #f0f0f066;
-  margin: 30px auto;
+  margin: 20px auto;
+  margin-bottom: 50px;
   padding: 10px 22px;
   border-radius: 8px;
   font-size: 10px;
@@ -122,7 +123,7 @@ export const ChatRoomHeader = styled.div`
   padding-top: 30px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   color: white;
   background-color: #f9f9f9;
   border-bottom: 1px solid #e4e4e4;

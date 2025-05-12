@@ -28,3 +28,12 @@ export const getRoom = async (roomKey: string) => {
     throw error;
   }
 };
+export const expireRoom = async (roomKey: string) => {
+  try {
+    const res = await axios.patch(`/api/rooms/${roomKey}/close`);
+    console.log('방 종료:', res);
+  } catch (error: unknown) {
+    console.error('error: ', error);
+    throw error;
+  }
+};
