@@ -4,9 +4,7 @@ export const PeopleCount = styled.div`
   display: flex;
   font-weight: 300;
 `;
-export const CharacterImg = styled.img`
-  position: absolute;
-`;
+export const CharacterImg = styled.img``;
 export const ChatInput = styled.textarea`
   width: 80%;
   border: none;
@@ -16,6 +14,7 @@ export const SendButton = styled.button<{ isInput: boolean }>`
   background-color: transparent;
   color: ${(props) => (props.isInput ? '#ff7913' : '#dadada')};
   height: 35px;
+  cursor: pointer;
   svg {
     width: 35px;
     height: 35px;
@@ -39,7 +38,8 @@ export const ChatInputContainer = styled.div`
 `;
 export const UserEntry = styled.div`
   background-color: #f0f0f066;
-  margin: 30px auto;
+  margin: 20px auto;
+  margin-bottom: 50px;
   padding: 10px 22px;
   border-radius: 8px;
   font-size: 10px;
@@ -113,12 +113,20 @@ export const ChatRoomContainer = styled.div`
   background-color: rgb(255, 255, 255);
   gap: 11px;
   overflow: auto;
+  margin-top: 90px;
 `;
 export const ChatRoomHeader = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 10px 24px;
+  padding-top: 30px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   color: white;
+  background-color: #f9f9f9;
+  border-bottom: 1px solid #e4e4e4;
   width: 100%;
   font-size: 16px;
 `;
