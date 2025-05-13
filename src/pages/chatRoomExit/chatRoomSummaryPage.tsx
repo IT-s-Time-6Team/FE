@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Button from '@components/chatRoomExit/Button';
-import { Container, Header } from '@components/shared/UIStyles';
+import { Container, Header, SkeletonBox } from '@components/shared/UIStyles';
 import { Title, SubTitle } from '@components/shared/TextStyles';
 import SummaryModal from '@components/chatRoomExit/SummaryModal';
 import { ModalPortal } from '@components/shared/ModalPortal';
@@ -46,7 +46,7 @@ const ChatRoomSummaryPage = () => {
   useEffect(() => {
     handleRoomResult();
   }, []);
-  if (!roomResult) return <>로딩중</>;
+
   return (
     <Container>
       <SummaryHeader>
@@ -54,44 +54,49 @@ const ChatRoomSummaryPage = () => {
         <SubTitle>대화는 즐거우셨나요? 요약 결과를 보여드릴게요.</SubTitle>
       </SummaryHeader>
       <StatsContainer>
-        <Box>
-          <Wrapper>
-            <MainText>공감한 키워드</MainText>
-            <Divider />
-            <TagWrapper>
-              {roomResult.sharedKeywords.map((keyword, id) => (
-                <Title key={id}>#{keyword}</Title>
-              ))}
-            </TagWrapper>
-          </Wrapper>
-          <Wrapper>
-            <MainText>총 대화 시간</MainText>
-            <Divider />
-            <Title>{roomResult.totalDuration}</Title>
-          </Wrapper>
-          <Wrapper>
-            <MainText>가장 많은 키워드를 작성한 사람</MainText>
-            <Divider />
-            <Title>
-              1위:{' '}
-              {roomResult.topKeywordContributorNames.length > 1
-                ? roomResult.topKeywordContributorNames.join(', ')
-                : roomResult.topKeywordContributorNames[0]}{' '}
-              ({roomResult.topKeywordCount}개)
-            </Title>
-          </Wrapper>
-          <Wrapper>
-            <MainText>취미가 가장 많이 겹친 사람</MainText>
-            <Divider />
-            <Title>
-              1위:{' '}
-              {roomResult.mostMatchedHobbyUserNames.length > 1
-                ? roomResult.mostMatchedHobbyUserNames.join(', ')
-                : roomResult.mostMatchedHobbyUserNames[0]}{' '}
-              ({roomResult.matchedHobbyCount}개)
-            </Title>
-          </Wrapper>
-        </Box>
+        {roomResult ? (
+          <Box>
+            <Wrapper>
+              <MainText>공감한 키워드</MainText>
+              <Divider />
+              <TagWrapper>
+                {roomResult.sharedKeywords.map((keyword, id) => (
+                  <Title key={id}>#{keyword}</Title>
+                ))}
+              </TagWrapper>
+            </Wrapper>
+            <Wrapper>
+              <MainText>총 대화 시간</MainText>
+              <Divider />
+              <Title>{roomResult.totalDuration}</Title>
+            </Wrapper>
+            <Wrapper>
+              <MainText>가장 많은 키워드를 작성한 사람</MainText>
+              <Divider />
+              <Title>
+                1위:{' '}
+                {roomResult.topKeywordContributorNames.length > 1
+                  ? roomResult.topKeywordContributorNames.join(', ')
+                  : roomResult.topKeywordContributorNames[0]}{' '}
+                ({roomResult.topKeywordCount}개)
+              </Title>
+            </Wrapper>
+            <Wrapper>
+              <MainText>취미가 가장 많이 겹친 사람</MainText>
+              <Divider />
+              <Title>
+                1위:{' '}
+                {roomResult.mostMatchedHobbyUserNames.length > 1
+                  ? roomResult.mostMatchedHobbyUserNames.join(', ')
+                  : roomResult.mostMatchedHobbyUserNames[0]}{' '}
+                ({roomResult.matchedHobbyCount}개)
+              </Title>
+            </Wrapper>
+          </Box>
+        ) : (
+          <SkeletonBox />
+        )}
+
         <SaveWrapper onClick={handleOpenModal}>
           <Download />
           <SaveText>저장</SaveText>
