@@ -4,12 +4,13 @@ import html2canvas from 'html2canvas';
 import { SubTitle, Title } from '@components/shared/TextStyles';
 import { Mask, ModalBody } from '@components/shared/ModalStyles';
 import rabbitIcon from '../../assets/summary_rabbit_icon.svg';
-
+import { RoomResult } from '@pages/chatRoomExit/chatRoomSummaryPage';
 interface SummaryModalProps {
   onClose: () => void;
+  data: RoomResult;
 }
 // 채팅룸 종료 페이지에 보여지는 요약 카드 모달
-const SummaryModal = ({ onClose }: SummaryModalProps) => {
+const SummaryModal = ({ onClose, data }: SummaryModalProps) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -31,6 +32,10 @@ const SummaryModal = ({ onClose }: SummaryModalProps) => {
   const handlePressEnd = () => {
     if (timerRef.current) clearTimeout(timerRef.current);
   };
+
+  const MAX_VISIBLE_KEYWORDS = 3;
+  const visibleKeywords = data.sharedKeywords.slice(0, MAX_VISIBLE_KEYWORDS);
+  const hiddenKeywordCount = data.sharedKeywords.length - MAX_VISIBLE_KEYWORDS;
   return (
     <>
       <Mask onClick={onClose} />
@@ -57,23 +62,38 @@ const SummaryModal = ({ onClose }: SummaryModalProps) => {
             <SubTitle>공감한 키워드</SubTitle>
             <KeywordList>
               <KeywordWrapper>
-                <Keyword>#LOL</Keyword>
-                <Keyword>#애니</Keyword>
+                {visibleKeywords.map((keyword, id) => (
+                  <Keyword key={id}>#{keyword}</Keyword>
+                ))}
               </KeywordWrapper>
-              <MoreKeywords>+3</MoreKeywords>
+              {hiddenKeywordCount > 0 && <MoreKeywords>+{hiddenKeywordCount}</MoreKeywords>}
             </KeywordList>
           </KeywordContainer>
           <KeywordContainer>
             <SubTitle>총 대화시간</SubTitle>
-            <Keyword>30분 12초</Keyword>
+            <Keyword>{data.totalDuration}</Keyword>
           </KeywordContainer>
           <KeywordContainer>
             <SubTitle>가장 많은 키워드를 작성한 사람</SubTitle>
-            <Keyword>1위: 하나(3개)</Keyword>
+            <Keyword>
+              {' '}
+              1위:{' '}
+              {data.topKeywordContributorNames.length > 1
+                ? data.topKeywordContributorNames.join(', ')
+                : data.topKeywordContributorNames[0]}{' '}
+              ({data.topKeywordCount}개)
+            </Keyword>
           </KeywordContainer>
           <KeywordContainer>
             <SubTitle>취미가 가장 많이 겹친 사람</SubTitle>
-            <Keyword>1위: 하나(2개)</Keyword>
+            <Keyword>
+              {' '}
+              1위:{' '}
+              {data.mostMatchedHobbyUserNames.length > 1
+                ? data.mostMatchedHobbyUserNames.join(', ')
+                : data.mostMatchedHobbyUserNames[0]}{' '}
+              ({data.matchedHobbyCount}개)
+            </Keyword>
           </KeywordContainer>
         </InfoContainer>
         <SaveInstruction>이미지를 꾹 눌러 저장해 보세요.</SaveInstruction>

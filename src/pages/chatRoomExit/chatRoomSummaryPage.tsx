@@ -8,7 +8,7 @@ import SummaryModal from '@components/chatRoomExit/SummaryModal';
 import { ModalPortal } from '@components/shared/ModalPortal';
 import { getRoomResult } from '@api/chatRoomResult';
 import DownloadIcon from '@assets/DownloadIcon.svg?react';
-interface RoomResult {
+export interface RoomResult {
   sharedKeywords: string[];
   totalDuration: string;
   topKeywordContributorNames: string[];
@@ -104,7 +104,7 @@ const ChatRoomSummaryPage = () => {
       <Button text='메인으로 돌아가기' onClick={() => navigate('/rooms')} />
       {isOpen && (
         <ModalPortal>
-          <SummaryModal onClose={handleCloseModal} />
+          <SummaryModal onClose={handleCloseModal} data={roomResult} />
         </ModalPortal>
       )}
     </Container>
@@ -112,7 +112,7 @@ const ChatRoomSummaryPage = () => {
 };
 export default ChatRoomSummaryPage;
 const SummaryHeader = styled(Header)`
-  margin-top: 97px;
+  margin-top: 40px;
 `;
 const StatsContainer = styled.div`
   width: 342px;
@@ -142,9 +142,9 @@ const Box = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  gap: 30px;
   width: 342px;
-  height: 376px;
+  min-height: 376px;
   flex-shrink: 0;
   border-radius: 12px;
   border: 1px solid #e4e4e4;
@@ -155,20 +155,21 @@ const Box = styled.div`
 const Wrapper = styled.div`
   display: flex;
   width: 299px;
-  height: 61px;
+  min-height: 61px;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: space-between;
 `;
 const Divider = styled.div`
   width: 299px;
   height: 1px;
   background-color: #f0f0f0;
+  margin: 9px 0;
 `;
 const TagWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
 `;
 const SaveWrapper = styled.div`
   display: flex;
