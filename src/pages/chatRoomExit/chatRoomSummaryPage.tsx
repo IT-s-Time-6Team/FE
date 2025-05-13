@@ -1,14 +1,14 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Button from '@components/chatRoomExit/Button';
 import { Container, Header } from '@components/shared/UIStyles';
 import { Title, SubTitle } from '@components/shared/TextStyles';
 import SummaryModal from '@components/chatRoomExit/SummaryModal';
 import { ModalPortal } from '@components/shared/ModalPortal';
-/* import { getRoomResult } from '@api/chatRoomResult'; */
+import { getRoomResult } from '@api/chatRoomResult';
 import DownloadIcon from '@assets/DownloadIcon.svg?react';
-/* interface RoomResult {
+interface RoomResult {
   sharedKeywords: string[];
   totalDuration: string;
   topKeywordContributorNames: string[];
@@ -17,40 +17,36 @@ import DownloadIcon from '@assets/DownloadIcon.svg?react';
   matchedHobbyCount: number;
   requestMemberName: string;
   requestMemberCharacterId: number;
-} */
-
+}
 // 채팅룸 종료 요약 페이지
 const ChatRoomSummaryPage = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  /*  const [roomResult, setRoomResult] = useState<RoomResult | null>(null); */
-  const roomResult = {
-    sharedKeywords: ['LOL', '애니'],
-    totalDuration: '30분 12초',
-    topKeywordContributorNames: ['하나'],
-    topKeywordCount: 3,
-    mostMatchedHobbyUserNames: ['하나'],
-    matchedHobbyCount: 2,
-    requestMemberName: 'member1',
-    requestMemberCharacterId: 1,
-  };
+  const location = useLocation();
+  const roomKey = location.state?.roomKey;
+  const [roomResult, setRoomResult] = useState<RoomResult | null>(null);
+
   const navigate = useNavigate();
-  /*  const roomKey = '123'; */
+
   const handleOpenModal = () => {
     setIsOpen(true);
   };
   const handleCloseModal = () => {
     setIsOpen(false);
   };
-  /* const handleRoomResult = async () => {
+  const handleRoomResult = async () => {
     if (!roomKey) return;
+    console.log(roomKey);
     try {
       const res = await getRoomResult(roomKey);
-      console.log('요약 결과 조회:', res);
       setRoomResult(res.data);
     } catch (err: unknown) {
       console.error('요약 결과 조회 실패:', err);
-    }s
-  }; */
+    }
+  };
+  useEffect(() => {
+    handleRoomResult();
+  }, []);
+  if (!roomResult) return <>로딩중</>;
   return (
     <Container>
       <SummaryHeader>
@@ -64,7 +60,7 @@ const ChatRoomSummaryPage = () => {
             <Divider />
             <TagWrapper>
               {roomResult.sharedKeywords.map((keyword, id) => (
-                <Title key={id}>{keyword}</Title>
+                <Title key={id}>#{keyword}</Title>
               ))}
             </TagWrapper>
           </Wrapper>
@@ -77,14 +73,22 @@ const ChatRoomSummaryPage = () => {
             <MainText>가장 많은 키워드를 작성한 사람</MainText>
             <Divider />
             <Title>
-              1위: {roomResult.topKeywordContributorNames}({roomResult.topKeywordCount}개)
+              1위:{' '}
+              {roomResult.topKeywordContributorNames.length > 1
+                ? roomResult.topKeywordContributorNames.join(', ')
+                : roomResult.topKeywordContributorNames[0]}{' '}
+              ({roomResult.topKeywordCount}개)
             </Title>
           </Wrapper>
           <Wrapper>
             <MainText>취미가 가장 많이 겹친 사람</MainText>
             <Divider />
             <Title>
-              1위: {roomResult.mostMatchedHobbyUserNames}({roomResult.matchedHobbyCount}개)
+              1위:{' '}
+              {roomResult.mostMatchedHobbyUserNames.length > 1
+                ? roomResult.mostMatchedHobbyUserNames.join(', ')
+                : roomResult.mostMatchedHobbyUserNames[0]}{' '}
+              ({roomResult.matchedHobbyCount}개)
             </Title>
           </Wrapper>
         </Box>
