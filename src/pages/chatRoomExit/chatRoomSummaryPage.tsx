@@ -107,7 +107,7 @@ const ChatRoomSummaryPage = () => {
         <FormLinkText>https://docs.google.com/forms/435432</FormLinkText>
       </FeedbackBox>
       <Button text='메인으로 돌아가기' onClick={() => navigate('/rooms')} />
-      {isOpen && (
+      {isOpen && roomResult && (
         <ModalPortal>
           <SummaryModal onClose={handleCloseModal} data={roomResult} />
         </ModalPortal>
