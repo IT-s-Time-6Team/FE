@@ -1,28 +1,28 @@
 // CharacterIcons.ts
-import rabbit from '@/assets/chatRoom/character/rabbit.svg';
-import bear from '@/assets/chatRoom/character/bear.svg';
-import cat from '@/assets/chatRoom/character/cat.svg';
-import chick from '@/assets/chatRoom/character/chick.svg';
-import pan from '@/assets/chatRoom/character/pan.svg';
-import pig from '@/assets/chatRoom/character/pig.svg';
-import snake from '@/assets/chatRoom/character/snake.svg';
+import rabbit from '@assets/summary_rabbit_icon.svg';
+import bear from '@assets/summary_bear_icon.svg';
+import cat from '@assets/summary_fox_icon.svg';
+import chick from '@assets/summary_chick_icon.svg';
+import pan from '@assets/summary_panda_icon.svg';
+import pig from '@assets/summary_pig_icon.svg';
+import snake from '@assets/summary_turtle_icon.svg';
 
 export const RABBIT = rabbit;
 export const BEAR = bear;
-export const CAT = cat;
+export const FOX = cat;
 export const CHICK = chick;
-export const PAN = pan;
+export const PANDA = pan;
 export const PIG = pig;
-export const SNAKE = snake;
+export const TURTLE = snake;
 
 const CharacterIcons = {
   RABBIT,
   BEAR,
-  CAT,
+  FOX,
   CHICK,
-  PAN,
+  PANDA,
   PIG,
-  SNAKE,
+  TURTLE,
 };
 
 export default CharacterIcons;

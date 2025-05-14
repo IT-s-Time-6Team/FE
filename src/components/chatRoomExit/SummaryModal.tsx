@@ -1,12 +1,13 @@
 import styled from '@emotion/styled';
 import { useRef } from 'react';
-import { useEffect } from 'react';
 import html2canvas from 'html2canvas';
 import { SubTitle, Title } from '@components/shared/TextStyles';
 import { Mask, ModalBody } from '@components/shared/ModalStyles';
-import rabbitIcon from '../../assets/summary_rabbit_icon.svg';
+
 import { RoomResult } from '@pages/chatRoomExit/chatRoomSummaryPage';
 import useRoomUsersStore from '@store/useRoomUsersStore';
+import CharacterIcons from '@components/shared/CharacterIcons';
+
 interface SummaryModalProps {
   onClose: () => void;
   data: RoomResult;
@@ -30,9 +31,6 @@ const SummaryModal = ({ onClose, data }: SummaryModalProps) => {
       }
     }, 1000); // 1초 이상 눌렀을 때 캡처
   };
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
 
   // 터치나 마우스를 떼면 타이머를 취소
   const handlePressEnd = () => {
@@ -56,7 +54,7 @@ const SummaryModal = ({ onClose, data }: SummaryModalProps) => {
         className='cursor-pointer'
       >
         <ProfileContainer>
-          <ProfileImage src={rabbitIcon} />
+          <ProfileImage src={CharacterIcons.CHICK} />
           <ProfileTextContainer>
             <SubTitle>이름</SubTitle>
             <Title>{user?.nickname}</Title>
