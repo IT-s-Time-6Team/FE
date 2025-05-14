@@ -12,9 +12,12 @@ type Question = {
   keyword: string;
   question: string;
 };
-const KeywordModal = () => {
+interface SummaryModalProps {
+  onClose: () => void;
+  keyword: string;
+}
+const KeywordModal = ({ onClose, keyword }: SummaryModalProps) => {
   const [questions, setQuestions] = useState<Question[]>();
-  const keyword = 'mbti';
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -31,7 +34,7 @@ const KeywordModal = () => {
   if (!questions) return <p>로딩중</p>;
   return (
     <>
-      <Mask />
+      <Mask onClick={onClose} />
       <Swiper
         style={{
           width: '268px',
