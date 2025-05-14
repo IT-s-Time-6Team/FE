@@ -29,7 +29,8 @@
       "@layout/*": ["src/layout/*"],
       "@pages/*": ["src/pages/*"],
       "@assets/*": ["src/assets/*"],
-      "@hooks/*": ["src/hooks/*"]
+      "@hooks/*": ["src/hooks/*"],
+      "@store/*": ["src/store/*"]
     }
   },
   "include": ["src", "swiper-css.d.ts"], // 타입 검사 포함 디렉토리

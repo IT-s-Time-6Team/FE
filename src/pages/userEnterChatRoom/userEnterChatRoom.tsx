@@ -19,6 +19,7 @@ import Button from '@components/chatRoomCreated/LoginButton';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { joinRoom } from '@api/login';
+import useRoomUsersStore from '@store/useRoomUsersStore';
 
 const UserEnterChatRoom = () => {
   const { nickname, isNicknameValid, handleNicknameChange } = useNicknameValidation();
@@ -27,12 +28,21 @@ const UserEnterChatRoom = () => {
 
   const { roomKey } = useParams();
   const navigate = useNavigate();
+  const addUser = useRoomUsersStore((state) => state.addUser);
+  const resetUsers = useRoomUsersStore((state) => state.resetUsers);
 
   const handleJoin = async () => {
     if (!roomKey) return;
     try {
       const res = await joinRoom(roomKey, { nickname, password });
       console.log(res);
+      if (res.data.data.isLeader) {
+        resetUsers();
+      }
+      addUser(res.data.data);
+      const updatedUsers = useRoomUsersStore.getState().users;
+      console.log('전역 저장된 users:', updatedUsers);
+
       navigate(`/rooms/${roomKey}/chat`);
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {

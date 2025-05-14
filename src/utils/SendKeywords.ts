@@ -5,7 +5,7 @@ interface SendKeywordsProps {
   roomKey: string;
   input: string;
   setInput: (input: string) => void;
-  setKeyword: (keyword: string) => void;
+  setKeyword: (keyword: string[]) => void;
   setMyKeyword: React.Dispatch<React.SetStateAction<string[]>>;
   mykeyword: string[];
 }
@@ -20,13 +20,13 @@ const SendKeywords = ({
 }: SendKeywordsProps) => {
   if (stompClient && input.trim()) {
     const keywords = input
-      .split('#')
+      .split(' ')
       .map((s) => s.trim())
       .filter((s) => s.length > 0);
 
     if (keywords.length === 0) {
       setInput('');
-      setKeyword('');
+      setKeyword([]);
       return;
     }
 
@@ -34,7 +34,7 @@ const SendKeywords = ({
 
     if (newKeywords.length === 0) {
       setInput('');
-      setKeyword('');
+      setKeyword([]);
       return;
     }
 
@@ -48,7 +48,7 @@ const SendKeywords = ({
 
     setMyKeyword((prev) => [...prev, ...newKeywords]);
     setInput('');
-    setKeyword('');
+    setKeyword([]);
   }
 };
 export default SendKeywords;
