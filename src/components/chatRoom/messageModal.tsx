@@ -34,7 +34,7 @@ const MessageModal = ({ onClose, kind }: MessageModalProps) => {
   }, [kind, navigate]);
 
   const handleClose = () => {
-    if (kind === 'ended') {
+    if (kind === 'ended' || kind === 'closed') {
       onClose(); // 모달 닫은 후 navigate 실행
     }
   };

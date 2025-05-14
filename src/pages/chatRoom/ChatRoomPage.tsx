@@ -37,7 +37,9 @@ const ChatRoomPage = () => {
   const [peoplenum, setPeoplenum] = useState<number>(0);
   const [userIsLeader] = useState(false);
   const [isInviteOpen, setIsInviteOpen] = useState<boolean>(false);
-  const [isMessageOpen, setIsMessageOpen] = useState<boolean>(false);
+  //const [isWarningOpen, setIsWarningOpen] = useState(false); // 방 종료 5분전 메시지
+  const [isClosedOpen, setIsClosedOpen] = useState(false); // 방장 종료 메시지
+  const [isEndedOpen, setIsEndedOpen] = useState(false); // 방 종료 메시지
   const sendKeyword = () => {
     SendKeywords({
       stompClient,
@@ -100,7 +102,7 @@ const ChatRoomPage = () => {
               }
             } else if (data.type === 'ROOM_EXPIRED') {
               console.log('방 만료됨');
-              setIsMessageOpen(true);
+              setIsEndedOpen(true);
             }
           } catch (e) {
             console.error('메시지 파싱 오류:', e);
@@ -148,7 +150,7 @@ const ChatRoomPage = () => {
       }
       if (roomKey) {
         expireRoom(roomKey);
-        navigate('/rooms/exit');
+        setIsClosedOpen(true);
       }
     } else {
       alert('방장이 아닙니다.');
@@ -201,9 +203,14 @@ const ChatRoomPage = () => {
           <InviteModal onClose={() => setIsInviteOpen(false)} roomId={roomKey ?? ''} />
         </ModalPortal>
       )}
-      {isMessageOpen && (
+      {isEndedOpen && (
         <ModalPortal>
           <MessageModal onClose={() => setIsInviteOpen(false)} kind='ended' />
+        </ModalPortal>
+      )}
+      {isClosedOpen && (
+        <ModalPortal>
+          <MessageModal onClose={() => setIsInviteOpen(false)} kind='closed' />
         </ModalPortal>
       )}
     </>
