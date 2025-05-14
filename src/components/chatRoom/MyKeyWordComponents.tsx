@@ -9,12 +9,12 @@ interface MyKeyWordComponentsProps {
 }
 const MyKeyWordComponents = ({ mykeyword }: MyKeyWordComponentsProps) => {
   return (
-    <KeyWordContainer>
+    <KeyWordContainer isMyKeyword={true}>
       <KeyWord>내가 입력한 공감 키워드</KeyWord>
       <KeyWordDivider />
       <KeyWordDetail>
         {mykeyword.length > 0
-          ? mykeyword.map((item) => `${item} `)
+          ? mykeyword.map((item) => `#${item}\t`)
           : '아직 입력한 키워드가 없습니다.'}
       </KeyWordDetail>
     </KeyWordContainer>

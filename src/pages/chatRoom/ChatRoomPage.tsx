@@ -5,6 +5,8 @@ import {
   ChatContainer,
   UserEntry,
 } from '../../styles/chatRoom/chatRoom';
+import styled from '@emotion/styled';
+import InfoIcon from '@assets/chatRoom/info.svg';
 import { useEffect, useState } from 'react';
 import Characters from '../../components/chatRoom/Characters';
 import { expireRoom, getRoom } from '@api/chatRoomCreated';
@@ -26,10 +28,11 @@ const ChatRoomPage = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [stompClient, setStompClient] = useState<Client | null>(null);
   const [messages, setMessages] = useState<{ type: string; content: string }>();
-  const [keyword, setKeyword] = useState('');
+  const [keyword, setKeyword] = useState<string[]>([]);
   const [, setConnected] = useState(false);
   const [mykeyword, setMyKeyword] = useState<string[]>([]);
   const [peoplenum, setPeoplenum] = useState<number>(0);
+  const [userIsLeader] = useState(false);
   const sendKeyword = () => {
     SendKeywords({
       stompClient,
@@ -86,11 +89,9 @@ const ChatRoomPage = () => {
               );
 
               if (keywordNames.length > 0) {
-                const allKeywords = keywordNames.join(' ');
-
-                setKeyword(allKeywords);
+                setKeyword(keywordNames);
               } else {
-                setKeyword('같은 키워드를 2명 이상 작성하면 공개됩니다.');
+                setKeyword([]);
               }
             } else if (data.type === 'ROOM_EXPIRED') {
               alert('방이 만료되었습니다.');
@@ -135,13 +136,17 @@ const ChatRoomPage = () => {
   };
 
   const disconnect = () => {
-    if (stompClient) {
-      stompClient.deactivate();
-      setConnected(false);
-    }
-    if (roomKey) {
-      expireRoom(roomKey);
-      navigate('/rooms/exit');
+    if (userIsLeader) {
+      if (stompClient) {
+        stompClient.deactivate();
+        setConnected(false);
+      }
+      if (roomKey) {
+        expireRoom(roomKey);
+        navigate('/rooms/exit');
+      }
+    } else {
+      alert('방장이 아닙니다.');
     }
   };
 
@@ -169,6 +174,7 @@ const ChatRoomPage = () => {
     <>
       <ChatRoomContainer>
         <ChatRoomHeader>
+          <InfoButton src={InfoIcon} alt='info' />
           <CloseButton onClick={disconnect}>종료</CloseButton>
         </ChatRoomHeader>
         <KeyWordComponents keyword={keyword} peoplenum={peoplenum} />
@@ -189,3 +195,9 @@ const ChatRoomPage = () => {
   );
 };
 export default ChatRoomPage;
+const InfoButton = styled.img`
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  margin-right: 10px;
+`;
