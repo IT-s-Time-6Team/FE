@@ -44,7 +44,7 @@ const ChatInputComponents = ({
       <ChatInput
         value={input}
         onChange={(e) => setInput(e.target.value)}
-        placeholder={`키워드를 입력해 주세요.\n(키워드마다 앞에 #을 붙여주세요. 예: #게임)`}
+        placeholder={`키워드를 입력해 주세요.\n(키워드는 띄어쓰기로 구분됩니다! )`}
       />
       <SendButton isInput={isInput} onClick={sendKeyword} disabled={!isInput}>
         <SendIcon />

@@ -2,13 +2,18 @@ import styled from '@emotion/styled';
 
 export const PeopleCount = styled.div`
   display: flex;
-  font-weight: 300;
+  font-weight: 600;
+  font-size: 16px;
+  gap: 3px;
 `;
 export const CharacterImg = styled.img``;
 export const ChatInput = styled.textarea`
   width: 80%;
   border: none;
   font-size: 14px;
+  &:focus {
+    outline: none;
+  }
 `;
 export const SendButton = styled.button<{ isInput: boolean }>`
   background-color: transparent;
@@ -63,12 +68,13 @@ export const KeyWordDetail = styled.div`
   color: #7c7c7c;
   margin-top: 8px;
 `;
-export const KeyWordContainer = styled.div`
+export const KeyWordContainer = styled.div<{ isMyKeyword?: boolean }>`
   border: 1px solid #e4e4e4;
   width: 342px;
   height: fit-content;
   border-radius: 12px;
   padding: 18px 22px;
+  margin-bottom: ${(props) => (props.isMyKeyword ? '100px' : '0')};
 `;
 export const KeyWord = styled.div`
   display: flex;
