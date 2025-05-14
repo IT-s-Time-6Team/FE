@@ -127,6 +127,7 @@ export const ChatRoomHeader = styled.div`
   left: 0;
   padding: 10px 24px;
   padding-top: 30px;
+  gap: 10px;
   display: flex;
   align-items: center;
   justify-content: flex-end;

@@ -18,7 +18,7 @@ export default defineConfig({
     },
   },
   server: {
-    port: 3000,
+    port: 8080,
     proxy: {
       '/api': {
         target: 'https://dev.okii.kr',

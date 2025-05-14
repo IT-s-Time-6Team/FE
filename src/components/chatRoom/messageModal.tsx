@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 import { Title, SubTitle } from '@components/shared/TextStyles';
 import { Mask, ModalBody } from '@components/shared/ModalStyles';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 const messages = {
   warning: {
     title: '채팅룸 종료 5분 전!',
@@ -15,14 +17,28 @@ const messages = {
     subTitle: '5초 후 요약 페이지로 이동할게요.',
   },
 };
+interface MessageModalProps {
+  onClose: () => void;
+  kind: 'warning' | 'closed' | 'ended';
+}
+const MessageModal = ({ onClose, kind }: MessageModalProps) => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (kind === 'ended' || kind === 'closed') {
+      const timeout = setTimeout(() => {
+        navigate('/rooms/exit'); // 모달이 뜬 후 5초 후 이동
+      }, 5000); // 5초 후에 이동
 
-const MessageModal = () => {
+      return () => clearTimeout(timeout); // 컴포넌트 언마운트 시 타이머 클리어
+    }
+  }, [kind, navigate]);
+
   return (
     <>
-      <Mask />
+      <Mask onClick={onClose} />
       <MessageModalBody>
-        <Title>{messages.warning.title}</Title>
-        <SubTitle>{messages.warning.subTitle}</SubTitle>
+        <Title>{messages[kind].title}</Title>
+        <SubTitle>{messages[kind].subTitle}</SubTitle>
       </MessageModalBody>
     </>
   );
