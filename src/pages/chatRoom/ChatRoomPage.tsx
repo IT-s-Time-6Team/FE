@@ -60,27 +60,6 @@ const ChatRoomPage = () => {
     };
   }, [stompClient]);
 
-  // 방 남은 시간 계산
-  useEffect(() => {
-    if (!roomData?.createdAt || !roomData.durationMinutes) return;
-
-    const createdAt = new Date(roomData.createdAt);
-    const endAt = new Date(createdAt.getTime() + roomData.durationMinutes * 60 * 1000);
-    const warningAt = new Date(endAt.getTime() - 5 * 60 * 1000);
-
-    const now = new Date();
-    const msUntilWarning = warningAt.getTime() - now.getTime();
-
-    if (msUntilWarning > 0) {
-      const timer = setTimeout(() => {
-        setIsWarningOpen(true);
-      }, msUntilWarning);
-      return () => clearTimeout(timer);
-    } else {
-      setIsWarningOpen(true); // 이미 5분 미만인 경우 즉시 표시
-    }
-  }, [roomData]);
-
   const connect = () => {
     const socket = new SockJS('/api/connect');
     const client = new Client({
@@ -124,6 +103,9 @@ const ChatRoomPage = () => {
             } else if (data.type === 'ROOM_EXPIRED') {
               console.log('방 만료됨');
               setIsEndedOpen(true);
+            } else if (data.type === 'ROOM_EXPIRY_WARNING') {
+              console.log('방 종료 5분 남음');
+              setIsWarningOpen(true);
             }
           } catch (e) {
             console.error('메시지 파싱 오류:', e);
