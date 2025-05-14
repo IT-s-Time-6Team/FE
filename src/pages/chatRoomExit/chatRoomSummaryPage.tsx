@@ -5,8 +5,10 @@ import { Container, Header } from '@components/shared/UIStyles';
 import { Title, SubTitle } from '@components/shared/TextStyles';
 import SummaryModal from '@components/chatRoomExit/SummaryModal';
 import { ModalPortal } from '@components/shared/ModalPortal';
+import { useNavigate } from 'react-router-dom';
 // 채팅룸 종료 요약 페이지
 const ChatRoomSummaryPage = () => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const handleOpenModal = () => {
     setIsOpen(true);
@@ -55,7 +57,7 @@ const ChatRoomSummaryPage = () => {
         <FeedbackText>서비스 피드백을 부탁드려도 될까요?</FeedbackText>
         <FormLinkText>https://docs.google.com/forms/435432</FormLinkText>
       </FeedbackBox>
-      <Button text='메인으로 돌아가기' />
+      <Button text='메인으로 돌아가기' onClick={() => navigate('/rooms')} />
       {isOpen && (
         <ModalPortal>
           <SummaryModal onClose={handleCloseModal} />

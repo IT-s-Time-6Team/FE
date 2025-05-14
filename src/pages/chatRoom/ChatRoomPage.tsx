@@ -18,6 +18,8 @@ import ChatInputComponents from '@components/chatRoom/ChatInputComponents';
 import KeyWordComponents from '@components/chatRoom/KeyWordComponents';
 import MyKeyWordComponents from '@components/chatRoom/MyKeyWordComponents';
 import SendKeywords from '../../utils/SendKeywords';
+import InviteModal from '@components/chatRoom/InviteModal';
+import { ModalPortal } from '@components/shared/ModalPortal';
 
 const ChatRoomPage = () => {
   const [isInput, setIsInput] = useState(false);
@@ -33,6 +35,7 @@ const ChatRoomPage = () => {
   const [mykeyword, setMyKeyword] = useState<string[]>([]);
   const [peoplenum, setPeoplenum] = useState<number>(0);
   const [userIsLeader] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const sendKeyword = () => {
     SendKeywords({
       stompClient,
@@ -174,7 +177,7 @@ const ChatRoomPage = () => {
     <>
       <ChatRoomContainer>
         <ChatRoomHeader>
-          <InfoButton src={InfoIcon} alt='info' />
+          <InfoButton onClick={() => setIsOpen(true)} src={InfoIcon} alt='info' />
           <CloseButton onClick={disconnect}>종료</CloseButton>
         </ChatRoomHeader>
         <KeyWordComponents keyword={keyword} peoplenum={peoplenum} />
@@ -191,6 +194,11 @@ const ChatRoomPage = () => {
         sendKeyword={sendKeyword}
         setIsInput={setIsInput}
       />
+      {isOpen && (
+        <ModalPortal>
+          <InviteModal onClose={() => setIsOpen(false)} roomId={roomKey ?? ''} />
+        </ModalPortal>
+      )}
     </>
   );
 };
@@ -199,5 +207,4 @@ const InfoButton = styled.img`
   width: 24px;
   height: 24px;
   cursor: pointer;
-  margin-right: 10px;
 `;
