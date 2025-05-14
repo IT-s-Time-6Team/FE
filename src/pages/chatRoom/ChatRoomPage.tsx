@@ -74,8 +74,15 @@ const ChatRoomPage = () => {
               setInput('');
             } else if (data.type === 'REENTER') {
               setMessages({ type: 'SYSTEM', content: `${data.nickname}님이 재입장하셨습니다.` });
+              setPeoplenum(data.data.userCount);
+              setUsers((prev) => [...prev, { state: '', nickname: data.nickname }]);
+              setInput('');
             } else if (data.type === `ERROR`) {
               alert('형식 오류');
+            } else if (data.type === 'LEAVE') {
+              setMessages({ type: 'SYSTEM', content: `${data.nickname}님이 퇴장하셨습니다.` });
+              setPeoplenum(data.data.userCount);
+              setUsers((prev) => prev.filter((user) => user.nickname !== data.nickname));
             } else if (data.type === 'kEY_EVENT') {
               setUsers([...users, { state: 'typing', nickname: data.nickname }]);
             } else if (data.type === 'ANALYSIS_RESULT') {
@@ -138,15 +145,17 @@ const ChatRoomPage = () => {
   const disconnect = () => {
     if (userIsLeader) {
       if (stompClient) {
+        if (roomKey) {
+          expireRoom(roomKey);
+          navigate('/rooms/exit');
+        }
         stompClient.deactivate();
         setConnected(false);
       }
-      if (roomKey) {
-        expireRoom(roomKey);
-        navigate('/rooms/exit');
-      }
     } else {
-      alert('방장이 아닙니다.');
+      setConnected(false);
+      stompClient?.deactivate();
+      navigate('/');
     }
   };
 
@@ -175,7 +184,7 @@ const ChatRoomPage = () => {
       <ChatRoomContainer>
         <ChatRoomHeader>
           <InfoButton src={InfoIcon} alt='info' />
-          <CloseButton onClick={disconnect}>종료</CloseButton>
+          <CloseButton onClick={disconnect}>{userIsLeader ? '종료' : '나가기'}</CloseButton>
         </ChatRoomHeader>
         <KeyWordComponents keyword={keyword} peoplenum={peoplenum} />
         <ChatContainer>
