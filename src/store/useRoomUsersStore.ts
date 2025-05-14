@@ -8,16 +8,19 @@ export interface UserInfo {
 }
 
 interface RoomUsersState {
+  user: UserInfo | null;
   users: UserInfo[];
   addUser: (user: UserInfo) => void;
   removeUser: (nickname: string) => void;
   resetUsers: () => void;
+  setUser: (user: UserInfo) => void;
 }
 
 const useRoomUsersStore = create<RoomUsersState>()(
   persist(
     (set) => ({
       users: [],
+      user: null,
       addUser: (user) =>
         set((state) => {
           const alreadyExists = state.users.some((u) => u.nickname === user.nickname);
@@ -32,6 +35,7 @@ const useRoomUsersStore = create<RoomUsersState>()(
         set({ users: [] });
         localStorage.removeItem('room-users');
       },
+      setUser: (user) => set({ user }), // 단일 유저 설정
     }),
     {
       name: 'room-users',

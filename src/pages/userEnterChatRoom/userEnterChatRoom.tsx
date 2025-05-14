@@ -30,6 +30,7 @@ const UserEnterChatRoom = () => {
   const navigate = useNavigate();
   const addUser = useRoomUsersStore((state) => state.addUser);
   const resetUsers = useRoomUsersStore((state) => state.resetUsers);
+  const setUser = useRoomUsersStore((state) => state.setUser);
 
   const handleJoin = async () => {
     if (!roomKey) return;
@@ -40,6 +41,7 @@ const UserEnterChatRoom = () => {
         resetUsers();
       }
       addUser(res.data.data);
+      setUser(res.data.data);
       const updatedUsers = useRoomUsersStore.getState().users;
       console.log('전역 저장된 users:', updatedUsers);
 

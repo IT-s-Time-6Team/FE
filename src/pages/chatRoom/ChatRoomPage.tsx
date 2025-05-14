@@ -18,6 +18,9 @@ import ChatInputComponents from '@components/chatRoom/ChatInputComponents';
 import KeyWordComponents from '@components/chatRoom/KeyWordComponents';
 import MyKeyWordComponents from '@components/chatRoom/MyKeyWordComponents';
 import SendKeywords from '../../utils/SendKeywords';
+import InviteModal from '@components/chatRoom/InviteModal';
+import { ModalPortal } from '@components/shared/ModalPortal';
+import MessageModal from '@components/chatRoom/messageModal';
 
 const ChatRoomPage = () => {
   const [isInput, setIsInput] = useState(false);
@@ -32,7 +35,11 @@ const ChatRoomPage = () => {
   const [, setConnected] = useState(false);
   const [mykeyword, setMyKeyword] = useState<string[]>([]);
   const [peoplenum, setPeoplenum] = useState<number>(0);
-  const [userIsLeader] = useState(false);
+  const [userIsLeader] = useState(true);
+  const [isInviteOpen, setIsInviteOpen] = useState<boolean>(false);
+  const [isWarningOpen, setIsWarningOpen] = useState(false); // 방 종료 5분전 메시지
+  const [isClosedOpen, setIsClosedOpen] = useState(false); // 방장 종료 메시지
+  const [isEndedOpen, setIsEndedOpen] = useState(false); // 방 종료 메시지
   const sendKeyword = () => {
     SendKeywords({
       stompClient,
@@ -94,8 +101,11 @@ const ChatRoomPage = () => {
                 setKeyword([]);
               }
             } else if (data.type === 'ROOM_EXPIRED') {
-              alert('방이 만료되었습니다.');
-              navigate('/rooms/exit', { state: { roomKey } });
+              console.log('방 만료됨');
+              setIsEndedOpen(true);
+            } else if (data.type === 'ROOM_EXPIRY_WARNING') {
+              console.log('방 종료 5분 남음');
+              setIsWarningOpen(true);
             }
           } catch (e) {
             console.error('메시지 파싱 오류:', e);
@@ -143,7 +153,7 @@ const ChatRoomPage = () => {
       }
       if (roomKey) {
         expireRoom(roomKey);
-        navigate('/rooms/exit');
+        setIsClosedOpen(true);
       }
     } else {
       alert('방장이 아닙니다.');
@@ -174,7 +184,7 @@ const ChatRoomPage = () => {
     <>
       <ChatRoomContainer>
         <ChatRoomHeader>
-          <InfoButton src={InfoIcon} alt='info' />
+          <InfoButton onClick={() => setIsInviteOpen(true)} src={InfoIcon} alt='info' />
           <CloseButton onClick={disconnect}>종료</CloseButton>
         </ChatRoomHeader>
         <KeyWordComponents keyword={keyword} peoplenum={peoplenum} />
@@ -191,6 +201,26 @@ const ChatRoomPage = () => {
         sendKeyword={sendKeyword}
         setIsInput={setIsInput}
       />
+      {isInviteOpen && (
+        <ModalPortal>
+          <InviteModal onClose={() => setIsInviteOpen(false)} roomId={roomKey ?? ''} />
+        </ModalPortal>
+      )}
+      {isEndedOpen && (
+        <ModalPortal>
+          <MessageModal onClose={() => setIsEndedOpen(false)} kind='ended' roomkey={roomKey} />
+        </ModalPortal>
+      )}
+      {isClosedOpen && (
+        <ModalPortal>
+          <MessageModal onClose={() => setIsClosedOpen(false)} kind='closed' roomkey={roomKey} />
+        </ModalPortal>
+      )}
+      {isWarningOpen && (
+        <ModalPortal>
+          <MessageModal onClose={() => setIsWarningOpen(false)} kind='warning' />
+        </ModalPortal>
+      )}
     </>
   );
 };
@@ -199,5 +229,4 @@ const InfoButton = styled.img`
   width: 24px;
   height: 24px;
   cursor: pointer;
-  margin-right: 10px;
 `;

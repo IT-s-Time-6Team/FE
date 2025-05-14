@@ -18,14 +18,14 @@ export interface RoomResult {
   requestMemberName: string;
   requestMemberCharacterId: number;
 }
+
 // 채팅룸 종료 요약 페이지
 const ChatRoomSummaryPage = () => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const location = useLocation();
   const roomKey = location.state?.roomKey;
   const [roomResult, setRoomResult] = useState<RoomResult | null>(null);
-
-  const navigate = useNavigate();
 
   const handleOpenModal = () => {
     setIsOpen(true);

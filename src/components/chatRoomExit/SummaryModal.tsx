@@ -1,10 +1,12 @@
 import styled from '@emotion/styled';
 import { useRef } from 'react';
+import { useEffect } from 'react';
 import html2canvas from 'html2canvas';
 import { SubTitle, Title } from '@components/shared/TextStyles';
 import { Mask, ModalBody } from '@components/shared/ModalStyles';
 import rabbitIcon from '../../assets/summary_rabbit_icon.svg';
 import { RoomResult } from '@pages/chatRoomExit/chatRoomSummaryPage';
+import useRoomUsersStore from '@store/useRoomUsersStore';
 interface SummaryModalProps {
   onClose: () => void;
   data: RoomResult;
@@ -13,6 +15,7 @@ interface SummaryModalProps {
 const SummaryModal = ({ onClose, data }: SummaryModalProps) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const user = useRoomUsersStore((state) => state.user);
 
   // 길게 누를 때 실행되는 함수
   const handleLongPress = () => {
@@ -27,6 +30,9 @@ const SummaryModal = ({ onClose, data }: SummaryModalProps) => {
       }
     }, 1000); // 1초 이상 눌렀을 때 캡처
   };
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
 
   // 터치나 마우스를 떼면 타이머를 취소
   const handlePressEnd = () => {
@@ -53,7 +59,7 @@ const SummaryModal = ({ onClose, data }: SummaryModalProps) => {
           <ProfileImage src={rabbitIcon} />
           <ProfileTextContainer>
             <SubTitle>이름</SubTitle>
-            <Title>하나</Title>
+            <Title>{user?.nickname}</Title>
           </ProfileTextContainer>
         </ProfileContainer>
         <Divider />
