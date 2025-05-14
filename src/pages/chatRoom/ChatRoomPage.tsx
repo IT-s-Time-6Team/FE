@@ -20,6 +20,7 @@ import MyKeyWordComponents from '@components/chatRoom/MyKeyWordComponents';
 import SendKeywords from '../../utils/SendKeywords';
 import InviteModal from '@components/chatRoom/InviteModal';
 import { ModalPortal } from '@components/shared/ModalPortal';
+import MessageModal from '@components/chatRoom/messageModal';
 
 const ChatRoomPage = () => {
   const [isInput, setIsInput] = useState(false);
@@ -35,7 +36,8 @@ const ChatRoomPage = () => {
   const [mykeyword, setMyKeyword] = useState<string[]>([]);
   const [peoplenum, setPeoplenum] = useState<number>(0);
   const [userIsLeader] = useState(false);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isInviteOpen, setIsInviteOpen] = useState<boolean>(false);
+  const [isMessageOpen, setIsMessageOpen] = useState<boolean>(false);
   const sendKeyword = () => {
     SendKeywords({
       stompClient,
@@ -97,8 +99,8 @@ const ChatRoomPage = () => {
                 setKeyword([]);
               }
             } else if (data.type === 'ROOM_EXPIRED') {
-              alert('방이 만료되었습니다.');
-              navigate('/rooms/exit');
+              console.log('방 만료됨');
+              setIsMessageOpen(true);
             }
           } catch (e) {
             console.error('메시지 파싱 오류:', e);
@@ -177,7 +179,7 @@ const ChatRoomPage = () => {
     <>
       <ChatRoomContainer>
         <ChatRoomHeader>
-          <InfoButton onClick={() => setIsOpen(true)} src={InfoIcon} alt='info' />
+          <InfoButton onClick={() => setIsInviteOpen(true)} src={InfoIcon} alt='info' />
           <CloseButton onClick={disconnect}>종료</CloseButton>
         </ChatRoomHeader>
         <KeyWordComponents keyword={keyword} peoplenum={peoplenum} />
@@ -194,9 +196,14 @@ const ChatRoomPage = () => {
         sendKeyword={sendKeyword}
         setIsInput={setIsInput}
       />
-      {isOpen && (
+      {isInviteOpen && (
         <ModalPortal>
-          <InviteModal onClose={() => setIsOpen(false)} roomId={roomKey ?? ''} />
+          <InviteModal onClose={() => setIsInviteOpen(false)} roomId={roomKey ?? ''} />
+        </ModalPortal>
+      )}
+      {isMessageOpen && (
+        <ModalPortal>
+          <MessageModal onClose={() => setIsInviteOpen(false)} kind='ended' />
         </ModalPortal>
       )}
     </>

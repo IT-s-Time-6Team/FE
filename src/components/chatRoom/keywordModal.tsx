@@ -12,11 +12,11 @@ type Question = {
   keyword: string;
   question: string;
 };
-interface SummaryModalProps {
+interface KeywordModalProps {
   onClose: () => void;
   keyword: string;
 }
-const KeywordModal = ({ onClose, keyword }: SummaryModalProps) => {
+const KeywordModal = ({ onClose, keyword }: KeywordModalProps) => {
   const [questions, setQuestions] = useState<Question[]>();
 
   useEffect(() => {
