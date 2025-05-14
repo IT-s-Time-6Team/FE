@@ -24,7 +24,7 @@ interface MessageModalProps {
 const MessageModal = ({ onClose, kind }: MessageModalProps) => {
   const navigate = useNavigate();
   useEffect(() => {
-    if (kind === 'ended') {
+    if (kind === 'ended' || kind === 'closed') {
       const timeout = setTimeout(() => {
         navigate('/rooms/exit'); // 모달이 뜬 후 5초 후 이동
       }, 5000); // 5초 후에 이동
@@ -33,14 +33,9 @@ const MessageModal = ({ onClose, kind }: MessageModalProps) => {
     }
   }, [kind, navigate]);
 
-  const handleClose = () => {
-    if (kind === 'ended' || kind === 'closed') {
-      onClose(); // 모달 닫은 후 navigate 실행
-    }
-  };
   return (
     <>
-      <Mask onClick={handleClose} />
+      <Mask onClick={onClose} />
       <MessageModalBody>
         <Title>{messages[kind].title}</Title>
         <SubTitle>{messages[kind].subTitle}</SubTitle>

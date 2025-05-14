@@ -37,7 +37,7 @@ const ChatRoomPage = () => {
   const [peoplenum, setPeoplenum] = useState<number>(0);
   const [userIsLeader] = useState(false);
   const [isInviteOpen, setIsInviteOpen] = useState<boolean>(false);
-  //const [isWarningOpen, setIsWarningOpen] = useState(false); // 방 종료 5분전 메시지
+  const [isWarningOpen, setIsWarningOpen] = useState(false); // 방 종료 5분전 메시지
   const [isClosedOpen, setIsClosedOpen] = useState(false); // 방장 종료 메시지
   const [isEndedOpen, setIsEndedOpen] = useState(false); // 방 종료 메시지
   const sendKeyword = () => {
@@ -59,6 +59,27 @@ const ChatRoomPage = () => {
       }
     };
   }, [stompClient]);
+
+  // 방 남은 시간 계산
+  useEffect(() => {
+    if (!roomData?.createdAt || !roomData.durationMinutes) return;
+
+    const createdAt = new Date(roomData.createdAt);
+    const endAt = new Date(createdAt.getTime() + roomData.durationMinutes * 60 * 1000);
+    const warningAt = new Date(endAt.getTime() - 5 * 60 * 1000);
+
+    const now = new Date();
+    const msUntilWarning = warningAt.getTime() - now.getTime();
+
+    if (msUntilWarning > 0) {
+      const timer = setTimeout(() => {
+        setIsWarningOpen(true);
+      }, msUntilWarning);
+      return () => clearTimeout(timer);
+    } else {
+      setIsWarningOpen(true); // 이미 5분 미만인 경우 즉시 표시
+    }
+  }, [roomData]);
 
   const connect = () => {
     const socket = new SockJS('/api/connect');
@@ -205,12 +226,17 @@ const ChatRoomPage = () => {
       )}
       {isEndedOpen && (
         <ModalPortal>
-          <MessageModal onClose={() => setIsInviteOpen(false)} kind='ended' />
+          <MessageModal onClose={() => setIsEndedOpen(false)} kind='ended' />
         </ModalPortal>
       )}
       {isClosedOpen && (
         <ModalPortal>
-          <MessageModal onClose={() => setIsInviteOpen(false)} kind='closed' />
+          <MessageModal onClose={() => setIsClosedOpen(false)} kind='closed' />
+        </ModalPortal>
+      )}
+      {isWarningOpen && (
+        <ModalPortal>
+          <MessageModal onClose={() => setIsWarningOpen(false)} kind='warning' />
         </ModalPortal>
       )}
     </>
