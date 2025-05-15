@@ -21,6 +21,7 @@ import SendKeywords from '../../utils/SendKeywords';
 import InviteModal from '@components/chatRoom/InviteModal';
 import { ModalPortal } from '@components/shared/ModalPortal';
 import MessageModal from '@components/chatRoom/messageModal';
+import useRoomUsersStore from '@store/useRoomUsersStore';
 
 const ChatRoomPage = () => {
   const [isInput, setIsInput] = useState(false);
@@ -35,11 +36,11 @@ const ChatRoomPage = () => {
   const [, setConnected] = useState(false);
   const [mykeyword, setMyKeyword] = useState<string[]>([]);
   const [peoplenum, setPeoplenum] = useState<number>(0);
-  const [userIsLeader] = useState(true);
   const [isInviteOpen, setIsInviteOpen] = useState<boolean>(false);
   const [isWarningOpen, setIsWarningOpen] = useState(false); // 방 종료 5분전 메시지
   const [isClosedOpen, setIsClosedOpen] = useState(false); // 방장 종료 메시지
   const [isEndedOpen, setIsEndedOpen] = useState(false); // 방 종료 메시지
+  const user = useRoomUsersStore((state) => state.user);
   const sendKeyword = () => {
     SendKeywords({
       stompClient,
@@ -146,7 +147,7 @@ const ChatRoomPage = () => {
   };
 
   const disconnect = () => {
-    if (userIsLeader) {
+    if (user?.isLeader) {
       if (stompClient) {
         stompClient.deactivate();
         setConnected(false);
@@ -156,7 +157,7 @@ const ChatRoomPage = () => {
         setIsClosedOpen(true);
       }
     } else {
-      alert('방장이 아닙니다.');
+      navigate('/rooms');
     }
   };
 
@@ -185,7 +186,7 @@ const ChatRoomPage = () => {
       <ChatRoomContainer>
         <ChatRoomHeader>
           <InfoButton onClick={() => setIsInviteOpen(true)} src={InfoIcon} alt='info' />
-          <CloseButton onClick={disconnect}>종료</CloseButton>
+          <CloseButton onClick={disconnect}>{user?.isLeader ? '종료' : '나가기'}</CloseButton>
         </ChatRoomHeader>
         <KeyWordComponents keyword={keyword} peoplenum={peoplenum} />
         <ChatContainer>

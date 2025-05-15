@@ -92,7 +92,7 @@ export const Logo = styled.div`
 export const CloseButton = styled.button`
   background-color: #bcbcbc26;
   color: #3e3333;
-  width: 52px;
+  min-width: 52px;
   height: 32px;
   border: none;
   border-radius: 8px;
@@ -129,6 +129,7 @@ export const ChatRoomHeader = styled.div`
   padding-top: 30px;
   gap: 10px;
   display: flex;
+  box-sizing: border-box;
   align-items: center;
   justify-content: flex-end;
   color: white;

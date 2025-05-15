@@ -1,12 +1,12 @@
 import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Button from '@components/chatRoomExit/Button';
 import { Container, Header, SkeletonBox } from '@components/shared/UIStyles';
 import { Title, SubTitle } from '@components/shared/TextStyles';
 import SummaryModal from '@components/chatRoomExit/SummaryModal';
 import { ModalPortal } from '@components/shared/ModalPortal';
-import { getRoomResult } from '@api/chatRoomResult';
+
 import DownloadIcon from '@assets/DownloadIcon.svg?react';
 export interface RoomResult {
   sharedKeywords: string[];
@@ -20,12 +20,9 @@ export interface RoomResult {
 }
 
 // 채팅룸 종료 요약 페이지
-const ChatRoomSummaryPage = () => {
+const ChatRoomSummaryPage = ({ roomResult }: { roomResult: RoomResult }) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const location = useLocation();
-  const roomKey = location.state?.roomKey;
-  const [roomResult, setRoomResult] = useState<RoomResult | null>(null);
 
   const handleOpenModal = () => {
     setIsOpen(true);
@@ -33,19 +30,6 @@ const ChatRoomSummaryPage = () => {
   const handleCloseModal = () => {
     setIsOpen(false);
   };
-  const handleRoomResult = async () => {
-    if (!roomKey) return;
-    console.log(roomKey);
-    try {
-      const res = await getRoomResult(roomKey);
-      setRoomResult(res.data);
-    } catch (err: unknown) {
-      console.error('요약 결과 조회 실패:', err);
-    }
-  };
-  useEffect(() => {
-    handleRoomResult();
-  }, []);
 
   return (
     <Container>
@@ -182,6 +166,10 @@ const SaveWrapper = styled.div`
   gap: 6px;
   justify-content: flex-end;
   cursor: pointer;
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
 `;
 
 const SaveText = styled.p`
