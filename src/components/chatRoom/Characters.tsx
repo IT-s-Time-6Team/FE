@@ -14,14 +14,13 @@ type Props = {
 };
 
 const Characters = ({ count }: Props) => {
-  const CharacterImgs = [rabbit, chick, pan, cat, pig, snake, bear];
+  const CharacterImgList = [rabbit, chick, pan, cat, pig, snake, bear];
 
   return (
     <CharactersContainer>
       {Array.from({ length: count }).map((_, index) => {
         const total = 7;
-        const imgIndex = index % CharacterImgs.length;
-
+        if (index >= total) return null;
         if (index === 6) {
           return (
             <CharacterContainer
@@ -33,7 +32,7 @@ const Characters = ({ count }: Props) => {
               }}
             >
               <TypingDots arrow={index} />
-              <CharacterImg src={CharacterImgs[imgIndex]} alt={`character-${index}`} />
+              <CharacterImg src={CharacterImgList[6]} alt={`character-${index}`} />
             </CharacterContainer>
           );
         }
@@ -52,7 +51,7 @@ const Characters = ({ count }: Props) => {
               transform: 'translate(-50%, -50%)',
             }}
           >
-            <CharacterImg src={CharacterImgs[imgIndex]} alt={`character-${index}`} />
+            <CharacterImg src={CharacterImgList[index]} alt={`character-${index}`} />
             <TypingDots arrow={index} />
           </CharacterContainer>
         );

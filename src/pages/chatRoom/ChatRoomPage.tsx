@@ -142,7 +142,7 @@ const ChatRoomPage = () => {
       onDisconnect: () => {
         console.log('웹소켓 연결 해제');
         setConnected(false);
-        navigate('/rooms', { state: { roomKey } });
+        navigate('/rooms/exit', { state: { roomKey } });
       },
       onStompError: (frame) => {
         console.error('STOMP 에러:', frame);
@@ -159,7 +159,7 @@ const ChatRoomPage = () => {
       if (stompClient) {
         if (roomKey) {
           expireRoom(roomKey);
-          navigate('/rooms/exit');
+          setIsClosedOpen(true);
         }
         stompClient.deactivate();
         setConnected(false);
@@ -167,7 +167,7 @@ const ChatRoomPage = () => {
     } else {
       setConnected(false);
       stompClient?.deactivate();
-      navigate('/');
+      navigate('/rooms');
     }
   };
 
