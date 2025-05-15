@@ -82,6 +82,13 @@ const ChatRoomPage = () => {
               setInput('');
             } else if (data.type === 'REENTER') {
               setMessages({ type: 'SYSTEM', content: `${data.nickname}님이 재입장하셨습니다.` });
+              setPeoplenum(data.data.userCount);
+              setUsers((prev) => [...prev, { state: '', nickname: data.nickname }]);
+              setInput('');
+            } else if (data.type === 'LEAVE') {
+              setMessages({ type: 'SYSTEM', content: `${data.nickname}님이 퇴장하셨습니다.` });
+              setPeoplenum(data.data.userCount);
+              setUsers((prev) => prev.filter((user) => user.nickname !== data.nickname));
             } else if (data.type === `ERROR`) {
               alert('형식 오류');
             } else if (data.type === 'kEY_EVENT') {
@@ -135,7 +142,7 @@ const ChatRoomPage = () => {
       onDisconnect: () => {
         console.log('웹소켓 연결 해제');
         setConnected(false);
-        navigate('/rooms/exit', { state: { roomKey } });
+        navigate('/rooms', { state: { roomKey } });
       },
       onStompError: (frame) => {
         console.error('STOMP 에러:', frame);
@@ -148,16 +155,19 @@ const ChatRoomPage = () => {
 
   const disconnect = () => {
     if (user?.isLeader) {
+      console.log('방장입니다. 방을 종료합니다.');
       if (stompClient) {
+        if (roomKey) {
+          expireRoom(roomKey);
+          navigate('/rooms/exit');
+        }
         stompClient.deactivate();
         setConnected(false);
       }
-      if (roomKey) {
-        expireRoom(roomKey);
-        setIsClosedOpen(true);
-      }
     } else {
-      navigate('/rooms');
+      setConnected(false);
+      stompClient?.deactivate();
+      navigate('/');
     }
   };
 
