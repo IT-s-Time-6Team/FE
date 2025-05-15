@@ -46,14 +46,22 @@ const UserEnterChatRoom = () => {
       navigate(`/rooms/${roomKey}/chat`);
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
-        const status = err.response?.status;
+        const { status, data } = err.response || {};
+        const errorCode = data?.code;
+        const errorMessage = data?.data;
 
-        if (status === 403) {
-          console.error(err);
-          alert('중복된 닉네임입니다. 다른 닉네임을 입력해주세요!');
-        } else {
-          console.error(err);
-          alert('서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.');
+        switch (true) {
+          case status === 403:
+            alert('중복된 닉네임입니다. 다른 닉네임을 입력해주세요!');
+            break;
+
+          case errorCode === 400:
+            alert(errorMessage || '요청이 잘못되었습니다.');
+            break;
+
+          default:
+            alert('서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.');
+            break;
         }
       } else {
         console.error(err);
