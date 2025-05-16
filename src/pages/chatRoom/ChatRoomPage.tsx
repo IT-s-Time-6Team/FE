@@ -7,7 +7,7 @@ import {
 } from '../../styles/chatRoom/chatRoom';
 import styled from '@emotion/styled';
 import InfoIcon from '@assets/chatRoom/info.svg';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Characters from '../../components/chatRoom/Characters';
 import { expireRoom, getRoom } from '@api/chatRoomCreated';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -41,6 +41,7 @@ const ChatRoomPage = () => {
   const [isClosedOpen, setIsClosedOpen] = useState(false); // 방장 종료 메시지
   const [isEndedOpen, setIsEndedOpen] = useState(false); // 방 종료 메시지
   const user = useRoomUsersStore((state) => state.user);
+  const hasRoomEnded = useRef(false);
   const sendKeyword = () => {
     SendKeywords({
       stompClient,
@@ -74,6 +75,8 @@ const ChatRoomPage = () => {
         // 채팅방 메시지 구독
         client.subscribe(`/topic/room/${roomKey}/messages`, (message) => {
           try {
+            if (hasRoomEnded.current) return;
+
             const data = JSON.parse(message.body);
             if (data.type === 'ENTER') {
               setMessages({ type: 'SYSTEM', content: `${data.nickname}님이 입장하셨습니다.` });
@@ -109,16 +112,18 @@ const ChatRoomPage = () => {
                 setKeyword([]);
               }
             } else if (data.type === 'ROOM_EXPIRED') {
-              if (data.type === 'LEADER_ROOM_EXPIRED') {
-                console.log('방 만료됨');
-                setIsEndedOpen(true);
-              }
+              console.log('방 만료됨');
+              setIsEndedOpen(true);
+              hasRoomEnded.current = true;
+              return;
             } else if (data.type === 'ROOM_EXPIRY_WARNING') {
               console.log('방 종료 5분 남음');
               setIsWarningOpen(true);
             } else if (data.type === 'LEADER_ROOM_EXPIRED') {
               console.log('방장이 방 종료');
               setIsClosedOpen(true);
+              hasRoomEnded.current = true;
+              return;
             }
           } catch (e) {
             console.error('메시지 파싱 오류:', e);
