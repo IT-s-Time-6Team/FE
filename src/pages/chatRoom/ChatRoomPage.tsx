@@ -224,11 +224,12 @@ const ChatRoomPage = () => {
           <MessageModal onClose={() => setIsEndedOpen(false)} kind='ended' roomkey={roomKey} />
         </ModalPortal>
       )}
-      {isClosedOpen && (
+      {isClosedOpen && !user?.isLeader && (
         <ModalPortal>
           <MessageModal onClose={() => setIsClosedOpen(false)} kind='closed' roomkey={roomKey} />
         </ModalPortal>
       )}
+
       {isWarningOpen && (
         <ModalPortal>
           <MessageModal onClose={() => setIsWarningOpen(false)} kind='warning' />
