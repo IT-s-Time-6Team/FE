@@ -1,0 +1,30 @@
+name: Deploy React to Mac mini
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: yarn install
+
+      - name: Build React
+        run: yarn build
+
+      - name: Setup SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.MACMINI_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -p ${{ secrets.MACMINI_PORT }} ${{ secrets.MACMINI_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to Mac mini via SCP
+        run: |
+          scp -P ${{ secrets.MACMINI_PORT }} -r dist/* ${{ secrets.MACMINI_USER }}@${{ secrets.MACMINI_HOST }}:${{ secrets.MACMINI_TARGET_DIR }}
