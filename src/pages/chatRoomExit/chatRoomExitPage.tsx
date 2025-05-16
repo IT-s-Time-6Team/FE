@@ -19,7 +19,8 @@ const ChatRoomExitPage = () => {
     }
   }, [roomKey, isExpired]);
 
-  if (isExpired || roomResult === null) return <ChatRoomExpiredPage />;
+  if (isExpired || !roomKey || roomResult === null) return <ChatRoomExpiredPage />;
+
   if (roomResult === undefined) return null;
   return <ChatRoomSummaryPage roomResult={roomResult} />;
 };

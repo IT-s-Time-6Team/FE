@@ -181,7 +181,7 @@ const ChatRoomPage = () => {
         setRoomData(res.data);
       } catch (error) {
         console.error('Error fetching room data:', error);
-        navigate('/');
+        navigate('/rooms/exit');
       }
     };
     fetchRoomData();
