@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const passwordRegex = /^(?=.*[a-z])(?=.*[.,/~]).{6,}$/;
+const passwordRegex = /^(?=.*[a-z])(?=.*[!@#$%^&*(),.?":{}|<>]).{6,}$/;
 
 const usePasswordValidation = () => {
   const [password, setPassword] = useState('');
