@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const nicknameRegex = /^[\p{L}\p{N}\s]+$/u;
+const nicknameRegex = /^[a-zA-Z0-9가-힣]+$/;
 
 const useNicknameValidation = () => {
   const [nickname, setNickname] = useState('');
