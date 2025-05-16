@@ -21,6 +21,7 @@ import SendKeywords from '../../utils/SendKeywords';
 import InviteModal from '@components/chatRoom/InviteModal';
 import { ModalPortal } from '@components/shared/ModalPortal';
 import MessageModal from '@components/chatRoom/messageModal';
+import useRoomUsersStore from '@store/useRoomUsersStore';
 
 const ChatRoomPage = () => {
   const [isInput, setIsInput] = useState(false);
@@ -35,11 +36,11 @@ const ChatRoomPage = () => {
   const [, setConnected] = useState(false);
   const [mykeyword, setMyKeyword] = useState<string[]>([]);
   const [peoplenum, setPeoplenum] = useState<number>(0);
-  const [userIsLeader] = useState(false);
   const [isInviteOpen, setIsInviteOpen] = useState<boolean>(false);
   const [isWarningOpen, setIsWarningOpen] = useState(false); // 방 종료 5분전 메시지
   const [isClosedOpen, setIsClosedOpen] = useState(false); // 방장 종료 메시지
   const [isEndedOpen, setIsEndedOpen] = useState(false); // 방 종료 메시지
+  const user = useRoomUsersStore((state) => state.user);
   const sendKeyword = () => {
     SendKeywords({
       stompClient,
@@ -81,6 +82,13 @@ const ChatRoomPage = () => {
               setInput('');
             } else if (data.type === 'REENTER') {
               setMessages({ type: 'SYSTEM', content: `${data.nickname}님이 재입장하셨습니다.` });
+              setPeoplenum(data.data.userCount);
+              setUsers((prev) => [...prev, { state: '', nickname: data.nickname }]);
+              setInput('');
+            } else if (data.type === 'LEAVE') {
+              setMessages({ type: 'SYSTEM', content: `${data.nickname}님이 퇴장하셨습니다.` });
+              setPeoplenum(data.data.userCount);
+              setUsers((prev) => prev.filter((user) => user.nickname !== data.nickname));
             } else if (data.type === `ERROR`) {
               alert('형식 오류');
             } else if (data.type === 'kEY_EVENT') {
@@ -134,7 +142,7 @@ const ChatRoomPage = () => {
       onDisconnect: () => {
         console.log('웹소켓 연결 해제');
         setConnected(false);
-        navigate('/rooms/exit');
+        navigate('/rooms/exit', { state: { roomKey } });
       },
       onStompError: (frame) => {
         console.error('STOMP 에러:', frame);
@@ -146,17 +154,20 @@ const ChatRoomPage = () => {
   };
 
   const disconnect = () => {
-    if (userIsLeader) {
+    if (user?.isLeader) {
+      console.log('방장입니다. 방을 종료합니다.');
       if (stompClient) {
+        if (roomKey) {
+          expireRoom(roomKey);
+          setIsClosedOpen(true);
+        }
         stompClient.deactivate();
         setConnected(false);
       }
-      if (roomKey) {
-        expireRoom(roomKey);
-        setIsClosedOpen(true);
-      }
     } else {
-      alert('방장이 아닙니다.');
+      setConnected(false);
+      stompClient?.deactivate();
+      navigate('/rooms');
     }
   };
 
@@ -185,7 +196,7 @@ const ChatRoomPage = () => {
       <ChatRoomContainer>
         <ChatRoomHeader>
           <InfoButton onClick={() => setIsInviteOpen(true)} src={InfoIcon} alt='info' />
-          <CloseButton onClick={disconnect}>종료</CloseButton>
+          <CloseButton onClick={disconnect}>{user?.isLeader ? '종료' : '나가기'}</CloseButton>
         </ChatRoomHeader>
         <KeyWordComponents keyword={keyword} peoplenum={peoplenum} />
         <ChatContainer>
@@ -208,12 +219,12 @@ const ChatRoomPage = () => {
       )}
       {isEndedOpen && (
         <ModalPortal>
-          <MessageModal onClose={() => setIsEndedOpen(false)} kind='ended' />
+          <MessageModal onClose={() => setIsEndedOpen(false)} kind='ended' roomkey={roomKey} />
         </ModalPortal>
       )}
       {isClosedOpen && (
         <ModalPortal>
-          <MessageModal onClose={() => setIsClosedOpen(false)} kind='closed' />
+          <MessageModal onClose={() => setIsClosedOpen(false)} kind='closed' roomkey={roomKey} />
         </ModalPortal>
       )}
       {isWarningOpen && (

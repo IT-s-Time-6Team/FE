@@ -13,6 +13,7 @@ const InviteModal = ({ onClose, roomId }: SummaryModalProps) => {
   const chatRoomUrl = `https://oki/rooms/${roomId}/member`;
   const [qrValue, setQrValue] = useState(chatRoomUrl);
   const [downloaded, setDownloaded] = useState(false);
+  const [copy, setCopy] = useState(false);
   const qrRef = useRef<HTMLCanvasElement | null>(null);
 
   //QR코드 재생성
@@ -28,7 +29,7 @@ const InviteModal = ({ onClose, roomId }: SummaryModalProps) => {
     const url = canvas.toDataURL('image/png');
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'QRcode.png';
+    link.download = 'QR코드.png';
     link.click();
     setDownloaded(true);
     setTimeout(() => setDownloaded(false), 2000);
@@ -38,7 +39,8 @@ const InviteModal = ({ onClose, roomId }: SummaryModalProps) => {
     try {
       const url = chatRoomUrl;
       await navigator.clipboard.writeText(url);
-      alert('링크가 복사되었습니다!');
+      setCopy(true);
+      setTimeout(() => setCopy(false), 2000);
     } catch {
       alert('복사에 실패했어요');
     }
@@ -72,9 +74,11 @@ const InviteModal = ({ onClose, roomId }: SummaryModalProps) => {
 
           <QRSubText>링크를 클릭하여 복사할 수 있어요</QRSubText>
         </QRCodeWrapper>
-        {downloaded && (
+        {(downloaded || copy) && (
           <DownloadNotice>
-            <ColoredQRSubText>QR코드가 다운로드 되었습니다.</ColoredQRSubText>
+            <ColoredQRSubText>
+              {downloaded ? 'QR코드가 다운로드 되었습니다.' : '링크가 복사되었습니다.'}
+            </ColoredQRSubText>
           </DownloadNotice>
         )}
       </InviteModalBody>

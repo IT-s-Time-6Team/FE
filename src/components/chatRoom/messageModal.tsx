@@ -20,13 +20,14 @@ const messages = {
 interface MessageModalProps {
   onClose: () => void;
   kind: 'warning' | 'closed' | 'ended';
+  roomkey?: string;
 }
-const MessageModal = ({ onClose, kind }: MessageModalProps) => {
+const MessageModal = ({ onClose, kind, roomkey }: MessageModalProps) => {
   const navigate = useNavigate();
   useEffect(() => {
     if (kind === 'ended' || kind === 'closed') {
       const timeout = setTimeout(() => {
-        navigate('/rooms/exit'); // 모달이 뜬 후 5초 후 이동
+        navigate('/rooms/exit', { state: roomkey }); // 모달이 뜬 후 5초 후 이동
       }, 5000); // 5초 후에 이동
 
       return () => clearTimeout(timeout); // 컴포넌트 언마운트 시 타이머 클리어

@@ -1,21 +1,63 @@
 import styled from '@emotion/styled';
+import { useRef } from 'react';
+import html2canvas from 'html2canvas';
 import { SubTitle, Title } from '@components/shared/TextStyles';
 import { Mask, ModalBody } from '@components/shared/ModalStyles';
-import rabbitIcon from '../../assets/summary_rabbit_icon.svg';
+
+import { RoomResult } from '@pages/chatRoomExit/chatRoomSummaryPage';
+import useRoomUsersStore from '@store/useRoomUsersStore';
+import CharacterIcons from '@components/shared/CharacterIcons';
+
 interface SummaryModalProps {
   onClose: () => void;
+  data: RoomResult;
 }
 // 채팅룸 종료 페이지에 보여지는 요약 카드 모달
-const SummaryModal = ({ onClose }: SummaryModalProps) => {
+const SummaryModal = ({ onClose, data }: SummaryModalProps) => {
+  const modalRef = useRef<HTMLDivElement>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const user = useRoomUsersStore((state) => state.user);
+
+  // 길게 누를 때 실행되는 함수
+  const handleLongPress = () => {
+    timerRef.current = setTimeout(async () => {
+      if (modalRef.current) {
+        const canvas = await html2canvas(modalRef.current);
+        const link = document.createElement('a');
+        const fileName = `채팅요약_${new Date().toISOString().split('T')[0]}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.download = fileName;
+        link.click();
+      }
+    }, 1000); // 1초 이상 눌렀을 때 캡처
+  };
+
+  // 터치나 마우스를 떼면 타이머를 취소
+  const handlePressEnd = () => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+  };
+
+  const MAX_VISIBLE_KEYWORDS = 3;
+  const visibleKeywords = data.sharedKeywords.slice(0, MAX_VISIBLE_KEYWORDS);
+  const hiddenKeywordCount = data.sharedKeywords.length - MAX_VISIBLE_KEYWORDS;
   return (
     <>
       <Mask onClick={onClose} />
-      <ModalBody>
+      <ModalBody
+        ref={modalRef}
+        onTouchStart={handleLongPress} // 모바일 터치 이벤트
+        onTouchEnd={handlePressEnd} // 터치 끝났을 때
+        onTouchCancel={handlePressEnd} // 터치 취소 시
+        onMouseDown={handleLongPress} // 데스크탑에서 마우스 클릭 시작
+        onMouseUp={handlePressEnd} // 마우스 클릭 끝났을 때
+        onMouseLeave={handlePressEnd} // 마우스 떠날 때
+        className='cursor-pointer'
+      >
         <ProfileContainer>
-          <ProfileImage src={rabbitIcon} />
+          <ProfileImage src={CharacterIcons.CHICK} />
           <ProfileTextContainer>
             <SubTitle>이름</SubTitle>
-            <Title>하나</Title>
+            <Title>{user?.nickname}</Title>
           </ProfileTextContainer>
         </ProfileContainer>
         <Divider />
@@ -24,23 +66,38 @@ const SummaryModal = ({ onClose }: SummaryModalProps) => {
             <SubTitle>공감한 키워드</SubTitle>
             <KeywordList>
               <KeywordWrapper>
-                <Keyword>#LOL</Keyword>
-                <Keyword>#애니</Keyword>
+                {visibleKeywords.map((keyword, id) => (
+                  <Keyword key={id}>#{keyword}</Keyword>
+                ))}
               </KeywordWrapper>
-              <MoreKeywords>+3</MoreKeywords>
+              {hiddenKeywordCount > 0 && <MoreKeywords>+{hiddenKeywordCount}</MoreKeywords>}
             </KeywordList>
           </KeywordContainer>
           <KeywordContainer>
             <SubTitle>총 대화시간</SubTitle>
-            <Keyword>30분 12초</Keyword>
+            <Keyword>{data.totalDuration}</Keyword>
           </KeywordContainer>
           <KeywordContainer>
             <SubTitle>가장 많은 키워드를 작성한 사람</SubTitle>
-            <Keyword>1위: 하나(3개)</Keyword>
+            <Keyword>
+              {' '}
+              1위:{' '}
+              {data.topKeywordContributorNames.length > 1
+                ? data.topKeywordContributorNames.join(', ')
+                : data.topKeywordContributorNames[0]}{' '}
+              ({data.topKeywordCount}개)
+            </Keyword>
           </KeywordContainer>
           <KeywordContainer>
             <SubTitle>취미가 가장 많이 겹친 사람</SubTitle>
-            <Keyword>1위: 하나(2개)</Keyword>
+            <Keyword>
+              {' '}
+              1위:{' '}
+              {data.mostMatchedHobbyUserNames.length > 1
+                ? data.mostMatchedHobbyUserNames.join(', ')
+                : data.mostMatchedHobbyUserNames[0]}{' '}
+              ({data.matchedHobbyCount}개)
+            </Keyword>
           </KeywordContainer>
         </InfoContainer>
         <SaveInstruction>이미지를 꾹 눌러 저장해 보세요.</SaveInstruction>
