@@ -109,11 +109,16 @@ const ChatRoomPage = () => {
                 setKeyword([]);
               }
             } else if (data.type === 'ROOM_EXPIRED') {
-              console.log('방 만료됨');
-              setIsEndedOpen(true);
+              if (data.type === 'LEADER_ROOM_EXPIRED') {
+                console.log('방 만료됨');
+                setIsEndedOpen(true);
+              }
             } else if (data.type === 'ROOM_EXPIRY_WARNING') {
               console.log('방 종료 5분 남음');
               setIsWarningOpen(true);
+            } else if (data.type === 'LEADER_ROOM_EXPIRED') {
+              console.log('방장이 방 종료');
+              setIsClosedOpen(true);
             }
           } catch (e) {
             console.error('메시지 파싱 오류:', e);

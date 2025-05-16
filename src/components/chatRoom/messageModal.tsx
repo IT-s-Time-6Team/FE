@@ -18,7 +18,7 @@ const messages = {
   },
 };
 interface MessageModalProps {
-  onClose: () => void;
+  onClose?: () => void;
   kind: 'warning' | 'closed' | 'ended';
   roomkey?: string;
 }
@@ -36,7 +36,7 @@ const MessageModal = ({ onClose, kind, roomkey }: MessageModalProps) => {
 
   return (
     <>
-      <Mask onClick={onClose} />
+      <Mask onClick={kind === 'warning' ? onClose : undefined} />
       <MessageModalBody>
         <Title>{messages[kind].title}</Title>
         <SubTitle>{messages[kind].subTitle}</SubTitle>
