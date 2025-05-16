@@ -15,6 +15,7 @@ const GlobalStyles = () => (
         font-family: 'Pretendard Variable', sans-serif;
         margin: 0;
         padding: 0;
+        -webkit-tap-highlight-color: transparent;
       }
       body {
         color: black;

@@ -142,7 +142,9 @@ const ChatRoomPage = () => {
       onDisconnect: () => {
         console.log('웹소켓 연결 해제');
         setConnected(false);
-        navigate('/rooms/exit', { state: { roomKey } });
+        if (user?.isLeader) {
+          navigate('/rooms/exit', { state: { roomKey } });
+        }
       },
       onStompError: (frame) => {
         console.error('STOMP 에러:', frame);
