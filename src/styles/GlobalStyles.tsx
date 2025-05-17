@@ -15,6 +15,10 @@ const GlobalStyles = () => (
         font-family: 'Pretendard Variable', sans-serif;
         margin: 0;
         padding: 0;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-user-select: none;
+        -webkit-touch-callout: none;
+        user-select: none;
       }
       body {
         color: black;
@@ -32,6 +36,11 @@ const GlobalStyles = () => (
       }
       button {
         border: none;
+      }
+      input,
+      textarea {
+        -webkit-user-select: text;
+        user-select: text;
       }
     `}
   />

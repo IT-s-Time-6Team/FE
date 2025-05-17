@@ -9,20 +9,30 @@ import { useNavigate } from 'react-router-dom';
 const ChatRoomExpiredPage = () => {
   const navigate = useNavigate();
   return (
-    <Container>
-      <ProfileImage src={errorIcon} />
-      <Header>
-        <Title>채팅룸이 종료되었어요.</Title>
-        <SubTitle>이미 종료된 채팅룸이에요. 새 방을 만들어 볼까요?</SubTitle>
-      </Header>
+    <ExpiryContainer>
+      <Box>
+        <ProfileImage src={errorIcon} />
+        <Header>
+          <Title>채팅룸이 종료되었어요.</Title>
+          <SubTitle>이미 종료된 채팅룸이에요. 새 방을 만들어 볼까요?</SubTitle>
+        </Header>
+      </Box>
       <Button text='새로운 채팅룸 만들기' onClick={() => navigate('/rooms')} />
-    </Container>
+    </ExpiryContainer>
   );
 };
 export default ChatRoomExpiredPage;
 
 const ProfileImage = styled.img`
-  margin-top: 216px;
+  margin-top: 150px;
   margin-bottom: 23px;
-  align-self: center;
+  justify-self: center;
+`;
+const ExpiryContainer = styled(Container)`
+  justify-content: space-between;
+`;
+const Box = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;

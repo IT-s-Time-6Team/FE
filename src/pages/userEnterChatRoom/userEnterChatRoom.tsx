@@ -74,56 +74,58 @@ const UserEnterChatRoom = () => {
 
   return (
     <UserEnterContainer>
-      <UserEnterHeader>
-        <TitleText>키워드를 입력하러 가 볼까요?</TitleText>
-        <SubTitleText>사용할 닉네임과 비밀번호를 입력해주세요</SubTitleText>
-      </UserEnterHeader>
-      <LoginContainer>
-        <LoginForm>
-          <InputContainer>
-            <InputLabel>
-              닉네임
-              <NicknameInput
-                type='text'
-                name='nickname'
-                value={nickname}
-                $valid={isNicknameValid}
-                onChange={(e) => handleNicknameChange(e.target.value)}
-                placeholder='채팅방에서 사용할 닉네임을 입력해주세요.'
-                autoComplete='on'
-                required
-              />
-              <CircleIcon $valid={isNicknameValid} />
-              <CheckIcon $show={isNicknameValid === true} />
-              <XMarkIcon $show={isNicknameValid === false} />
-            </InputLabel>
-            <ValidationMessage valid={isNicknameValid} type='nickname' />
-          </InputContainer>
+      <div>
+        <UserEnterHeader>
+          <TitleText>키워드를 입력하러 가 볼까요?</TitleText>
+          <SubTitleText>사용할 닉네임과 비밀번호를 입력해주세요</SubTitleText>
+        </UserEnterHeader>
+        <LoginContainer>
+          <LoginForm>
+            <InputContainer>
+              <InputLabel>
+                닉네임
+                <NicknameInput
+                  type='text'
+                  name='nickname'
+                  value={nickname}
+                  $valid={isNicknameValid}
+                  onChange={(e) => handleNicknameChange(e.target.value)}
+                  placeholder='채팅방에서 사용할 닉네임을 입력해주세요.'
+                  autoComplete='on'
+                  required
+                />
+                <CircleIcon $valid={isNicknameValid} />
+                <CheckIcon $show={isNicknameValid === true} />
+                <XMarkIcon $show={isNicknameValid === false} />
+              </InputLabel>
+              <ValidationMessage valid={isNicknameValid} type='nickname' />
+            </InputContainer>
 
-          <InputContainer>
-            <InputLabel>
-              비밀번호
-              <PasswordInput
-                type='password'
-                name='password'
-                value={password}
-                $valid={isPasswordValid}
-                onChange={(e) => handlePasswordChange(e.target.value)}
-                placeholder='채팅방에서 사용할 비밀번호를 입력해 주세요.'
-                autoComplete='current-password'
-                required
-              />
-              <CircleIcon $valid={isPasswordValid} />
-              <CheckIcon $show={isPasswordValid === true} />
-              <XMarkIcon $show={isPasswordValid === false} />
-            </InputLabel>
-            <ValidationMessage valid={isPasswordValid} type='password' />
-          </InputContainer>
-        </LoginForm>
-      </LoginContainer>
+            <InputContainer>
+              <InputLabel>
+                비밀번호
+                <PasswordInput
+                  type='password'
+                  name='password'
+                  value={password}
+                  $valid={isPasswordValid}
+                  onChange={(e) => handlePasswordChange(e.target.value)}
+                  placeholder='채팅방에서 사용할 비밀번호를 입력해 주세요.'
+                  autoComplete='current-password'
+                  required
+                />
+                <CircleIcon $valid={isPasswordValid} />
+                <CheckIcon $show={isPasswordValid === true} />
+                <XMarkIcon $show={isPasswordValid === false} />
+              </InputLabel>
+              <ValidationMessage valid={isPasswordValid} type='password' />
+            </InputContainer>
+          </LoginForm>
+        </LoginContainer>
+      </div>
       <ButtonContainer>
         <ButtonText>*닉네임과 비밀번호는 이번 채팅방에서만 사용돼요.</ButtonText>
-        <EntranceButton onClick={handleJoin} text='키워드 입력하러 가기' active={isFormValid} />
+        <Button onClick={handleJoin} text='키워드 입력하러 가기' active={isFormValid} />
       </ButtonContainer>
     </UserEnterContainer>
   );
@@ -132,10 +134,14 @@ const UserEnterChatRoom = () => {
 export default UserEnterChatRoom;
 
 const UserEnterContainer = styled(Container)`
-  margin-top: 97px;
-  gap: 59px;
+  padding-top: 80px;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding-bottom: 24px;
 `;
-const UserEnterHeader = styled(Header)``;
+const UserEnterHeader = styled(Header)`
+  margin-bottom: 55px;
+`;
 const TitleText = styled(Title)`
   color: #3e3333;
   text-align: center;
@@ -145,16 +151,12 @@ const SubTitleText = styled(SubTitle)`
 `;
 
 const ButtonContainer = styled(Container)`
-  margin-top: 244px;
   gap: 13px;
+  min-height: 50px;
 `;
 const ButtonText = styled.p`
   color: #b7b7b7;
   font-size: 10px;
   font-weight: 500;
   text-align: center;
-`;
-const EntranceButton = styled(Button)`
-  position: absolute;
-  bottom: 47px;
 `;

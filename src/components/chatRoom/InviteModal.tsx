@@ -10,7 +10,7 @@ interface SummaryModalProps {
   roomId: string;
 }
 const InviteModal = ({ onClose, roomId }: SummaryModalProps) => {
-  const chatRoomUrl = `https://oki/rooms/${roomId}/member`;
+  const chatRoomUrl = `https://dev.okii.kr/rooms/${roomId}/member`;
   const [qrValue, setQrValue] = useState(chatRoomUrl);
   const [downloaded, setDownloaded] = useState(false);
   const [copy, setCopy] = useState(false);
@@ -102,10 +102,8 @@ const QRText = styled.p`
   margin-top: 10px;
   color: #3e3333;
   text-align: center;
-
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 500;
-
   cursor: pointer;
 `;
 const QRSubText = styled.p`
