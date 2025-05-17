@@ -88,7 +88,14 @@ const ChatRoomSummaryPage = ({ roomResult }: { roomResult: RoomResult }) => {
       </StatsContainer>
       <FeedbackBox>
         <FeedbackText>서비스 피드백을 부탁드려도 될까요?</FeedbackText>
-        <FormLinkText>https://docs.google.com/forms/435432</FormLinkText>
+        <FormLinkText
+          as='a'
+          href='https://forms.gle/pw8awcwaZ3vmvETA9'
+          target='_blank'
+          rel='noopener noreferrer'
+        >
+          https://forms.gle/pw8awcwaZ3vmvETA9
+        </FormLinkText>
       </FeedbackBox>
       <Button text='메인으로 돌아가기' onClick={() => navigate('/rooms')} />
       {isOpen && roomResult && (
@@ -104,7 +111,7 @@ const ResultText = styled(Title)`
   font-size: 19px;
 `;
 const SummaryHeader = styled(Header)`
-  margin-top: 20px;
+  margin-top: 30px;
 `;
 const StatsContainer = styled.div`
   width: 342px;
@@ -120,7 +127,7 @@ const FeedbackText = styled.p`
   color: #7c7c7c;
   text-align: center;
 `;
-const FormLinkText = styled.p`
+const FormLinkText = styled.a`
   font-size: 14px;
   font-weight: 400;
   color: #7c7c7c;
