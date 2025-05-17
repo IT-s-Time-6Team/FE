@@ -120,14 +120,14 @@ const MainPage = () => {
         <ChevronRight $isRightActive={activeMode === 1} onClick={() => setActiveMode(1)} />
       </ModeContainer>
 
-      <Footer>버전 정보</Footer>
+      <Footer>버전 정보 v1.0.0</Footer>
     </MainContainer>
   );
 };
 export default MainPage;
 
 const MainContainer = styled(Container)`
-  margin-top: 6dvh;
+  padding-top: 6dvh;
 `;
 
 const MainHeader = styled(Header)`
@@ -136,6 +136,7 @@ const MainHeader = styled(Header)`
 `;
 const ModeContainer = styled(Container)`
   flex-direction: row;
+  min-height: 343px;
 `;
 
 const IconStyle = styled.div<{ $visible: boolean }>`

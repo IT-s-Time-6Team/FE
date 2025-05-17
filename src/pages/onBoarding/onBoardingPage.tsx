@@ -27,8 +27,8 @@ const OnBoardingPage = () => {
 export default OnBoardingPage;
 
 const OnBoardingContainer = styled(Container)`
-  margin-top: 10dvh;
-  gap: 94px;
+  padding-top: 8dvh;
+  justify-content: space-between;
 `;
 const OnBoardingHeader = styled(Header)`
   gap: 10px;
@@ -51,5 +51,5 @@ const MainContainer = styled.div`
   }
 `;
 const IconGroup = styled(Icons)`
-  position: absolute;
+  //position: absolute;
 `;

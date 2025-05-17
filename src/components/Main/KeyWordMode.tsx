@@ -77,7 +77,7 @@ export default KeywordModeBox;
 // 스타일 컴포넌트
 const KeyWordBox = styled(Container)`
   width: 287px;
-  height: 343px;
+  min-height: 343px;
   gap: 15px;
   border-radius: 18px;
   border: 1px solid #e4e4e4;
@@ -104,6 +104,7 @@ const KeyWordSubTitle = styled(SubTitle)`
 const Selector = styled(Container)`
   margin-top: 9px;
   gap: 17px;
+  min-height: 90px;
 `;
 
 const Complete = styled(Button)`

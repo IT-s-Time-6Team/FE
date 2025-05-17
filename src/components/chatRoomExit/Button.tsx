@@ -10,7 +10,7 @@ const Button = ({ text, onClick }: { text: string; onClick: () => void }) => {
 export default Button;
 const NaviButton = styled.button`
   width: 253px;
-  height: 57px;
+  min-height: 57px;
   background-color: #ff7913;
   color: white;
   border-radius: 15px;
@@ -18,6 +18,5 @@ const NaviButton = styled.button`
   font-weight: 600;
   cursor: pointer;
   align-self: center;
-  position: absolute;
-  bottom: 47px;
+  margin-bottom: 30px;
 `;
