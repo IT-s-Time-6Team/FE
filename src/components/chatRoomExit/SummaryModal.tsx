@@ -3,7 +3,6 @@ import { useRef } from 'react';
 import html2canvas from 'html2canvas';
 import { SubTitle, Title } from '@components/shared/TextStyles';
 import { Mask, ModalBody } from '@components/shared/ModalStyles';
-
 import { RoomResult } from '@pages/chatRoomExit/chatRoomSummaryPage';
 import useRoomUsersStore from '@store/useRoomUsersStore';
 import CharacterIcons from '@components/shared/CharacterIcons';
@@ -17,6 +16,8 @@ const SummaryModal = ({ onClose, data }: SummaryModalProps) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const user = useRoomUsersStore((state) => state.user);
+  const nickname = user?.nickname;
+  const character = user?.character as keyof typeof CharacterIcons;
 
   // 길게 누를 때 실행되는 함수
   const handleLongPress = () => {
@@ -54,10 +55,10 @@ const SummaryModal = ({ onClose, data }: SummaryModalProps) => {
         className='cursor-pointer'
       >
         <ProfileContainer>
-          <ProfileImage src={CharacterIcons.CHICK} />
+          <ProfileImage src={CharacterIcons[character]} />
           <ProfileTextContainer>
             <SubTitle>이름</SubTitle>
-            <Title>{user?.nickname}</Title>
+            <Title>{nickname}</Title>
           </ProfileTextContainer>
         </ProfileContainer>
         <Divider />
