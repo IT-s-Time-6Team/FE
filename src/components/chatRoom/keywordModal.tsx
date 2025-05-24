@@ -64,7 +64,7 @@ const KeywordModal = ({ onClose, keyword }: KeywordModalProps) => {
             }}
           >
             <Box>
-              <Title>{item.keyword}</Title>
+              <Title>#{item.keyword}</Title>
               <Divider />
             </Box>
             <KeywordSubTitle>{item.question}</KeywordSubTitle>

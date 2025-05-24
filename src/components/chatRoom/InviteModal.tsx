@@ -10,7 +10,7 @@ interface SummaryModalProps {
   roomId: string;
 }
 const InviteModal = ({ onClose, roomId }: SummaryModalProps) => {
-  const chatRoomUrl = `https://dev.okii.kr/rooms/${roomId}/member`;
+  const chatRoomUrl = `https://okii.kr/rooms/${roomId}/member`;
   const [qrValue, setQrValue] = useState(chatRoomUrl);
   const [downloaded, setDownloaded] = useState(false);
   const [copy, setCopy] = useState(false);
