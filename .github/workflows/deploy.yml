@@ -27,7 +27,7 @@ jobs:
 
       - name: Deploy to Mac mini via SCP
         run: |
-          scp -P ${{ secrets.MACMINI_PORT }} -r dist/* ${{ secrets.MACMINI_USER }}@${{ secrets.MACMINI_HOST }}:${{ secrets.MACMINI_TARGET_DIR }}
+          scp -P ${{ secrets.MACMINI_PORT }} -r dist/* ${{ secrets.MACMINI_USER }}@${{ secrets.MACMINI_HOST }}:${{ secrets.MACMINI_TARGET_PROD_DIR }}
 
       - name: Fix permissions on Mac mini
         run: |
