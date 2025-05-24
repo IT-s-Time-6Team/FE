@@ -86,6 +86,7 @@ const ChatRoomPage = () => {
               setMessages({ type: 'SYSTEM', content: `${data.nickname}님이 재입장하셨습니다.` });
               setPeoplenum(data.data.userCount);
               setUsers((prev) => [...prev, { state: '', nickname: data.nickname }]);
+              setMyKeyword(data.data.keywords);
               setInput('');
             } else if (data.type === 'LEAVE') {
               setMessages({ type: 'SYSTEM', content: `${data.nickname}님이 퇴장하셨습니다.` });
