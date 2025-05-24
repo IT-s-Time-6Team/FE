@@ -2,11 +2,14 @@ name: Deploy React to Mac mini
 
 on:
   push:
-    branches: [main]
+    branches: [main, develop]
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
+    env:
+      TARGET_DIR: ${{ github.ref == 'refs/heads/main' && secrets.MACMINI_TARGET_PROD_DIR || secrets.MACMINI_TARGET_DEV_DIR }}
 
     steps:
       - name: Checkout Code
@@ -27,9 +30,9 @@ jobs:
 
       - name: Deploy to Mac mini via SCP
         run: |
-          scp -P ${{ secrets.MACMINI_PORT }} -r dist/* ${{ secrets.MACMINI_USER }}@${{ secrets.MACMINI_HOST }}:${{ secrets.MACMINI_TARGET_DIR }}
+          scp -P ${{ secrets.MACMINI_PORT }} -r dist/* ${{ secrets.MACMINI_USER }}@${{ secrets.MACMINI_HOST }}:${{ env.TARGET_DIR }}
 
       - name: Fix permissions on Mac mini
         run: |
-          ssh -p ${{ secrets.MACMINI_PORT }} ${{ secrets.MACMINI_USER }}@${{ secrets.MACMINI_HOST }} "chmod -R 755 ${{ secrets.MACMINI_TARGET_DIR }}"
-          ssh -p ${{ secrets.MACMINI_PORT }} ${{ secrets.MACMINI_USER }}@${{ secrets.MACMINI_HOST }} "chown -R ${{ secrets.MACMINI_USER }}:$${{ secrets.MACMINI_USER }} ${{ secrets.MACMINI_TARGET_DIR }}"
+          ssh -p ${{ secrets.MACMINI_PORT }} ${{ secrets.MACMINI_USER }}@${{ secrets.MACMINI_HOST }} "chmod -R 755 ${{ env.TARGET_DIR }}"
+          ssh -p ${{ secrets.MACMINI_PORT }} ${{ secrets.MACMINI_USER }}@${{ secrets.MACMINI_HOST }} "chown -R ${{ secrets.MACMINI_USER }}:${{ secrets.MACMINI_USER }} ${{ env.TARGET_DIR }}"
