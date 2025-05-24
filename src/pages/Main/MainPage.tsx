@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
 import { Container, Header } from '@components/shared/UIStyles';
-import Logo from '@assets/oki_log.svg?react';
+import Logo from '@assets/okii_log.svg?react';
 import DLogo from '@assets/Main/development_icon.svg?react';
 import MainIcon from '@assets/Main/main_icon_group.svg?react';
 import ChevronLeftIcon from '@assets/Main/chevronleft_icon.svg?react';
