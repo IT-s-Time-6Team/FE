@@ -48,7 +48,6 @@ const ChatRoomPage = () => {
       roomKey: roomKey ?? '',
       input,
       setInput,
-      setKeyword,
       setMyKeyword,
       mykeyword,
     });
