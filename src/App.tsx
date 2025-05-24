@@ -7,6 +7,7 @@ import OnBoardingPage from '@pages/onBoarding/onBoardingPage';
 import MainPage from '@pages/Main/MainPage';
 import UserEnterChatRoom from '@pages/userEnterChatRoom/userEnterChatRoom';
 import ChatRoomPage from '@pages/chatRoom/ChatRoomPage';
+import TmiVotePage from '@pages/tmiVote/TmiVotePage';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path='/rooms/:roomKey/member' element={<UserEnterChatRoom />} />
             <Route path='/rooms/exit' element={<ChatRoomExitPage />} />
             <Route path='/rooms/:roomKey/chat' element={<ChatRoomPage />} />
+            <Route path='/tmi/vote' element={<TmiVotePage />} />
           </Route>
         </Routes>
       </BrowserRouter>
