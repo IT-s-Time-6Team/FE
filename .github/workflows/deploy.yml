@@ -18,6 +18,14 @@ jobs:
       - name: Install Dependencies
         run: yarn install
 
+      - name: Create .env file
+        run: |
+          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            echo "VITE_API_URL=${{ secrets.VITE_API_URL_PROD }}" > .env
+          else
+            echo "VITE_API_URL=${{ secrets.VITE_API_URL_DEV }}" > .env
+          fi
+
       - name: Build React
         run: yarn build
 
@@ -30,7 +38,8 @@ jobs:
 
       - name: Deploy to Mac mini via SCP
         run: |
-          scp -P ${{ secrets.MACMINI_PORT }} -r dist/* ${{ secrets.MACMINI_USER }}@${{ secrets.MACMINI_HOST }}:${{ env.TARGET_DIR }}
+          ssh -p ${{ secrets.MACMINI_PORT }} ${{ secrets.MACMINI_USER }}@${{ secrets.MACMINI_HOST }} "rm -rf ${{ env.TARGET_DIR }}"
+          scp -P ${{ secrets.MACMINI_PORT }} -r dist ${{ secrets.MACMINI_USER }}@${{ secrets.MACMINI_HOST }}:$(dirname "${{ env.TARGET_DIR }}")
 
       - name: Fix permissions on Mac mini
         run: |
