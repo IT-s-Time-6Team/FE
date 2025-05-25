@@ -16,7 +16,7 @@ const MainPage = () => {
   const navigate = useNavigate();
 
   const MIN = 2;
-  const MAX = 20;
+  const MAX = 7;
   const [empathyCount, setEmpathyCount] = useState(2);
   const [maxCount, setMaxCount] = useState(2);
 
