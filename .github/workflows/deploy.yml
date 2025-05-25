@@ -37,4 +37,4 @@ jobs:
       - name: Fix permissions on Mac mini
         run: |
           ssh -p ${{ secrets.MACMINI_PORT }} ${{ secrets.MACMINI_USER }}@${{ secrets.MACMINI_HOST }} "chmod -R 755 ${{ env.TARGET_DIR }}"
-          ssh -p ${{ secrets.MACMINI_PORT }} ${{ secrets.MACMINI_USER }}@${{ secrets.MACMINI_HOST }} "chown -R ${{ secrets.MACMINI_USER }}:${{ secrets.MACMINI_USER }} ${{ env.TARGET_DIR }}"
+          ssh -p ${{ secrets.MACMINI_PORT }} ${{ secrets.MACMINI_USER }}@${{ secrets.MACMINI_HOST }} "chown -R ${{ secrets.MACMINI_USER }} ${{ env.TARGET_DIR }}"
