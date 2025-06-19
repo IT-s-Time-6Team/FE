@@ -26,7 +26,7 @@ export default InprogresssModeBox;
 const InProgressContainer = styled(Container)`
   width: 287px;
   height: 343px;
-
+  min-height: 343px;
   border-radius: 18px;
   border: 1px solid #e4e4e4;
 `;
