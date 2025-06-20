@@ -9,6 +9,7 @@ import UserEnterChatRoom from '@pages/userEnterChatRoom/userEnterChatRoom';
 import ChatRoomPage from '@pages/chatRoom/ChatRoomPage';
 import TMIInputPage from '@pages/TMIRoom/TMIInputPage';
 import TMILoadPage from '@pages/TMIRoom/TMILoadPage';
+import TMIHintPage from '@pages/TMIRoom/TMIHintPage';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             <Route path='/rooms/:roomKey/chat' element={<ChatRoomPage />} />
             <Route path='/tmi' element={<TMIInputPage />} />
             <Route path='/tmiload' element={<TMILoadPage />} />
+            <Route path='/tmihint' element={<TMIHintPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

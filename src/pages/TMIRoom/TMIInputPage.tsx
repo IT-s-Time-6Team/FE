@@ -51,6 +51,7 @@ export const TMIdetail = styled.p`
   font-size: 16px;
   line-height: 24px;
   color: #7c7c7c;
+  text-align: center;
 `;
 const TMIInput = styled.textarea`
   width: 17.9375rem;
