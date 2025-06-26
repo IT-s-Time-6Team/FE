@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { Container, Header } from '@components/shared/UIStyles';
 import { SubTitle, Title } from '@components/shared/TextStyles';
+import Button from '@components/chatRoomExit/Button';
 
 const VoteResult = () => {
   return (
@@ -13,6 +14,25 @@ const VoteResult = () => {
         <CandidateCharacter />
         <CandidateTMI>오늘 아침에 양치하다가 칫솔을 떨어뜨려서 새 칫솔로 교체했어요.</CandidateTMI>
       </VoteCandidateContainer>
+      <ResultContainer>
+        <ResultHeader>투표 결과</ResultHeader>
+        <MyVoteContainer>
+          <VoteText>나의 투표</VoteText>
+          <VoteSubContainer>
+            <SubTitle>하나</SubTitle>
+          </VoteSubContainer>
+        </MyVoteContainer>
+        <Result>
+          <VoteText>투표 결과</VoteText>
+          <VoteSubContainer>
+            <VotenameContainer>
+              <SubTitle>하나</SubTitle>
+              <SubTitle>3표</SubTitle>
+            </VotenameContainer>
+          </VoteSubContainer>
+        </Result>
+      </ResultContainer>
+      <Button onClick={() => {}} text='다음으로' />
     </Container>
   );
 };
@@ -25,12 +45,11 @@ const VoteResultHeader = styled(Header)`
 const ResultText = styled(Title)`
   color: #3e3333;
 `;
-const VoteCandidateContainer = styled(Container)`
-  
+const VoteCandidateContainer = styled(Header)`
+  width: 301px;
   margin-top: 22px;
   gap: 22px;
   border-radius: 12px;
-  background: rgba(240, 240, 240, 0.4);
 `;
 const CandidateCharacter = styled.img`
   width: 100px;
@@ -38,7 +57,45 @@ const CandidateCharacter = styled.img`
 `;
 const CandidateTMI = styled(SubTitle)`
   padding: 19px 24px;
+  border-radius: 12px;
 
+  text-align: center;
   color: #3e3333;
   line-height: 150%;
+  background: rgba(240, 240, 240, 0.4);
+`;
+
+const ResultContainer = styled(Header)`
+  margin-top: 38px;
+  margin-bottom: 100px;
+  width: 301px;
+`;
+const ResultHeader = styled(Header)`
+  margin-bottom: 18px;
+  font-size: 14px;
+  font-weight: 600;
+`;
+const MyVoteContainer = styled(Header)`
+  width: 100%;
+  padding: 18px 0 21px 0;
+  flex-direction: row;
+
+  align-items: flex-start;
+  gap: 37px;
+
+  border-top: 1px solid #e4e4e4;
+`;
+const Result = styled(MyVoteContainer)`
+  padding-top: 21px;
+  border-top: 1px solid #f0f0f0;
+`;
+const VoteText = styled(SubTitle)`
+  font-weight: 600;
+`;
+const VoteSubContainer = styled(Header)`
+  gap: 14px;
+`;
+const VotenameContainer = styled(Header)`
+  flex-direction: row;
+  gap: 13px;
 `;
