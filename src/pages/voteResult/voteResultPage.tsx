@@ -3,6 +3,7 @@ import { Container, Header } from '@components/shared/UIStyles';
 import { SubTitle, Title } from '@components/shared/TextStyles';
 import CheverRightIcon from '@assets/Main/chevronright_icon.svg?react';
 import Button from '@components/chatRoomExit/Button';
+import SummaryModal from '@components/voteResult/SummaryModal';
 
 const VoteResult = () => {
   const isCorrect = true;
@@ -47,6 +48,7 @@ const VoteResult = () => {
         </Result>
       </ResultContainer>
       <Button onClick={() => {}} text='다음으로' />
+      <SummaryModal />
     </Container>
   );
 };
