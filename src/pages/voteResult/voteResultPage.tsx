@@ -4,9 +4,18 @@ import { SubTitle, Title } from '@components/shared/TextStyles';
 import CheverRightIcon from '@assets/Main/chevronright_icon.svg?react';
 import Button from '@components/chatRoomExit/Button';
 import SummaryModal from '@components/voteResult/SummaryModal';
+import { useState } from 'react';
+import { ModalPortal } from '@components/shared/ModalPortal';
 
 const VoteResult = () => {
-  const isCorrect = true;
+  const isCorrect = false;
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const handleOpenModal = () => {
+    setIsOpen(true);
+  };
+  const handleCloseModal = () => {
+    setIsOpen(false);
+  };
 
   return (
     <Container>
@@ -23,10 +32,10 @@ const VoteResult = () => {
       </VoteCandidateContainer>
       <AnswerButton>
         {!isCorrect && (
-          <>
+          <AnswerWrapper onClick={handleOpenModal}>
             <SubTitle>정답보기</SubTitle>
             <CheverRight />
-          </>
+          </AnswerWrapper>
         )}
       </AnswerButton>
       <ResultContainer>
@@ -48,7 +57,11 @@ const VoteResult = () => {
         </Result>
       </ResultContainer>
       <Button onClick={() => {}} text='다음으로' />
-      <SummaryModal />
+      {isOpen && (
+        <ModalPortal>
+          <SummaryModal onClose={handleCloseModal} />
+        </ModalPortal>
+      )}
     </Container>
   );
 };
@@ -85,14 +98,22 @@ const AnswerButton = styled.div`
   width: 301px;
   min-height: 17px;
   margin-top: 10px;
-  padding-left: 2px;
 
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: flex-end;
+`;
+const AnswerWrapper = styled.div`
+  width: fit-content;
+  padding-right: 2px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   gap: 3px;
 `;
+
 const CheverRight = styled(CheverRightIcon)`
   width: 12px;
   height: 12px;

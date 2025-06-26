@@ -3,9 +3,13 @@ import { Mask, ModalBody } from '@components/shared/ModalStyles';
 import { SubTitle } from '@components/shared/TextStyles';
 import { Header } from '@components/shared/UIStyles';
 
-const SummaryModal = () => {
+interface SummaryModalProps {
+  onClose: () => void;
+}
+
+const SummaryModal = ({ onClose }: SummaryModalProps) => {
   return (
-    <Mask>
+    <Mask onClick={onClose}>
       <ModalBoddy>
         <ModalTitle>정답은 두리 님이었습니다.</ModalTitle>
         <MainContainer>
