@@ -1,19 +1,33 @@
 import styled from '@emotion/styled';
 import { Container, Header } from '@components/shared/UIStyles';
 import { SubTitle, Title } from '@components/shared/TextStyles';
+import CheverRightIcon from '@assets/Main/chevronright_icon.svg?react';
 import Button from '@components/chatRoomExit/Button';
 
 const VoteResult = () => {
+  const isCorrect = true;
+
   return (
     <Container>
       <VoteResultHeader>
-        <ResultText>TMI 맞추기 성공!</ResultText>
-        <SubTitle>하나 님은 TMI의 주인이 맞습니다.</SubTitle>
+        <ResultText> {isCorrect ? 'TMI 맞추기 성공!' : 'TMI 맞추기 실패!'}</ResultText>
+        <SubTitle>
+          {' '}
+          {isCorrect ? '하나 님은 TMI의 주인이 맞습니다.' : '하나 님은 TMI의 주인이 아닙니다.'}
+        </SubTitle>
       </VoteResultHeader>
       <VoteCandidateContainer>
         <CandidateCharacter />
         <CandidateTMI>오늘 아침에 양치하다가 칫솔을 떨어뜨려서 새 칫솔로 교체했어요.</CandidateTMI>
       </VoteCandidateContainer>
+      <AnswerButton>
+        {!isCorrect && (
+          <>
+            <SubTitle>정답보기</SubTitle>
+            <CheverRight />
+          </>
+        )}
+      </AnswerButton>
       <ResultContainer>
         <ResultHeader>투표 결과</ResultHeader>
         <MyVoteContainer>
@@ -65,10 +79,26 @@ const CandidateTMI = styled(SubTitle)`
   background: rgba(240, 240, 240, 0.4);
 `;
 
-const ResultContainer = styled(Header)`
-  margin-top: 38px;
-  margin-bottom: 100px;
+const AnswerButton = styled.div`
   width: 301px;
+  min-height: 17px;
+  margin-top: 10px;
+  padding-left: 2px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 3px;
+`;
+const CheverRight = styled(CheverRightIcon)`
+  width: 12px;
+  height: 12px;
+`;
+const ResultContainer = styled(Header)`
+  margin: 26px 0 100px 0;
+  width: 301px;
+  gap: 0px;
 `;
 const ResultHeader = styled(Header)`
   margin-bottom: 18px;
