@@ -7,6 +7,7 @@ import MainIcon from '@assets/Main/main_icon_group.svg?react';
 import ChevronLeftIcon from '@assets/Main/chevronleft_icon.svg?react';
 import ChevronRightIcon from '@assets/Main/chevronright_icon.svg?react';
 import KeywordModeBox from '@components/Main/KeyWordMode';
+import TmiModeBox from '@components/Main/TmiMode';
 import InprogresssModeBox from '@components/Main/InProgressMode';
 
 import { useNavigate } from 'react-router-dom';
@@ -69,7 +70,7 @@ const MainPage = () => {
         requiredAgreements: empathyCount,
         maxMember: maxCount,
         durationMinutes: timeLimit === 0 ? 30 : timeLimit,
-        gameMode: 'NORMAL',
+        gameMode: activeMode === 1 ? 'TMI' : activeMode === 2 ? 'INPROGRESS' : 'NORMAL',
       });
 
       console.log('방 생성 성공:', res);
@@ -84,16 +85,26 @@ const MainPage = () => {
     <MainContainer>
       <MainHeader>
         <Logo />
-        <IconStyle $visible={activeMode === 0}>
+        <IconStyle $visible={activeMode !== 2}>
           <MainIcon />
         </IconStyle>
-        <IconStyle $visible={activeMode === 1}>
+        <IconStyle $visible={activeMode === 2}>
           <DevelopmentLogo />
         </IconStyle>
       </MainHeader>
 
       <ModeContainer>
-        <ChevronLeft $isLeftActive={activeMode === 0} onClick={() => setActiveMode(0)} />
+        <ChevronLeft
+          $isLeftActive={activeMode === 0}
+          onClick={() => {
+            if (activeMode > 0) {
+              setActiveMode(activeMode - 1);
+              setEmpathyCount(2);
+              setMaxCount(2);
+              setTimeLimit(0);
+            }
+          }}
+        />
         <SliderWrapper>
           <SlideInner $activeIndex={activeMode}>
             <SlideBox>
@@ -110,6 +121,17 @@ const MainPage = () => {
                 onCreateRoom={handleCreateRoom}
               />
             </SlideBox>
+            <SlideBox>
+              {/* 두 번째 슬라이드: TMI 모드 */}
+              <TmiModeBox
+                maxCount={maxCount}
+                increaseMax={increaseMax}
+                decreaseMax={decreaseMax}
+                increaseTime={increaseTime}
+                decreaseTime={decreaseTime}
+                onCreateRoom={handleCreateRoom}
+              />
+            </SlideBox>
 
             <SlideBox>
               <InprogresssModeBox />
@@ -117,7 +139,17 @@ const MainPage = () => {
           </SlideInner>
         </SliderWrapper>
 
-        <ChevronRight $isRightActive={activeMode === 1} onClick={() => setActiveMode(1)} />
+        <ChevronRight
+          $isRightActive={activeMode === 2}
+          onClick={() => {
+            if (activeMode < 2) {
+              setActiveMode(activeMode + 1);
+              setEmpathyCount(2);
+              setMaxCount(2);
+              setTimeLimit(0);
+            }
+          }}
+        />
       </ModeContainer>
 
       <Footer>버전 정보 v1.0.0</Footer>
@@ -160,9 +192,9 @@ const SliderWrapper = styled.div`
 `;
 const SlideInner = styled.div<{ $activeIndex: number }>`
   display: flex;
-  width: 200%;
+  width: 300%;
   transition: transform 0.3s ease-in-out;
-  transform: translateX(${({ $activeIndex }) => `-${$activeIndex * 50}%`});
+  transform: translateX(${({ $activeIndex }) => `-${($activeIndex * 100) / 3}%`});
 `;
 const SlideBox = styled.div`
   width: 287px;
