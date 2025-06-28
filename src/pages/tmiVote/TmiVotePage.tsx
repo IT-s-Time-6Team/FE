@@ -15,7 +15,7 @@ const nicknames = [
   '고구마',
   '오이',
   '감자',
-  '또리',
+  '또리가고',
   '바보sldjfrn',
   '비비',
   '루피',
@@ -66,7 +66,9 @@ const TmiVotePage = () => {
                 isSelected={selectedIdx === idx}
                 onClick={() => setSelectedIdx(idx)}
               >
-                <PersonText isClicked={selectedIdx === idx}>{item}</PersonText>
+                <PersonText isClicked={selectedIdx === idx}>
+                  {item.length > 3 ? `${item.slice(0, 3)}...` : item}
+                </PersonText>
               </Nickname>
             ))}
           </NicknameBox>
@@ -143,7 +145,7 @@ const NicknameBox = styled.div`
 `;
 const Nickname = styled.div<{ isSelected: boolean }>`
   width: 93px;
-  min-height: 41px;
+  height: 41px;
   padding: 10px 15px;
   box-sizing: boreder-box;
   border-radius: 8px;
