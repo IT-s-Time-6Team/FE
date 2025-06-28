@@ -8,6 +8,7 @@ import MainPage from '@pages/Main/MainPage';
 import UserEnterChatRoom from '@pages/userEnterChatRoom/userEnterChatRoom';
 import ChatRoomPage from '@pages/chatRoom/ChatRoomPage';
 import TmiVotePage from '@pages/tmiVote/TmiVotePage';
+import VotingPage from '@pages/tmiVote/votingPage';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
             <Route path='/rooms/exit' element={<ChatRoomExitPage />} />
             <Route path='/rooms/:roomKey/chat' element={<ChatRoomPage />} />
             <Route path='/rooms/:roomKey/vote' element={<TmiVotePage />} />
+            <Route path='/rooms/:roomKey/voting' element={<VotingPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

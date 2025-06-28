@@ -1,11 +1,13 @@
 import styled from '@emotion/styled';
 // 공용으로 쓰이는 UI 스타일 컴포넌트
-export const Container = styled.div`
+export const Container = styled.div<{ gap?: string }>`
   display: flex;
   flex-direction: column;
   align-items: center;
   min-height: 100dvh;
+  gap: ${({ gap }) => gap || '0'};
 `;
+
 export const Header = styled.div`
   display: flex;
   flex-direction: column;
