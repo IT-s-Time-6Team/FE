@@ -7,14 +7,16 @@ import pan from '../../assets/chatRoom/character/pan.svg';
 import pig from '../../assets/chatRoom/character/pig.svg';
 import snake from '../../assets/chatRoom/character/snake.svg';
 import styled from '@emotion/styled';
+import { User } from 'src/types/chatRoom';
 
 type Props = {
   count: number;
+  user: User[];
 };
 
-const Characters = ({ count }: Props) => {
+const Characters = ({ count, user }: Props) => {
   const CharacterImgList = [rabbit, chick, pan, cat, pig, snake, bear];
-
+  console.log(user);
   return (
     <CharactersContainer>
       {Array.from({ length: count }).map((_, index) => {

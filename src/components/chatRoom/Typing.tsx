@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react';
 import union from '@assets/chatRoom/Union.svg';
 interface TypingDotsProps {
   arrow: number;
+  state?: string;
 }
-const TypingDots = ({ arrow }: TypingDotsProps) => {
+const TypingDots = ({ arrow, state }: TypingDotsProps) => {
   const [activeDot, setActiveDot] = useState(0);
+  const [isTyping] = useState(state == 'TYPING');
   const isReversed = arrow > 3 || arrow === 0;
   useEffect(() => {
     const timer = setInterval(() => {
@@ -21,7 +23,7 @@ const TypingDots = ({ arrow }: TypingDotsProps) => {
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         width: '30px',
-        display: 'flex',
+        display: isTyping ? 'flex' : 'none',
         justifyContent: 'center',
         alignItems: 'center',
         gap: '2px',

@@ -1,6 +1,7 @@
 export interface User {
   state: string;
   nickname: string;
+  character?: string; // 캐릭터 정보는 선택적
 }
 export interface RoomInfo {
   roomKey: string;

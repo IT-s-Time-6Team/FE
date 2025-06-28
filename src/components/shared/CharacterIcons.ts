@@ -15,7 +15,7 @@ export const PANDA = pan;
 export const PIG = pig;
 export const TURTLE = snake;
 
-const CharacterIcons = {
+export const CharacterIcons = {
   RABBIT,
   BEAR,
   FOX,

@@ -24,24 +24,45 @@ import MessageModal from '@components/chatRoom/messageModal';
 import useRoomUsersStore from '@store/useRoomUsersStore';
 
 const ChatRoomPage = () => {
+  //입력 관련 상태
   const [isInput, setIsInput] = useState(false);
   const [input, setInput] = useState<string>('');
+
+  // 채팅방 정보
   const [roomData, setRoomData] = useState<RoomInfo>();
   const { roomKey } = useParams();
-  const navigate = useNavigate();
+
+  //사용자 목록
   const [users, setUsers] = useState<User[]>([]);
-  const [stompClient, setStompClient] = useState<Client | null>(null);
+
+  //메시지 및 키워드 관련 상태
   const [messages, setMessages] = useState<{ type: string; content: string }>();
-  const [keyword, setKeyword] = useState<string[]>([]);
+
+  //웹소켓 관련 상태
+  const [stompClient, setStompClient] = useState<Client | null>(null);
   const [, setConnected] = useState(false);
+
+  //키워드 관련
   const [mykeyword, setMyKeyword] = useState<string[]>([]);
+  const [keyword, setKeyword] = useState<string[]>([]);
+
+  // 인원 수
   const [peoplenum, setPeoplenum] = useState<number>(0);
+
   const [isInviteOpen, setIsInviteOpen] = useState<boolean>(false);
   const [isWarningOpen, setIsWarningOpen] = useState(false); // 방 종료 5분전 메시지
   const [isClosedOpen, setIsClosedOpen] = useState(false); // 방장 종료 메시지
   const [isEndedOpen, setIsEndedOpen] = useState(false); // 방 종료 메시지
+
+  // 사용자 정보
   const user = useRoomUsersStore((state) => state.user);
+
+  const navigate = useNavigate();
+
+  //방 종료 여부
   const hasRoomEnded = useRef(false);
+
+  //키워드 전송 함수
   const sendKeyword = () => {
     SendKeywords({
       stompClient,
@@ -53,6 +74,7 @@ const ChatRoomPage = () => {
     });
   };
 
+  // 컴포넌트 언마운트 시 웹소켓 연결 해제
   useEffect(() => {
     return () => {
       if (stompClient) {
@@ -61,8 +83,11 @@ const ChatRoomPage = () => {
     };
   }, [stompClient]);
 
+  // 웹소켓 연결 함수
   const connect = () => {
+    // SockJS를 사용하여 웹소켓 연결
     const socket = new SockJS('/api/connect');
+    // STOMP 클라이언트 생성
     const client = new Client({
       webSocketFactory: () => socket,
       debug: (str) => {
@@ -73,35 +98,59 @@ const ChatRoomPage = () => {
         setConnected(true);
         // 채팅방 메시지 구독
         client.subscribe(`/topic/room/${roomKey}/messages`, (message) => {
+          let data;
           try {
-            if (hasRoomEnded.current) return;
-
-            const data = JSON.parse(message.body);
-            if (data.type === 'ENTER') {
+            data = JSON.parse(message.body);
+          } catch (e) {
+            console.error('메시지 파싱 오류:', e);
+            return;
+          }
+          switch (data.type) {
+            //방 입장 및 재입장
+            case 'ENTER':
               setMessages({ type: 'SYSTEM', content: `${data.nickname}님이 입장하셨습니다.` });
               setPeoplenum(data.data.userCount);
-              setUsers((prev) => [...prev, { state: '', nickname: data.nickname }]);
+              setUsers((prev) => [
+                ...prev,
+                { state: '', nickname: data.nickname, character: data.character },
+              ]);
+              console.log('입장한 사용자:', data.character);
+              console.log('입장한 사용자 닉네임:', data.nickname);
               setInput('');
-            } else if (data.type === 'REENTER') {
+              break;
+            case 'REENTER':
               setMessages({ type: 'SYSTEM', content: `${data.nickname}님이 재입장하셨습니다.` });
               setPeoplenum(data.data.userCount);
-              setUsers((prev) => [...prev, { state: '', nickname: data.nickname }]);
+              setUsers((prev) => [
+                ...prev,
+                { state: '', nickname: data.nickname, character: data.character },
+              ]);
               setMyKeyword(data.data.keywords);
               setInput('');
-            } else if (data.type === 'LEAVE') {
+              break;
+            //방 퇴장
+            case 'LEAVE':
               setMessages({ type: 'SYSTEM', content: `${data.nickname}님이 퇴장하셨습니다.` });
               setPeoplenum(data.data.userCount);
               setUsers((prev) => prev.filter((user) => user.nickname !== data.nickname));
-            } else if (data.type === `ERROR`) {
+              break;
+            //에러
+            case 'ERROR':
               alert('형식 오류');
-            } else if (data.type === 'kEY_EVENT') {
-              setUsers([...users, { state: 'typing', nickname: data.nickname }]);
-            } else if (data.type === 'ANALYSIS_RESULT') {
+              break;
+            //타이핑 이벤트
+            case 'KEY_EVENT':
+              setUsers((prev) =>
+                prev.map((user) =>
+                  user.nickname === data.nickname ? { ...user, state: 'typing' } : user,
+                ),
+              );
+              break;
+            case 'ANALYSIS_RESULT': {
               const matchedKeywords =
                 data.data?.filter(
                   (item: { count: number }) => item.count >= (roomData?.requiredAgreements ?? 2),
                 ) ?? [];
-              console.log('matchedKeywords:', matchedKeywords);
               const keywordNames = matchedKeywords.map(
                 (item: { referenceName: dataInfo }) => item.referenceName,
               );
@@ -111,22 +160,21 @@ const ChatRoomPage = () => {
               } else {
                 setKeyword([]);
               }
-            } else if (data.type === 'ROOM_EXPIRED') {
-              console.log('방 만료됨');
+              break;
+            }
+            case 'ROOM_EXPIRED':
               setIsEndedOpen(true);
               hasRoomEnded.current = true;
               return;
-            } else if (data.type === 'ROOM_EXPIRY_WARNING') {
-              console.log('방 종료 5분 남음');
+            case 'ROOM_EXPIRY_WARNING':
               setIsWarningOpen(true);
-            } else if (data.type === 'LEADER_ROOM_EXPIRED') {
-              console.log('방장이 방 종료');
+              break;
+            case 'LEADER_ROOM_EXPIRED':
               setIsClosedOpen(true);
               hasRoomEnded.current = true;
               return;
-            }
-          } catch (e) {
-            console.error('메시지 파싱 오류:', e);
+            default:
+              console.warn('알 수 없는 메시지 타입:', data.type);
           }
         });
 
@@ -165,9 +213,10 @@ const ChatRoomPage = () => {
     setStompClient(client);
   };
 
+  // 방 나가기 및 종료 처리
+  // 방장이면 방을 종료하고, 참여자면 방을 나감
   const disconnect = () => {
     if (user?.isLeader) {
-      console.log('방장입니다. 방을 종료합니다.');
       if (stompClient) {
         if (roomKey) {
           expireRoom(roomKey);
@@ -183,6 +232,7 @@ const ChatRoomPage = () => {
     }
   };
 
+  // 방 KEY가 있을 때만 방 정보를 가져옴
   useEffect(() => {
     const fetchRoomData = async () => {
       if (!roomKey) return;
@@ -197,6 +247,7 @@ const ChatRoomPage = () => {
     fetchRoomData();
   }, [roomKey]);
 
+  // 방 데이터가 있을 때만 connect 함수 호출
   useEffect(() => {
     if (roomData) {
       connect();
@@ -213,7 +264,7 @@ const ChatRoomPage = () => {
         <KeyWordComponents keyword={keyword} peoplenum={peoplenum} />
         <ChatContainer>
           <UserEntry>{messages?.content}</UserEntry>
-          <Characters count={peoplenum} />
+          <Characters count={peoplenum} user={users} />
         </ChatContainer>
         <MyKeyWordComponents mykeyword={mykeyword} />
       </ChatRoomContainer>
