@@ -6,22 +6,13 @@ import Button from '@components/chatRoomCreated/LoginButton';
 
 interface TmiModeBoxProps {
   maxCount: number;
-  timeLimit: number;
   increaseMax: () => void;
   decreaseMax: () => void;
-  increaseTime: () => void;
-  decreaseTime: () => void;
   onCreateRoom: () => void;
 }
 
 //키워드 모드 화면
-const TmiModeBox = ({
-  maxCount,
-  timeLimit,
-  increaseMax,
-  decreaseMax,
-  onCreateRoom,
-}: TmiModeBoxProps) => {
+const TmiModeBox = ({ maxCount, increaseMax, decreaseMax, onCreateRoom }: TmiModeBoxProps) => {
   return (
     <KeyWordBox>
       <KeyWordHeader>
@@ -42,7 +33,7 @@ const TmiModeBox = ({
           isUpActive={maxCount >= 7}
         />
       </Selector>
-      <Complete text='방 생성하기' active={timeLimit > 0} onClick={onCreateRoom} />
+      <Complete text='방 생성하기' onClick={onCreateRoom} />
     </KeyWordBox>
   );
 };

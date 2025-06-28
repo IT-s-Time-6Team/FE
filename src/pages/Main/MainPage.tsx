@@ -127,8 +127,6 @@ const MainPage = () => {
                 maxCount={maxCount}
                 increaseMax={increaseMax}
                 decreaseMax={decreaseMax}
-                increaseTime={increaseTime}
-                decreaseTime={decreaseTime}
                 onCreateRoom={handleCreateRoom}
               />
             </SlideBox>
