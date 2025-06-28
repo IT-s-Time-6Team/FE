@@ -1,3 +1,4 @@
+import CountUp from 'react-countup';
 import { ChatRoomContainer } from '../../styles/chatRoom/chatRoom';
 import { TMIdetail, TMIImg, TMItitle } from './TMIInputPage';
 import pan from '@assets/tmi/TMIPan.svg';
@@ -10,7 +11,12 @@ const TMILoadPage = () => {
       <TMIImg src={pan} alt='pan' />
       <TMItitle>TMI를 수집하는 중</TMItitle>
       <TMIdetail>다른 멤버들이 아직 TMI를 입력하고 있어요.</TMIdetail>
-      <h1>00%</h1>
+      <CountUp
+        end={100}
+        duration={3}
+        suffix='%'
+        style={{ fontSize: '30px', color: '#000', fontWeight: '600' }}
+      />
     </ChatRoomContainer>
   );
 };
