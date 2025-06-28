@@ -3,12 +3,13 @@ import { ChatRoomContainer, ChatRoomHeader, CloseButton } from '../../styles/cha
 import { Header } from '@components/shared/UIStyles';
 import InfoIcon from '@assets/chatRoom/info.svg';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ModalPortal } from '@components/shared/ModalPortal';
 import InviteModal from '@components/chatRoom/InviteModal';
 import { Title, SubTitle } from '@components/shared/TextStyles';
 import styled from '@emotion/styled';
 import searchIcon from '@assets/v2/search.svg';
-import Button from '@components/chatRoomExit/Button';
+import Button from '@components/shared/Button';
 const nicknames = [
   '하나',
   '고구마',
@@ -25,7 +26,8 @@ const nicknames = [
 
 const TmiVotePage = () => {
   const [isInviteOpen, setIsInviteOpen] = useState<boolean>(false);
-  const [selectedIdx, setSelectedIdx] = useState(null);
+  const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
+  const navigate = useNavigate();
 
   return (
     <ChatRoomContainer>
@@ -49,11 +51,13 @@ const TmiVotePage = () => {
       <NicknameBox>
         {nicknames.map((item, idx) => (
           <Nickname key={item} isSelected={selectedIdx === idx} onClick={() => setSelectedIdx(idx)}>
-            <TmiText>{item}</TmiText>
+            <PersonText isClicked={selectedIdx === idx} onClick={() => setSelectedIdx(idx)}>
+              {item}
+            </PersonText>
           </Nickname>
         ))}
       </NicknameBox>
-      <Button text='투표하기' />
+      <Button text='투표하기' onClick={() => navigate('/rooms')} />
       {isInviteOpen && (
         <ModalPortal>
           <InviteModal onClose={() => setIsInviteOpen(false)} roomId='sdfs3' />
@@ -63,16 +67,21 @@ const TmiVotePage = () => {
   );
 };
 export default TmiVotePage;
+
 const InfoButton = styled.img`
   width: 24px;
   min-height: 24px;
   cursor: pointer;
 `;
 const TmiText = styled(SubTitle)`
-  color: #3e3333;
+  color: '#ffffff';
   text-align: center;
   line-height: 150%;
 `;
+const PersonText = styled(TmiText)<{ isClicked: boolean }>`
+  color: ${({ isClicked }) => (isClicked ? '#ffffff' : '#3e3333')};
+`;
+
 const GrayBox = styled.div`
   width: 300px;
   height: 80px;
@@ -106,10 +115,10 @@ const NicknameBox = styled.div`
   gap: 8px 9px;
   overflow-y: auto;
 `;
-const Nickname = styled.div`
+const Nickname = styled.div<{ isSelected: boolean }>`
   width: 93px;
   padding: 10px 15px;
   box-sizing: boreder-box;
   border-radius: 8px;
-  background: #ebebeb;
+  background-color: ${({ isSelected }) => (isSelected ? '#FF7913' : '#EBEBEB')};
 `;

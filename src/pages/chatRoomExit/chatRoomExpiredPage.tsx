@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import Button from '@components/chatRoomExit/Button';
+import Button from '@components/shared/Button';
 import { Container, Header } from '@components/shared/UIStyles';
 import { Title, SubTitle } from '@components/shared/TextStyles';
 import errorIcon from '../../assets/error_page_icon.svg';
