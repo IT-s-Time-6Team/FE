@@ -6,7 +6,6 @@ import chick from '../../assets/chatRoom/character/chick.svg';
 import pan from '../../assets/chatRoom/character/pan.svg';
 import pig from '../../assets/chatRoom/character/pig.svg';
 import snake from '../../assets/chatRoom/character/snake.svg';
-import TypingDots from './Typing';
 import styled from '@emotion/styled';
 
 type Props = {
@@ -31,14 +30,13 @@ const Characters = ({ count }: Props) => {
                 transform: 'translate(-50%, -50%)',
               }}
             >
-              <TypingDots arrow={index} />
               <CharacterImg src={CharacterImgList[6]} alt={`character-${index}`} />
             </CharacterContainer>
           );
         }
 
-        const angle = (index / (total - 1)) * 2 * Math.PI - Math.PI + 1.2;
-        const radius = 40;
+        const angle = (index / (total - 1)) * 1.9 * Math.PI - Math.PI + 1.25;
+        const radius = 41.6;
         const x = 50 + radius * Math.cos(angle);
         const y = 50 + radius * Math.sin(angle);
 
@@ -52,7 +50,6 @@ const Characters = ({ count }: Props) => {
             }}
           >
             <CharacterImg src={CharacterImgList[index]} alt={`character-${index}`} />
-            <TypingDots arrow={index} />
           </CharacterContainer>
         );
       })}

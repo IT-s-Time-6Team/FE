@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
 import { Container, Header } from '@components/shared/UIStyles';
-import Logo from '@assets/oki_log.svg?react';
+import Logo from '@assets/okii_log.svg?react';
 import DLogo from '@assets/Main/development_icon.svg?react';
 import MainIcon from '@assets/Main/main_icon_group.svg?react';
 import ChevronLeftIcon from '@assets/Main/chevronleft_icon.svg?react';
@@ -16,7 +16,7 @@ const MainPage = () => {
   const navigate = useNavigate();
 
   const MIN = 2;
-  const MAX = 20;
+  const MAX = 7;
   const [empathyCount, setEmpathyCount] = useState(2);
   const [maxCount, setMaxCount] = useState(2);
 
