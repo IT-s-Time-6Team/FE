@@ -6,9 +6,12 @@ import Button from '@components/chatRoomExit/Button';
 import SummaryModal from '@components/voteResult/SummaryModal';
 import { useState } from 'react';
 import { ModalPortal } from '@components/shared/ModalPortal';
+import SuccessStamp from '@assets/voteResult/success_stamp.png';
+import FailStamp from '@assets/voteResult/fail_stamp.png';
+import { keyframes } from '@emotion/react';
 
 const VoteResult = () => {
-  const isCorrect = false;
+  const isCorrect = true;
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const handleOpenModal = () => {
     setIsOpen(true);
@@ -28,6 +31,13 @@ const VoteResult = () => {
       </VoteResultHeader>
       <VoteCandidateContainer>
         <CandidateCharacter />
+        <StampWrapper>
+          {isCorrect ? (
+            <StampImage src={SuccessStamp} alt='성공 스탬프' />
+          ) : (
+            <StampImage src={FailStamp} alt='실패 스탬프' />
+          )}
+        </StampWrapper>
         <CandidateTMI>오늘 아침에 양치하다가 칫솔을 떨어뜨려서 새 칫솔로 교체했어요.</CandidateTMI>
       </VoteCandidateContainer>
       <AnswerButton>
@@ -84,6 +94,34 @@ const CandidateCharacter = styled.img`
   width: 100px;
   height: 134px;
 `;
+
+const pulse = keyframes`
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.5;
+    transform-origin: 50% 50%;
+    transform: rotate(-2deg) scale(5);
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(-15deg) scale(1);
+  }
+`;
+
+const StampWrapper = styled.div`
+  position: fixed;
+  top: 26%;
+  left: 62%;
+  opacity: 0;
+  animation: ${pulse} 0.5s 1.5s forwards;
+`;
+const StampImage = styled.img`
+  width: 98px;
+  height: 98px;
+`;
+
 const CandidateTMI = styled(SubTitle)`
   padding: 19px 24px;
   border-radius: 12px;
