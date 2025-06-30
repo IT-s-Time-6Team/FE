@@ -25,16 +25,19 @@ export default InprogresssModeBox;
 
 const InProgressContainer = styled.div`
   width: 287px;
+  border-radius: 18px;
   height: 343px;
 
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-radius: 18px;
   border: 1px solid #e4e4e4;
 `;
 const InprogressContent = styled.div`
   margin: 54px 17px 18px 17px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 17px;
 
   display: flex;
