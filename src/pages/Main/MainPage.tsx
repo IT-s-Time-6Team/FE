@@ -85,7 +85,9 @@ const MainPage = () => {
       const res = await createRoom(payload);
 
       console.log('방 생성 성공:', res);
-      navigate(`/rooms/${res.data.roomKey}/member`);
+      navigate(`/rooms/${res.data.roomKey}/member`, {
+        state: { gameMode: gameMode },
+      });
     } catch (err: unknown) {
       console.error('방 생성 실패:', err);
       alert('방 생성에 실패했습니다.');
