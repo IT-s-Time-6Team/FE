@@ -39,6 +39,10 @@ const InprogressContent = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 17px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const InprogressText = styled(Container)`
