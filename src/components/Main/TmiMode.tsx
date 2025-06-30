@@ -33,7 +33,7 @@ const TmiModeBox = ({ maxCount, increaseMax, decreaseMax, onCreateRoom }: TmiMod
           isUpActive={maxCount >= 7}
         />
       </Selector>
-      <Complete text='방 생성하기' onClick={onCreateRoom} />
+      <Complete text='방 생성하기' active={maxCount > 1} onClick={onCreateRoom} />
     </KeyWordBox>
   );
 };
