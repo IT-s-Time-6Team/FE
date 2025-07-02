@@ -28,9 +28,9 @@ function App() {
             <Route path='/rooms/:roomKey/member' element={<UserEnterChatRoom />} />
             <Route path='/rooms/exit' element={<ChatRoomExitPage />} />
             <Route path='/rooms/:roomKey/chat' element={<ChatRoomPage />} />
-            <Route path='/tmi' element={<TMIInputPage />} />
-            <Route path='/tmiload' element={<TMILoadPage />} />
-            <Route path='/tmihint' element={<TMIHintPage />} />
+            <Route path='/tmi/:roomKey/input' element={<TMIInputPage />} />
+            <Route path='/tmi/:roomKey/load' element={<TMILoadPage />} />
+            <Route path='/tmi/:roomKey/hint' element={<TMIHintPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
