@@ -2,37 +2,42 @@ import questionIcon from '@assets/v2/questionBubble.svg';
 import { ChatRoomContainer, ChatRoomHeader, CloseButton } from '../../styles/chatRoom/chatRoom';
 import { Header } from '@components/shared/UIStyles';
 import InfoIcon from '@assets/chatRoom/info.svg';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { ModalPortal } from '@components/shared/ModalPortal';
 import InviteModal from '@components/chatRoom/InviteModal';
 import { Title, SubTitle } from '@components/shared/TextStyles';
 import styled from '@emotion/styled';
 import searchIcon from '@assets/v2/search.svg';
 import Button from '@components/shared/Button';
-const nicknames = [
-  '하나',
-  '고구마',
-  '오이',
-  '감자',
-  '또리가고',
-  '바보sldjfrn',
-  '비비',
-  '루피',
-  '쵸파',
-  '고기',
-  '쿠키',
-];
+import { getVoteInfo } from '@api/voteInfo';
+
+type VoteInfo = {
+  tmiContent: string;
+  round: number;
+  members: string[];
+};
 
 const TmiVotePage = () => {
   const [isInviteOpen, setIsInviteOpen] = useState<boolean>(false);
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [voteInfo, setVoteInfo] = useState<VoteInfo | null | undefined>();
   const navigate = useNavigate();
+  const location = useLocation();
+  const roomKey = location.state?.roomKey;
 
-  const filteredNicknames = nicknames.filter((nickname) =>
+  const filteredNicknames = voteInfo?.members.filter((nickname) =>
     nickname.toLowerCase().includes(searchQuery.toLowerCase()),
   );
+
+  useEffect(() => {
+    if (roomKey) {
+      getVoteInfo(roomKey)
+        .then((res) => setVoteInfo(res.data))
+        .catch(() => setVoteInfo(null));
+    }
+  }, [roomKey]);
 
   return (
     <VoteRoomContainer>
@@ -47,7 +52,7 @@ const TmiVotePage = () => {
         </Header>
         <img src={questionIcon} />
         <GrayBox>
-          <TmiText>오늘 아침에 양치하다가 칫솔을 떨어뜨려서 새 칫솔로 교체했어요.</TmiText>
+          <TmiText>{voteInfo?.tmiContent}</TmiText>
         </GrayBox>
         <VoteBox gap='10px'>
           <TmiText>TMI의 주인은 누구일까요?</TmiText>
@@ -60,7 +65,7 @@ const TmiVotePage = () => {
             <img src={searchIcon} />
           </SearchBox>
           <NicknameBox>
-            {filteredNicknames.map((item, idx) => (
+            {filteredNicknames?.map((item, idx) => (
               <Nickname
                 key={item}
                 isSelected={selectedIdx === idx}

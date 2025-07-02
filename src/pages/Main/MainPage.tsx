@@ -1,12 +1,13 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
 import { Container, Header } from '@components/shared/UIStyles';
-import Logo from '@assets/oki_log.svg?react';
+import Logo from '@assets/okii_log.svg?react';
 import DLogo from '@assets/Main/development_icon.svg?react';
 import MainIcon from '@assets/Main/main_icon_group.svg?react';
 import ChevronLeftIcon from '@assets/Main/chevronleft_icon.svg?react';
 import ChevronRightIcon from '@assets/Main/chevronright_icon.svg?react';
 import KeywordModeBox from '@components/Main/KeyWordMode';
+import TmiModeBox from '@components/Main/TmiMode';
 import InprogresssModeBox from '@components/Main/InProgressMode';
 
 import { useNavigate } from 'react-router-dom';
@@ -16,7 +17,7 @@ const MainPage = () => {
   const navigate = useNavigate();
 
   const MIN = 2;
-  const MAX = 20;
+  const MAX = 7;
   const [empathyCount, setEmpathyCount] = useState(2);
   const [maxCount, setMaxCount] = useState(2);
 
@@ -65,15 +66,27 @@ const MainPage = () => {
 
   const handleCreateRoom = async () => {
     try {
-      const res = await createRoom({
-        requiredAgreements: empathyCount,
-        maxMember: maxCount,
-        durationMinutes: timeLimit === 0 ? 30 : timeLimit,
-        gameMode: 'NORMAL',
-      });
+      const gameMode = activeMode === 1 ? 'TMI' : activeMode === 2 ? 'INPROGRESS' : 'NORMAL';
+      let payload;
+      if (gameMode === 'TMI') {
+        payload = {
+          maxMember: maxCount,
+          gameMode: 'TMI',
+        };
+      } else {
+        payload = {
+          requiredAgreements: empathyCount,
+          maxMember: maxCount,
+          durationMinutes: timeLimit === 0 ? 30 : timeLimit,
+          gameMode: gameMode,
+        };
+      }
 
+      const res = await createRoom(payload);
       console.log('방 생성 성공:', res);
-      navigate(`/rooms/${res.data.roomKey}/member`);
+      navigate(`/rooms/${res.data.roomKey}/member`, {
+        state: { gameMode: gameMode },
+      });
     } catch (err: unknown) {
       console.error('방 생성 실패:', err);
       alert('방 생성에 실패했습니다.');
@@ -84,16 +97,26 @@ const MainPage = () => {
     <MainContainer>
       <MainHeader>
         <Logo />
-        <IconStyle $visible={activeMode === 0}>
+        <IconStyle $visible={activeMode !== 2}>
           <MainIcon />
         </IconStyle>
-        <IconStyle $visible={activeMode === 1}>
+        <IconStyle $visible={activeMode === 2}>
           <DevelopmentLogo />
         </IconStyle>
       </MainHeader>
 
       <ModeContainer>
-        <ChevronLeft $isLeftActive={activeMode === 0} onClick={() => setActiveMode(0)} />
+        <ChevronLeft
+          $isLeftActive={activeMode === 0}
+          onClick={() => {
+            if (activeMode > 0) {
+              setActiveMode(activeMode - 1);
+              setEmpathyCount(2);
+              setMaxCount(2);
+              setTimeLimit(0);
+            }
+          }}
+        />
         <SliderWrapper>
           <SlideInner $activeIndex={activeMode}>
             <SlideBox>
@@ -110,6 +133,15 @@ const MainPage = () => {
                 onCreateRoom={handleCreateRoom}
               />
             </SlideBox>
+            <SlideBox>
+              {/* 두 번째 슬라이드: TMI 모드 */}
+              <TmiModeBox
+                maxCount={maxCount}
+                increaseMax={increaseMax}
+                decreaseMax={decreaseMax}
+                onCreateRoom={handleCreateRoom}
+              />
+            </SlideBox>
 
             <SlideBox>
               <InprogresssModeBox />
@@ -117,7 +149,17 @@ const MainPage = () => {
           </SlideInner>
         </SliderWrapper>
 
-        <ChevronRight $isRightActive={activeMode === 1} onClick={() => setActiveMode(1)} />
+        <ChevronRight
+          $isRightActive={activeMode === 2}
+          onClick={() => {
+            if (activeMode < 2) {
+              setActiveMode(activeMode + 1);
+              setEmpathyCount(2);
+              setMaxCount(2);
+              setTimeLimit(0);
+            }
+          }}
+        />
       </ModeContainer>
 
       <Footer>버전 정보 v1.0.0</Footer>
@@ -160,9 +202,9 @@ const SliderWrapper = styled.div`
 `;
 const SlideInner = styled.div<{ $activeIndex: number }>`
   display: flex;
-  width: 200%;
+  width: 300%;
   transition: transform 0.3s ease-in-out;
-  transform: translateX(${({ $activeIndex }) => `-${$activeIndex * 50}%`});
+  transform: translateX(${({ $activeIndex }) => `-${($activeIndex * 100) / 3}%`});
 `;
 const SlideBox = styled.div`
   width: 287px;
