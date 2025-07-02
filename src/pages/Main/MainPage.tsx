@@ -66,15 +66,28 @@ const MainPage = () => {
 
   const handleCreateRoom = async () => {
     try {
-      const res = await createRoom({
-        requiredAgreements: empathyCount,
-        maxMember: maxCount,
-        durationMinutes: timeLimit === 0 ? 30 : timeLimit,
-        gameMode: activeMode === 1 ? 'TMI' : activeMode === 2 ? 'INPROGRESS' : 'NORMAL',
-      });
+      const gameMode = activeMode === 1 ? 'TMI' : activeMode === 2 ? 'INPROGRESS' : 'NORMAL';
+      let payload;
+      if (gameMode === 'TMI') {
+        payload = {
+          maxMember: maxCount,
+          gameMode: 'TMI',
+        };
+      } else {
+        payload = {
+          requiredAgreements: empathyCount,
+          maxMember: maxCount,
+          durationMinutes: timeLimit === 0 ? 30 : timeLimit,
+          gameMode: gameMode,
+        };
+      }
+
+      const res = await createRoom(payload);
 
       console.log('방 생성 성공:', res);
-      navigate(`/rooms/${res.data.roomKey}/member`);
+      navigate(`/rooms/${res.data.roomKey}/member`, {
+        state: { gameMode: gameMode },
+      });
     } catch (err: unknown) {
       console.error('방 생성 실패:', err);
       alert('방 생성에 실패했습니다.');
