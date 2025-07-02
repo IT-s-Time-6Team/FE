@@ -5,11 +5,43 @@ import useRoomUsersStore from '@store/useRoomUsersStore';
 import { useState } from 'react';
 import cat from '@assets/tmi/TMICat.svg';
 import Button from '@components/chatRoomCreated/LoginButton';
+import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 
 const TMIInputPage = () => {
   const user = useRoomUsersStore((state) => state.user);
   const [, setIsInviteOpen] = useState<boolean>(false);
-  const [active] = useState<boolean>(true);
+  const [active, setActive] = useState<boolean>(false);
+  const { roomKey } = useParams();
+  const navigate = useNavigate();
+  const handleSubmit = async () => {
+    if (!roomKey) {
+      console.error('Room key is not defined');
+      return;
+    }
+    if (!user) {
+      console.error('User is not defined');
+      return;
+    }
+    try {
+      const res = await axios.post(
+        `/api/tmi/rooms/${roomKey}/submit`,
+        {
+          tmiContent: document.querySelector('textarea')?.value,
+        },
+        {
+          withCredentials: true,
+        },
+      );
+      console.log('TMI 제출 성공:', res);
+      navigate(`/tmi/${roomKey}/load`);
+      return res.data;
+    } catch (error: unknown) {
+      console.error('error: ', error);
+      throw error;
+    }
+  };
+
   return (
     <>
       <ChatRoomContainer>
@@ -22,8 +54,15 @@ const TMIInputPage = () => {
         <TMIImg src={cat} />
         <TMIInput
           placeholder={`오늘 있었던 TMI를 한 가지 작성해 주세요.\n예) 어제 드라마를 보느라 늦게 잠들었어요.`}
+          onChange={(e) => {
+            if (e.target.value.length > 0) {
+              setActive(true);
+            } else {
+              setActive(false);
+            }
+          }}
         />
-        <SubmitButton text='제출하기' active={active} />
+        <SubmitButton text='제출하기' active={active} onClick={handleSubmit} />
       </ChatRoomContainer>
     </>
   );

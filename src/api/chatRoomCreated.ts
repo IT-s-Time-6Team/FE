@@ -37,6 +37,7 @@ export const getRoom = async (roomKey: string) => {
     console.log('방 정보:', res);
     return res.data;
   } catch (error: unknown) {
+    console.log('방 정보 가져오기 실패:', error);
     console.error('error: ', error);
     throw error;
   }

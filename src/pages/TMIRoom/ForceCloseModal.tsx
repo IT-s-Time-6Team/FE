@@ -1,8 +1,10 @@
 import styled from '@emotion/styled';
+import { useNavigate } from 'react-router-dom';
 interface ForceCloseModalProps {
   onClose: (open: boolean) => void;
 }
 const ForceCloseModal = ({ onClose }: ForceCloseModalProps) => {
+  const navigate = useNavigate();
   return (
     <OverLay onClick={() => onClose(false)}>
       <ModalContent>
@@ -15,7 +17,7 @@ const ForceCloseModal = ({ onClose }: ForceCloseModalProps) => {
         <ButtonContainer>
           <Button onClick={() => onClose(false)}>아니요</Button>
           <ButtonDivider />
-          <Button onClick={() => onClose(true)} active={true}>
+          <Button onClick={() => (onClose(true), navigate('/'))} active={true}>
             예
           </Button>
         </ButtonContainer>

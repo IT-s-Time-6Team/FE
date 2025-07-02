@@ -49,7 +49,7 @@ const UserEnterChatRoom = () => {
   const resetUsers = useRoomUsersStore((state) => state.resetUsers);
   const setUser = useRoomUsersStore((state) => state.setUser);
   const location = useLocation();
-  const gameMode = (location.state?.gameMode ?? 'NORMAL') as GameMode;
+  const gameMode = (location.state?.gameMode ?? 'TMI') as GameMode;
 
   const { title, button } = MODE_CONFIG[gameMode];
 
@@ -65,7 +65,10 @@ const UserEnterChatRoom = () => {
       setUser(res.data.data);
       const updatedUsers = useRoomUsersStore.getState().users;
       console.log('전역 저장된 users:', updatedUsers);
-
+      if (gameMode === 'TMI') {
+        navigate(`/tmi/${roomKey}/input`);
+        return;
+      }
       navigate(`/rooms/${roomKey}/chat`);
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
