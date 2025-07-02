@@ -5,7 +5,7 @@ export const createRoom = async (payload: {
   requiredAgreements: number;
   maxMember: number;
   durationMinutes?: number;
-  gameMode: 'NORMAL';
+  gameMode: 'NORMAL' | 'TMI' | 'INPROGRESS';
 }) => {
   try {
     const res = await api.post('/api/rooms', payload);
