@@ -10,9 +10,10 @@ import SockJS from 'sockjs-client';
 import { getRoom } from '@api/chatRoomCreated';
 import { RoomInfo } from 'src/types/chatRoom';
 import axios from 'axios';
+import { useWebSocketStore } from '@store/useWebSocketStore';
 
 const TMILoadPage = () => {
-  const [, setStompClient] = useState<Client | null>(null);
+  const { setClient } = useWebSocketStore();
   const [processRate, setProcessRate] = useState<number>(0);
   const [roomData, setRoomData] = useState<RoomInfo>();
   const { roomKey } = useParams();
@@ -48,7 +49,7 @@ const TMILoadPage = () => {
           hasRoomEnded.current = true;
           setTimeout(() => {
             navigate(`/tmi/${roomKey}/hint`);
-          }, 8000);
+          }, 5000);
         }
       }
     } catch (error) {
@@ -69,6 +70,7 @@ const TMILoadPage = () => {
       webSocketFactory: () => socket,
       onConnect: () => {
         console.log('웹소켓 연결 성공!');
+        setClient(client);
         client.subscribe(`/topic/room/${roomKey}/messages`, (message) => {
           try {
             if (hasRoomEnded.current) return;
@@ -80,7 +82,7 @@ const TMILoadPage = () => {
               setProcessRate(100);
               setTimeout(() => {
                 navigate(`/tmi/${roomKey}/hint`);
-              }, 8000);
+              }, 5000);
             }
           } catch (e) {
             console.error('메시지 파싱 오류:', e);
@@ -93,11 +95,9 @@ const TMILoadPage = () => {
     });
 
     client.activate();
-    setStompClient(client);
+    setClient(client);
 
-    return () => {
-      client.deactivate();
-    };
+    return () => {};
   }, [roomData, roomKey]);
 
   return (
