@@ -46,8 +46,8 @@ const TMILoadPage = () => {
         console.log('TMI 수집 진행률:', res.data.data.progress);
         setProcessRate(res.data.data.progress);
         if (
-          res.data.data.currentStep == 'COLLECTING_TMI' ||
-          (res.data.data.currentStep == 'HINT' && res.data.data.progress === 100)
+          (res.data.data.currentStep == 'COLLECTING_TMI' && res.data.data.progress === 100) ||
+          res.data.data.currentStep == 'HINT'
         ) {
           hasRoomEnded.current = true;
           setTimeout(() => {
