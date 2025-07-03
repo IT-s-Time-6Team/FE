@@ -37,6 +37,7 @@ const TmiVotePage = () => {
         .then((res) => setVoteInfo(res.data))
         .catch(() => setVoteInfo(null));
     }
+    console.log(roomKey);
   }, [roomKey]);
 
   return (
@@ -116,10 +117,9 @@ const PersonText = styled(TmiText)<{ isClicked: boolean }>`
 
 const GrayBox = styled.div`
   width: 300px;
-  height: 80px;
   background-color: #f9f9f9;
   padding: 19px 24px;
-  borderradius: 12px;
+  border-radius: 12px;
 `;
 const SearchBox = styled.div`
   width: 297px;

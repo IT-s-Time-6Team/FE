@@ -22,7 +22,7 @@ const TMIHintPage = () => {
 
       return;
     }
-
+    console.log(roomKey);
     const trySubscribe = () => {
       if (client.connected) {
         console.log('WebSocket 연결됨:', client.connected);
@@ -33,7 +33,9 @@ const TMIHintPage = () => {
             if (data.type === 'TMI_HINT_TIME_REMAINING') {
               setRemainingTime(data.data || '00:00:00');
             } else if (data.type === 'TMI_HINT_ENDED') {
-              navigate(`/tmi/${roomKey}/vote`);
+              navigate(`/tmi/${roomKey}/vote`, {
+                state: { roomKey },
+              });
             }
           } catch (e) {
             console.error('메시지 파싱 오류:', e);
