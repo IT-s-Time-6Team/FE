@@ -2,7 +2,7 @@ import questionIcon from '@assets/v2/questionBubble.svg';
 import { ChatRoomContainer, ChatRoomHeader, CloseButton } from '../../styles/chatRoom/chatRoom';
 import { Header } from '@components/shared/UIStyles';
 import InfoIcon from '@assets/chatRoom/info.svg';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ModalPortal } from '@components/shared/ModalPortal';
 import InviteModal from '@components/chatRoom/InviteModal';
@@ -11,25 +11,29 @@ import styled from '@emotion/styled';
 import searchIcon from '@assets/v2/search.svg';
 import Button from '@components/shared/Button';
 import { getVoteInfo } from '@api/voteInfo';
-
+import axios from 'axios';
 type VoteInfo = {
   tmiContent: string;
   round: number;
   members: string[];
 };
-
+const MAX_NICKNAME_LENGTH = 3;
 const TmiVotePage = () => {
   const [isInviteOpen, setIsInviteOpen] = useState<boolean>(false);
-  const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
+  const [selectedMemberName, setSelectedMemberName] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [voteInfo, setVoteInfo] = useState<VoteInfo | null | undefined>();
-  const navigate = useNavigate();
+  const [voteInfo, setVoteInfo] = useState<VoteInfo | null>(null);
   const location = useLocation();
+  const navigate = useNavigate();
   const roomKey = location.state?.roomKey;
 
-  const filteredNicknames = voteInfo?.members.filter((nickname) =>
-    nickname.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
+  const filteredNicknames = useMemo(() => {
+    return (
+      voteInfo?.members.filter((nickname) =>
+        nickname.toLowerCase().includes(searchQuery.toLowerCase()),
+      ) || []
+    );
+  }, [voteInfo, searchQuery]);
 
   useEffect(() => {
     if (roomKey) {
@@ -40,6 +44,35 @@ const TmiVotePage = () => {
     console.log(roomKey);
   }, [roomKey]);
 
+  const handleSubmit = async () => {
+    if (!roomKey) {
+      console.error('Room key is not defined');
+      return;
+    }
+    if (!roomKey || !selectedMemberName) {
+      console.error('No nickname selected or filteredNicknames is undefined');
+      return;
+    }
+
+    try {
+      const res = await axios.post(
+        `/api/tmi/rooms/${roomKey}/votes`,
+        {
+          votedMemberName: selectedMemberName,
+        },
+        {
+          withCredentials: true,
+        },
+      );
+      console.log('TMI 투표 제출 성공:', res);
+      navigate(`/tmi/${roomKey}/voting`, {
+        state: { roomKey },
+      });
+    } catch (error: unknown) {
+      console.error('error: ', error);
+      throw error;
+    }
+  };
   return (
     <VoteRoomContainer>
       <ChatRoomHeader>
@@ -68,19 +101,19 @@ const TmiVotePage = () => {
           <NicknameBox>
             {filteredNicknames?.map((item, idx) => (
               <Nickname
-                key={item}
-                isSelected={selectedIdx === idx}
-                onClick={() => setSelectedIdx(idx)}
+                key={idx}
+                isSelected={selectedMemberName === item}
+                onClick={() => setSelectedMemberName(item)}
               >
-                <PersonText isClicked={selectedIdx === idx}>
-                  {item.length > 3 ? `${item.slice(0, 3)}...` : item}
+                <PersonText isClicked={selectedMemberName === item}>
+                  {item.length > 3 ? `${item.slice(0, MAX_NICKNAME_LENGTH)}...` : item}
                 </PersonText>
               </Nickname>
             ))}
           </NicknameBox>
         </VoteBox>
       </VoteBox>
-      <Button text='투표하기' onClick={() => navigate('/rooms')} />
+      <Button text='투표하기' onClick={handleSubmit} />
       {isInviteOpen && (
         <ModalPortal>
           <InviteModal onClose={() => setIsInviteOpen(false)} roomId='sdfs3' />
