@@ -7,10 +7,12 @@ import cat from '@assets/tmi/TMICat.svg';
 import Button from '@components/chatRoomCreated/LoginButton';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import InviteModal from '@components/chatRoom/InviteModal';
+import { ModalPortal } from '@components/shared/ModalPortal';
 
 const TMIInputPage = () => {
   const user = useRoomUsersStore((state) => state.user);
-  const [, setIsInviteOpen] = useState<boolean>(false);
+  const [isInviteOpen, setIsInviteOpen] = useState<boolean>(false);
   const [active, setActive] = useState<boolean>(false);
   const { roomKey } = useParams();
   const navigate = useNavigate();
@@ -64,6 +66,11 @@ const TMIInputPage = () => {
         />
         <SubmitButton text='제출하기' active={active} onClick={handleSubmit} />
       </ChatRoomContainer>
+      {isInviteOpen && (
+        <ModalPortal>
+          <InviteModal onClose={() => setIsInviteOpen(false)} roomId={roomKey ?? ''} />
+        </ModalPortal>
+      )}
     </>
   );
 };
