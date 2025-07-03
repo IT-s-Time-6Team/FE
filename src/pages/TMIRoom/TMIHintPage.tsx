@@ -22,7 +22,7 @@ const TMIHintPage = () => {
 
       return;
     }
-    console.log(roomKey);
+
     const trySubscribe = () => {
       if (client.connected) {
         console.log('WebSocket 연결됨:', client.connected);

@@ -50,7 +50,7 @@ const TmiVotePage = () => {
       return;
     }
     if (!roomKey || !selectedMemberName) {
-      console.error('No nickname selected or filteredNicknames is undefined');
+      alert('투표할 멤버를 선택해주세요.');
       return;
     }
 

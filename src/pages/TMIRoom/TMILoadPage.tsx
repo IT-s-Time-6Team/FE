@@ -45,7 +45,10 @@ const TMILoadPage = () => {
         console.log('TMI 수집 상태:', res.data.data);
         console.log('TMI 수집 진행률:', res.data.data.progress);
         setProcessRate(res.data.data.progress);
-        if (res.data.data.progress === 100) {
+        if (
+          res.data.data.currentStep == 'COLLECTING_TMI' ||
+          (res.data.data.currentStep == 'HINT' && res.data.data.progress === 100)
+        ) {
           hasRoomEnded.current = true;
           setTimeout(() => {
             navigate(`/tmi/${roomKey}/hint`);
