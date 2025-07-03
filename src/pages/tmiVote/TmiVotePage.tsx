@@ -1,7 +1,6 @@
 import questionIcon from '@assets/v2/questionBubble.svg';
 import { ChatRoomContainer, ChatRoomHeader, CloseButton } from '../../styles/chatRoom/chatRoom';
 import { Header } from '@components/shared/UIStyles';
-import InfoIcon from '@assets/chatRoom/info.svg';
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ModalPortal } from '@components/shared/ModalPortal';
@@ -11,6 +10,7 @@ import styled from '@emotion/styled';
 import searchIcon from '@assets/v2/search.svg';
 import Button from '@components/shared/Button';
 import { getVoteInfo } from '@api/voteInfo';
+import useRoomUsersStore from '@store/useRoomUsersStore';
 import axios from 'axios';
 type VoteInfo = {
   tmiContent: string;
@@ -26,7 +26,7 @@ const TmiVotePage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const roomKey = location.state?.roomKey;
-
+  const user = useRoomUsersStore((state) => state.user);
   const filteredNicknames = useMemo(() => {
     return (
       voteInfo?.members.filter((nickname) =>
@@ -76,8 +76,7 @@ const TmiVotePage = () => {
   return (
     <VoteRoomContainer>
       <ChatRoomHeader>
-        <InfoButton onClick={() => setIsInviteOpen(true)} src={InfoIcon} alt='info' />
-        <CloseButton>종료</CloseButton>
+        <CloseButton>{user?.isLeader ? '종료' : '나가기'}</CloseButton>
       </ChatRoomHeader>
       <VoteBox>
         <Header>
@@ -134,11 +133,6 @@ const VoteBox = styled.div<{ gap?: string }>`
   gap: ${({ gap }) => gap || '20px'};
 `;
 
-const InfoButton = styled.img`
-  width: 24px;
-  min-height: 24px;
-  cursor: pointer;
-`;
 const TmiText = styled(SubTitle)`
   color: '#ffffff';
   text-align: center;
