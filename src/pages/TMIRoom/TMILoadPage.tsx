@@ -1,7 +1,7 @@
 import CountUp from 'react-countup';
 import { ChatRoomContainer } from '../../styles/chatRoom/chatRoom';
 import { TMIdetail, TMIImg, TMItitle } from './TMIInputPage';
-import pan from '@assets/tmi/TMIPan.svg';
+import pan from '@assets/tmi/pan.svg';
 import styled from '@emotion/styled';
 import { Client } from '@stomp/stompjs';
 import { useEffect, useRef, useState } from 'react';

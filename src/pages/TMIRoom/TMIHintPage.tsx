@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ChatRoomContainer } from '../../styles/chatRoom/chatRoom';
 import { TMIdetail, TMIImg, TMItitle } from './TMIInputPage';
-import tmi from '@assets/tmi/TMI.svg';
+import tmi from '@assets/tmi/tmiLogo.svg';
 import styled from '@emotion/styled';
 import ForceCloseModal from './ForceCloseModal';
 import { useWebSocketStore } from '@store/useWebSocketStore';

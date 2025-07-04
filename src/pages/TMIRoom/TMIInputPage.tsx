@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import InfoIcon from '@assets/chatRoom/info.svg';
 import useRoomUsersStore from '@store/useRoomUsersStore';
 import { useState } from 'react';
-import cat from '@assets/tmi/TMICat.svg';
+import cat from '@assets/tmi/cat.svg';
 import Button from '@components/chatRoomCreated/LoginButton';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
