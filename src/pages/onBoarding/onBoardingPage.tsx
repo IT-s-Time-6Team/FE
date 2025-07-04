@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import { Container, Header } from '@components/shared/UIStyles';
 import { SubTitle } from '@components/shared/TextStyles';
-import Button from '@components/chatRoomExit/Button';
-import OkiLogoIcon from '@assets/oki_log.svg?react';
+import Button from '@components/shared/Button';
+import OkiiLogoIcon from '@assets/okii_log.svg?react';
 import Icons from '@assets/icon_group.svg?react';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,7 +12,7 @@ const OnBoardingPage = () => {
   return (
     <OnBoardingContainer>
       <OnBoardingHeader>
-        <OkiLogo />
+        <OkiiLogo />
         <HeaderSubTitle>너와 내가 통하는 바로 그 순간</HeaderSubTitle>
       </OnBoardingHeader>
 
@@ -33,7 +33,7 @@ const OnBoardingContainer = styled(Container)`
 const OnBoardingHeader = styled(Header)`
   gap: 10px;
 `;
-const OkiLogo = styled(OkiLogoIcon)`
+const OkiiLogo = styled(OkiiLogoIcon)`
   width: 156px;
   height: 62px;
 `;

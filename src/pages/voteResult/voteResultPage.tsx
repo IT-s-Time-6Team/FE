@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { Container, Header } from '@components/shared/UIStyles';
 import { SubTitle, Title } from '@components/shared/TextStyles';
 import CheverRightIcon from '@assets/Main/chevronright_icon.svg?react';
-import Button from '@components/chatRoomExit/Button';
+import Button from '@components/shared/Button';
 import SummaryModal from '@components/voteResult/SummaryModal';
 import { useState } from 'react';
 import { ModalPortal } from '@components/shared/ModalPortal';

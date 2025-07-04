@@ -17,9 +17,26 @@ import {
 import ValidationMessage from '@components/chatRoomCreated/ValidationMessage';
 import Button from '@components/chatRoomCreated/LoginButton';
 import axios from 'axios';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { joinRoom } from '@api/login';
 import useRoomUsersStore from '@store/useRoomUsersStore';
+
+type GameMode = 'NORMAL' | 'TMI';
+
+interface ModeConfig {
+  title: string;
+  button: string;
+}
+const MODE_CONFIG: Record<GameMode, ModeConfig> = {
+  NORMAL: {
+    title: '키워드를 입력하러 가 볼까요?',
+    button: '키워드 입력하러 가기',
+  },
+  TMI: {
+    title: 'TMI를 입력하러 가 볼까요?',
+    button: 'TMI 입력하러 가기',
+  },
+};
 
 const UserEnterChatRoom = () => {
   const { nickname, isNicknameValid, handleNicknameChange } = useNicknameValidation();
@@ -31,6 +48,27 @@ const UserEnterChatRoom = () => {
   const addUser = useRoomUsersStore((state) => state.addUser);
   const resetUsers = useRoomUsersStore((state) => state.resetUsers);
   const setUser = useRoomUsersStore((state) => state.setUser);
+  const location = useLocation();
+  const gameMode = (location.state?.gameMode ?? 'TMI') as GameMode;
+
+  const { title, button } = MODE_CONFIG[gameMode];
+
+  const fetchCurrentStep = async () => {
+    if (!roomKey) return;
+    try {
+      const res = await axios.get(`/api/tmi/rooms/${roomKey}/status`, {
+        withCredentials: true,
+      });
+      if (res.data) {
+        console.log('진행 상태:', res.data.data);
+        console.log('진행률:', res.data.data.progress);
+        return res.data.data.currentStep;
+      }
+    } catch (error) {
+      console.error('Error fetching process rate:', error);
+      navigate('/rooms/exit');
+    }
+  };
 
   const handleJoin = async () => {
     if (!roomKey) return;
@@ -44,7 +82,21 @@ const UserEnterChatRoom = () => {
       setUser(res.data.data);
       const updatedUsers = useRoomUsersStore.getState().users;
       console.log('전역 저장된 users:', updatedUsers);
-
+      if (gameMode === 'TMI') {
+        const currentStep = await fetchCurrentStep();
+        if (currentStep === 'COLLECTING_TMI') {
+          navigate(`/tmi/${roomKey}/input`);
+        } else if (currentStep === 'HINT') {
+          navigate(`/tmi/${roomKey}/load`);
+        } else if (currentStep === 'VOTING') {
+          navigate(`/tmi/${roomKey}/vote`, {
+            state: { roomKey },
+          });
+        } else if (currentStep === 'COMPLETED') {
+          // navigate(`/tmi/${roomKey}/result`);
+        }
+        return;
+      }
       navigate(`/rooms/${roomKey}/chat`);
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
@@ -76,7 +128,7 @@ const UserEnterChatRoom = () => {
     <UserEnterContainer>
       <div>
         <UserEnterHeader>
-          <TitleText>키워드를 입력하러 가 볼까요?</TitleText>
+          <TitleText>{title}</TitleText>
           <SubTitleText>사용할 닉네임과 비밀번호를 입력해주세요</SubTitleText>
         </UserEnterHeader>
         <LoginContainer>
@@ -125,7 +177,7 @@ const UserEnterChatRoom = () => {
       </div>
       <ButtonContainer>
         <ButtonText>*닉네임과 비밀번호는 이번 채팅방에서만 사용돼요.</ButtonText>
-        <Button onClick={handleJoin} text='키워드 입력하러 가기' active={isFormValid} />
+        <Button onClick={handleJoin} text={button} active={isFormValid} />
       </ButtonContainer>
     </UserEnterContainer>
   );

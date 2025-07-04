@@ -33,7 +33,6 @@ const ChatRoomPage = () => {
   const [stompClient, setStompClient] = useState<Client | null>(null);
   const [messages, setMessages] = useState<{ type: string; content: string }>();
   const [keyword, setKeyword] = useState<string[]>([]);
-  const [, setConnected] = useState(false);
   const [mykeyword, setMyKeyword] = useState<string[]>([]);
   const [peoplenum, setPeoplenum] = useState<number>(0);
   const [isInviteOpen, setIsInviteOpen] = useState<boolean>(false);
@@ -48,7 +47,6 @@ const ChatRoomPage = () => {
       roomKey: roomKey ?? '',
       input,
       setInput,
-      setKeyword,
       setMyKeyword,
       mykeyword,
     });
@@ -71,7 +69,6 @@ const ChatRoomPage = () => {
       },
       onConnect: () => {
         console.log('웹소켓 연결 성공!');
-        setConnected(true);
         // 채팅방 메시지 구독
         client.subscribe(`/topic/room/${roomKey}/messages`, (message) => {
           try {
@@ -87,6 +84,7 @@ const ChatRoomPage = () => {
               setMessages({ type: 'SYSTEM', content: `${data.nickname}님이 재입장하셨습니다.` });
               setPeoplenum(data.data.userCount);
               setUsers((prev) => [...prev, { state: '', nickname: data.nickname }]);
+              setMyKeyword(data.data.keywords);
               setInput('');
             } else if (data.type === 'LEAVE') {
               setMessages({ type: 'SYSTEM', content: `${data.nickname}님이 퇴장하셨습니다.` });
@@ -150,8 +148,6 @@ const ChatRoomPage = () => {
         });
       },
       onDisconnect: () => {
-        console.log('웹소켓 연결 해제');
-        setConnected(false);
         if (user?.isLeader) {
           navigate('/rooms/exit', { state: { roomKey } });
         }
@@ -174,10 +170,8 @@ const ChatRoomPage = () => {
           setIsClosedOpen(true);
         }
         stompClient.deactivate();
-        setConnected(false);
       }
     } else {
-      setConnected(false);
       stompClient?.deactivate();
       navigate('/rooms');
     }
