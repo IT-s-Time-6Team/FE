@@ -7,6 +7,8 @@ import OnBoardingPage from '@pages/onBoarding/onBoardingPage';
 import MainPage from '@pages/Main/MainPage';
 import UserEnterChatRoom from '@pages/userEnterChatRoom/userEnterChatRoom';
 import ChatRoomPage from '@pages/chatRoom/ChatRoomPage';
+import TmiVotePage from '@pages/tmiVote/TmiVotePage';
+import VotingPage from '@pages/tmiVote/votingPage';
 import TMIInputPage from '@pages/TMIRoom/TMIInputPage';
 import TMILoadPage from '@pages/TMIRoom/TMILoadPage';
 import TMIHintPage from '@pages/TMIRoom/TMIHintPage';
@@ -28,6 +30,8 @@ function App() {
             <Route path='/rooms/:roomKey/member' element={<UserEnterChatRoom />} />
             <Route path='/rooms/exit' element={<ChatRoomExitPage />} />
             <Route path='/rooms/:roomKey/chat' element={<ChatRoomPage />} />
+            <Route path='/tmi/:roomKey/vote' element={<TmiVotePage />} />
+            <Route path='/tmi/:roomKey/voting' element={<VotingPage />} />
             <Route path='/tmi/:roomKey/input' element={<TMIInputPage />} />
             <Route path='/tmi/:roomKey/load' element={<TMILoadPage />} />
             <Route path='/tmi/:roomKey/hint' element={<TMIHintPage />} />

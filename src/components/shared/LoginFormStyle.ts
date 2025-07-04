@@ -6,7 +6,6 @@ import CheckMark from '@assets/WhiteCheck.svg?react';
 //채팅방 생성완료, 사용자 입장 페이지 로그인 폼 스타일
 export const LoginContainer = styled.div`
   width: 273px;
-
   display: flex;
   flex-direction: column;
   justify-content: center;

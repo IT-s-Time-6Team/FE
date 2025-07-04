@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { Container, Header } from '@components/shared/UIStyles';
 import { SubTitle } from '@components/shared/TextStyles';
-import Button from '@components/chatRoomExit/Button';
+import Button from '@components/shared/Button';
 import OkiiLogoIcon from '@assets/okii_log.svg?react';
 import Icons from '@assets/icon_group.svg?react';
 import { useNavigate } from 'react-router-dom';

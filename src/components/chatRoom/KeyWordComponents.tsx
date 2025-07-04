@@ -16,11 +16,13 @@ interface KeyWordComponentsProps {
 }
 const KeyWordComponents = ({ keyword, peoplenum }: KeyWordComponentsProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
   const [selectedKeyword, setSelectedKeyword] = useState<string>('');
   const handleClick = (item: string) => {
     setSelectedKeyword(item);
     setIsOpen(true);
   };
+
   return (
     <>
       <KeyWordContainer>
