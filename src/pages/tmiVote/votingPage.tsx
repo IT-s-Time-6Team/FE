@@ -51,7 +51,23 @@ const VotingPage = () => {
     // 이미 연결된 client가 있다면 재연결 X
     if (client && client.connected) {
       console.log('이미 연결된 웹소켓 사용');
-      return;
+      const subscription = client.subscribe(`/topic/room/${roomKey}/messages`, (message) => {
+        try {
+          if (hasRoomEnded.current) return;
+          const data = JSON.parse(message.body);
+          if (data.type === 'TMI_VOTING_PROGRESS') {
+            setProcessRate(data.data);
+          } else if (data.type === 'TMI_ROUND_COMPLETED') {
+            // navigate(`/tmi/${roomKey}/voting`);
+          } else if (data.type === 'TMI_ALL_COMPLETED') {
+            // navigate(`/tmi/${roomKey}/voting`);
+          }
+        } catch (e) {
+          console.error('메시지 파싱 오류:', e);
+        }
+      });
+
+      return () => subscription.unsubscribe(); // cleanup
     }
     const socket = new SockJS('/api/connect');
     const newClient = new Client({
