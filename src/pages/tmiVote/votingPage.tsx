@@ -12,7 +12,7 @@ import axios from 'axios';
 
 import { useLocation } from 'react-router-dom';
 const VotingPage = () => {
-  const { setClient } = useWebSocketStore();
+  const { client, setClient } = useWebSocketStore();
   const [processRate, setProcessRate] = useState<number>(0);
   const location = useLocation();
   const hasRoomEnded = useRef(false);
@@ -48,14 +48,18 @@ const VotingPage = () => {
 
   useEffect(() => {
     if (!roomKey) return;
-
+    // 이미 연결된 client가 있다면 재연결 X
+    if (client && client.connected) {
+      console.log('이미 연결된 웹소켓 사용');
+      return;
+    }
     const socket = new SockJS('/api/connect');
-    const client = new Client({
+    const newClient = new Client({
       webSocketFactory: () => socket,
       onConnect: () => {
         console.log('웹소켓 연결 성공!');
-        setClient(client);
-        client.subscribe(`/topic/room/${roomKey}/messages`, (message) => {
+        setClient(newClient);
+        newClient.subscribe(`/topic/room/${roomKey}/messages`, (message) => {
           try {
             if (hasRoomEnded.current) return;
             const data = JSON.parse(message.body);
@@ -82,8 +86,8 @@ const VotingPage = () => {
       },
     });
 
-    client.activate();
-    setClient(client);
+    newClient.activate();
+    setClient(newClient);
 
     return () => {};
   }, [roomKey]);
