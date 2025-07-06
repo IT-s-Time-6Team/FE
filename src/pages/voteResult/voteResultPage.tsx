@@ -12,6 +12,8 @@ import { keyframes } from '@emotion/react';
 
 import { getTmiVoteResult } from '@api/voteResult';
 import { useParams } from 'react-router-dom';
+import useRoomUsersStore from '@store/useRoomUsersStore';
+import { CharacterMap, CharacterKey } from '@components/shared/CharacterMap';
 
 interface VoteCount {
   nickname: string;
@@ -40,15 +42,14 @@ const VoteResult = () => {
 
     (async () => {
       try {
-        const d = await getTmiVoteResult(roomKey);
-        console.log(d);
-        setIsCorrect(d.isCorrect);
-        setTmiMessage(d.tmiContent);
-        setMyVote(d.myVote);
-        setCorrectAnswer(d.correctAnswer);
+        const data = await getTmiVoteResult(roomKey);
+        console.log(data);
+        setIsCorrect(data.isCorrect);
+        setTmiMessage(data.tmiContent);
+        setMyVote(data.myVote);
+        setCorrectAnswer(data.correctAnswer);
 
-        // Object → Array & 득표수 내림차순
-        const counts = Object.entries(d.votingResults)
+        const counts = Object.entries(data.votingResults)
           .map(([nickname, count]) => ({ nickname, count }))
           .sort((a, b) => b.count - a.count);
         setVoteCounts(counts);
@@ -58,6 +59,11 @@ const VoteResult = () => {
     })();
   }, [roomKey]);
 
+  const users = useRoomUsersStore((state) => state.users);
+  const votedUser = users.find((user) => user.nickname === myVote);
+  const rawChar = votedUser?.character ?? 'rabbit';
+  const key = rawChar as CharacterKey;
+  const characterImg = CharacterMap[key];
   return (
     <Container>
       <VoteResultHeader>
@@ -69,7 +75,7 @@ const VoteResult = () => {
         </SubTitle>
       </VoteResultHeader>
       <VoteCandidateContainer>
-        <CandidateCharacter />
+        <CandidateCharacter src={characterImg} />
         <StampWrapper>
           {isCorrect ? (
             <StampImage src={SuccessStamp} alt='성공 스탬프' />
