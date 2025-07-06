@@ -44,7 +44,7 @@ const VoteResult = () => {
       try {
         const data = await getTmiVoteResult(roomKey);
         console.log(data);
-        setIsCorrect(data.isCorrect);
+        setIsCorrect(false);
         setTmiMessage(data.tmiContent);
         setMyVote(data.myVote);
         setCorrectAnswer(data.correctAnswer);
@@ -116,7 +116,12 @@ const VoteResult = () => {
       <Button onClick={() => {}} text='다음으로' />
       {isOpen && (
         <ModalPortal>
-          <SummaryModal onClose={handleCloseModal} />
+          <SummaryModal
+            correctAnswer={correctAnswer}
+            tmiContent={tmiMessage}
+            character={votedUser?.character ?? 'rabbit'}
+            onClose={handleCloseModal}
+          />
         </ModalPortal>
       )}
     </Container>
