@@ -4,14 +4,29 @@ import { SubTitle, Title } from '@components/shared/TextStyles';
 import CheverRightIcon from '@assets/Main/chevronright_icon.svg?react';
 import Button from '@components/shared/Button';
 import SummaryModal from '@components/voteResult/SummaryModal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ModalPortal } from '@components/shared/ModalPortal';
 import SuccessStamp from '@assets/voteResult/success_stamp.png';
 import FailStamp from '@assets/voteResult/fail_stamp.png';
 import { keyframes } from '@emotion/react';
 
+import { getTmiVoteResult } from '@api/voteResult';
+import { useParams } from 'react-router-dom';
+
+interface VoteCount {
+  nickname: string;
+  count: number;
+}
+
 const VoteResult = () => {
-  const isCorrect = true;
+  const { roomKey } = useParams<{ roomKey: string }>();
+
+  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+  const [tmiMessage, setTmiMessage] = useState('');
+  const [myVote, setMyVote] = useState('');
+  const [correctAnswer, setCorrectAnswer] = useState('');
+  const [voteCounts, setVoteCounts] = useState<VoteCount[]>([]);
+
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const handleOpenModal = () => {
     setIsOpen(true);
@@ -20,13 +35,37 @@ const VoteResult = () => {
     setIsOpen(false);
   };
 
+  useEffect(() => {
+    if (!roomKey) return;
+
+    (async () => {
+      try {
+        const d = await getTmiVoteResult(roomKey);
+        console.log(d);
+        setIsCorrect(d.isCorrect);
+        setTmiMessage(d.tmiContent);
+        setMyVote(d.myVote);
+        setCorrectAnswer(d.correctAnswer);
+
+        // Object → Array & 득표수 내림차순
+        const counts = Object.entries(d.votingResults)
+          .map(([nickname, count]) => ({ nickname, count }))
+          .sort((a, b) => b.count - a.count);
+        setVoteCounts(counts);
+      } catch (err) {
+        console.error('투표 결과 조회 실패:', err);
+      }
+    })();
+  }, [roomKey]);
+
   return (
     <Container>
       <VoteResultHeader>
         <ResultText> {isCorrect ? 'TMI 맞추기 성공!' : 'TMI 맞추기 실패!'}</ResultText>
         <SubTitle>
-          {' '}
-          {isCorrect ? '하나 님은 TMI의 주인이 맞습니다.' : '하나 님은 TMI의 주인이 아닙니다.'}
+          {isCorrect
+            ? `${correctAnswer} 님은 TMI의 주인이 맞습니다.`
+            : `${correctAnswer} 님이 TMI의 주인이었습니다.`}
         </SubTitle>
       </VoteResultHeader>
       <VoteCandidateContainer>
@@ -38,7 +77,7 @@ const VoteResult = () => {
             <StampImage src={FailStamp} alt='실패 스탬프' />
           )}
         </StampWrapper>
-        <CandidateTMI>오늘 아침에 양치하다가 칫솔을 떨어뜨려서 새 칫솔로 교체했어요.</CandidateTMI>
+        <CandidateTMI>{tmiMessage}</CandidateTMI>
       </VoteCandidateContainer>
       <AnswerButton>
         {!isCorrect && (
@@ -53,16 +92,18 @@ const VoteResult = () => {
         <MyVoteContainer>
           <VoteText>나의 투표</VoteText>
           <VoteSubContainer>
-            <SubTitle>하나</SubTitle>
+            <SubTitle>{myVote}</SubTitle>
           </VoteSubContainer>
         </MyVoteContainer>
         <Result>
           <VoteText>투표 결과</VoteText>
           <VoteSubContainer>
-            <VotenameContainer>
-              <SubTitle>하나</SubTitle>
-              <SubTitle>3표</SubTitle>
-            </VotenameContainer>
+            {voteCounts.map(({ nickname, count }) => (
+              <VotenameContainer key={nickname}>
+                <SubTitle>{nickname}</SubTitle>
+                <SubTitle>{count}표</SubTitle>
+              </VotenameContainer>
+            ))}
           </VoteSubContainer>
         </Result>
       </ResultContainer>
@@ -123,6 +164,7 @@ const StampImage = styled.img`
 `;
 
 const CandidateTMI = styled(SubTitle)`
+  width: 100%;
   padding: 19px 24px;
   border-radius: 12px;
 
