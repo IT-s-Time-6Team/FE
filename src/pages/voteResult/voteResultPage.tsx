@@ -43,8 +43,7 @@ const VoteResult = () => {
     (async () => {
       try {
         const data = await getTmiVoteResult(roomKey);
-        console.log(data);
-        setIsCorrect(false);
+        setIsCorrect(data.isCorrect);
         setTmiMessage(data.tmiContent);
         setMyVote(data.myVote);
         setCorrectAnswer(data.correctAnswer);
@@ -62,16 +61,18 @@ const VoteResult = () => {
   const users = useRoomUsersStore((state) => state.users);
   const votedUser = users.find((user) => user.nickname === myVote);
   const rawChar = votedUser?.character ?? 'rabbit';
-  const key = rawChar as CharacterKey;
+  const key = rawChar.toUpperCase() as CharacterKey;
   const characterImg = CharacterMap[key];
+  const correctUser = users.find((user) => user.nickname === correctAnswer);
+
   return (
     <Container>
       <VoteResultHeader>
         <ResultText> {isCorrect ? 'TMI 맞추기 성공!' : 'TMI 맞추기 실패!'}</ResultText>
         <SubTitle>
           {isCorrect
-            ? `${correctAnswer} 님은 TMI의 주인이 맞습니다.`
-            : `${correctAnswer} 님이 TMI의 주인이었습니다.`}
+            ? `${myVote} 님은 TMI의 주인이 맞습니다.`
+            : `${myVote} 님은 TMI의 주인이 아닙니다.`}
         </SubTitle>
       </VoteResultHeader>
       <VoteCandidateContainer>
@@ -103,14 +104,14 @@ const VoteResult = () => {
         </MyVoteContainer>
         <Result>
           <VoteText>투표 결과</VoteText>
-          <VoteSubContainer>
+          <ResultSubContainer>
             {voteCounts.map(({ nickname, count }) => (
               <VotenameContainer key={nickname}>
                 <SubTitle>{nickname}</SubTitle>
                 <SubTitle>{count}표</SubTitle>
               </VotenameContainer>
             ))}
-          </VoteSubContainer>
+          </ResultSubContainer>
         </Result>
       </ResultContainer>
       <Button onClick={() => {}} text='다음으로' />
@@ -119,7 +120,7 @@ const VoteResult = () => {
           <SummaryModal
             correctAnswer={correctAnswer}
             tmiContent={tmiMessage}
-            character={votedUser?.character ?? 'rabbit'}
+            character={correctUser?.character ?? 'bear'}
             onClose={handleCloseModal}
           />
         </ModalPortal>
@@ -176,6 +177,7 @@ const StampImage = styled.img`
 
 const CandidateTMI = styled(SubTitle)`
   width: 100%;
+  height: 80px;
   padding: 19px 24px;
   border-radius: 12px;
 
@@ -238,6 +240,12 @@ const VoteText = styled(SubTitle)`
 `;
 const VoteSubContainer = styled(Header)`
   gap: 14px;
+`;
+
+const ResultSubContainer = styled(VoteSubContainer)`
+  height: 50px;
+  flex-wrap: wrap;
+  overflow-y: auto;
 `;
 const VotenameContainer = styled(Header)`
   flex-direction: row;

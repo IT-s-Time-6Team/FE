@@ -75,11 +75,17 @@ const UserEnterChatRoom = () => {
     try {
       const res = await joinRoom(roomKey, { nickname, password });
       console.log(res);
-      if (res.data.data.isLeader) {
+      if (res.data.data.isLeader && useRoomUsersStore.getState().users.length === 0) {
         resetUsers();
       }
+
+      const currentUsers = useRoomUsersStore.getState().users;
+      const alreadyIn = currentUsers.some((user) => user.nickname === res.data.data.nickname);
+
       addUser(res.data.data);
-      setUser(res.data.data);
+      if (!alreadyIn) {
+        setUser(res.data.data);
+      }
       const updatedUsers = useRoomUsersStore.getState().users;
       console.log('전역 저장된 users:', updatedUsers);
       if (gameMode === 'TMI') {
