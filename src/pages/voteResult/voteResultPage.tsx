@@ -11,7 +11,7 @@ import FailStamp from '@assets/voteResult/fail_stamp.png';
 import { keyframes } from '@emotion/react';
 
 import { getTmiVoteResult } from '@api/voteResult';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import useRoomUsersStore from '@store/useRoomUsersStore';
 import { CharacterMap, CharacterKey } from '@components/shared/CharacterMap';
 
@@ -28,6 +28,8 @@ const VoteResult = () => {
   const [myVote, setMyVote] = useState('');
   const [correctAnswer, setCorrectAnswer] = useState('');
   const [voteCounts, setVoteCounts] = useState<VoteCount[]>([]);
+  const [round, setRound] = useState<number>(0);
+  const navigate = useNavigate();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const handleOpenModal = () => {
@@ -47,6 +49,7 @@ const VoteResult = () => {
         setTmiMessage(data.tmiContent);
         setMyVote(data.myVote);
         setCorrectAnswer(data.correctAnswer);
+        setRound(data.round);
 
         const counts = Object.entries(data.votingResults)
           .map(([nickname, count]) => ({ nickname, count }))
@@ -64,6 +67,14 @@ const VoteResult = () => {
   const key = rawChar.toUpperCase() as CharacterKey;
   const characterImg = CharacterMap[key];
   const correctUser = users.find((user) => user.nickname === correctAnswer);
+
+  const handleNext = () => {
+    if (round === users.length - 1) {
+      navigate(`tmi/${roomKey}/result`);
+    } else {
+      navigate(`/tmi/${roomKey}/vote`);
+    }
+  };
 
   return (
     <Container>
@@ -114,7 +125,7 @@ const VoteResult = () => {
           </ResultSubContainer>
         </Result>
       </ResultContainer>
-      <Button onClick={() => {}} text='다음으로' />
+      <Button onClick={handleNext} text='다음으로' />
       {isOpen && (
         <ModalPortal>
           <SummaryModal
