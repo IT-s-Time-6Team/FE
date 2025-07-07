@@ -45,6 +45,8 @@ const UserEnterChatRoom = () => {
 
   const { roomKey } = useParams();
   const navigate = useNavigate();
+  const prevRoomKey = useRoomUsersStore.getState().roomKey;
+  const setRoomKey = useRoomUsersStore.getState().setRoomKey;
   const addUser = useRoomUsersStore((state) => state.addUser);
   const resetUsers = useRoomUsersStore((state) => state.resetUsers);
   const setUser = useRoomUsersStore((state) => state.setUser);
@@ -75,9 +77,11 @@ const UserEnterChatRoom = () => {
     try {
       const res = await joinRoom(roomKey, { nickname, password });
       console.log(res);
-      if (res.data.data.isLeader && useRoomUsersStore.getState().users.length === 0) {
-        resetUsers();
+
+      if (res.data.data.isLeader && roomKey !== prevRoomKey) {
+        resetUsers(); // 새로운 방이면 초기화
       }
+      setRoomKey(roomKey); // 무조건 현재 roomKey로 갱신
 
       const currentUsers = useRoomUsersStore.getState().users;
       const alreadyIn = currentUsers.some((user) => user.nickname === res.data.data.nickname);

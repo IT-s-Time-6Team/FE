@@ -20,15 +20,26 @@ interface VoteCount {
   count: number;
 }
 
+type VoteResultState = {
+  isCorrect: boolean | null;
+  tmiMessage: string;
+  myVote: string;
+  correctAnswer: string;
+  voteCounts: VoteCount[];
+  round: number;
+};
+
 const VoteResult = () => {
   const { roomKey } = useParams<{ roomKey: string }>();
 
-  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
-  const [tmiMessage, setTmiMessage] = useState('');
-  const [myVote, setMyVote] = useState('');
-  const [correctAnswer, setCorrectAnswer] = useState('');
-  const [voteCounts, setVoteCounts] = useState<VoteCount[]>([]);
-  const [round, setRound] = useState<number>(0);
+  const [state, setState] = useState<VoteResultState>({
+    isCorrect: null,
+    tmiMessage: '',
+    myVote: '',
+    correctAnswer: '',
+    voteCounts: [],
+    round: 0,
+  });
   const navigate = useNavigate();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -45,16 +56,17 @@ const VoteResult = () => {
     (async () => {
       try {
         const data = await getTmiVoteResult(roomKey);
-        setIsCorrect(data.isCorrect);
-        setTmiMessage(data.tmiContent);
-        setMyVote(data.myVote);
-        setCorrectAnswer(data.correctAnswer);
-        setRound(data.round);
-
         const counts = Object.entries(data.votingResults)
           .map(([nickname, count]) => ({ nickname, count }))
           .sort((a, b) => b.count - a.count);
-        setVoteCounts(counts);
+        setState({
+          isCorrect: data.isCorrect,
+          tmiMessage: data.tmiContent,
+          myVote: data.myVote,
+          correctAnswer: data.correctAnswer,
+          voteCounts: counts,
+          round: data.round,
+        });
       } catch (err) {
         console.error('투표 결과 조회 실패:', err);
       }
@@ -62,14 +74,14 @@ const VoteResult = () => {
   }, [roomKey]);
 
   const users = useRoomUsersStore((state) => state.users);
-  const votedUser = users.find((user) => user.nickname === myVote);
+  const votedUser = users.find((user) => user.nickname === state.myVote);
   const rawChar = votedUser?.character ?? 'rabbit';
   const key = rawChar.toUpperCase() as CharacterKey;
   const characterImg = CharacterMap[key];
-  const correctUser = users.find((user) => user.nickname === correctAnswer);
+  const correctUser = users.find((user) => user.nickname === state.correctAnswer);
 
   const handleNext = () => {
-    if (round === users.length - 1) {
+    if (state.round === users.length - 1) {
       navigate(`tmi/${roomKey}/result`);
     } else {
       navigate(`/tmi/${roomKey}/vote`);
@@ -79,26 +91,26 @@ const VoteResult = () => {
   return (
     <Container>
       <VoteResultHeader>
-        <ResultText> {isCorrect ? 'TMI 맞추기 성공!' : 'TMI 맞추기 실패!'}</ResultText>
+        <ResultText> {state.isCorrect ? 'TMI 맞추기 성공!' : 'TMI 맞추기 실패!'}</ResultText>
         <SubTitle>
-          {isCorrect
-            ? `${myVote} 님은 TMI의 주인이 맞습니다.`
-            : `${myVote} 님은 TMI의 주인이 아닙니다.`}
+          {state.isCorrect
+            ? `${state.myVote} 님은 TMI의 주인이 맞습니다.`
+            : `${state.myVote} 님은 TMI의 주인이 아닙니다.`}
         </SubTitle>
       </VoteResultHeader>
       <VoteCandidateContainer>
         <CandidateCharacter src={characterImg} />
         <StampWrapper>
-          {isCorrect ? (
+          {state.isCorrect ? (
             <StampImage src={SuccessStamp} alt='성공 스탬프' />
           ) : (
             <StampImage src={FailStamp} alt='실패 스탬프' />
           )}
         </StampWrapper>
-        <CandidateTMI>{tmiMessage}</CandidateTMI>
+        <CandidateTMI>{state.tmiMessage}</CandidateTMI>
       </VoteCandidateContainer>
       <AnswerButton>
-        {!isCorrect && (
+        {!state.isCorrect && (
           <AnswerWrapper onClick={handleOpenModal}>
             <SubTitle>정답보기</SubTitle>
             <CheverRight />
@@ -110,13 +122,13 @@ const VoteResult = () => {
         <MyVoteContainer>
           <VoteText>나의 투표</VoteText>
           <VoteSubContainer>
-            <SubTitle>{myVote}</SubTitle>
+            <SubTitle>{state.myVote}</SubTitle>
           </VoteSubContainer>
         </MyVoteContainer>
         <Result>
           <VoteText>투표 결과</VoteText>
           <ResultSubContainer>
-            {voteCounts.map(({ nickname, count }) => (
+            {state.voteCounts.map(({ nickname, count }) => (
               <VotenameContainer key={nickname}>
                 <SubTitle>{nickname}</SubTitle>
                 <SubTitle>{count}표</SubTitle>
@@ -129,8 +141,8 @@ const VoteResult = () => {
       {isOpen && (
         <ModalPortal>
           <SummaryModal
-            correctAnswer={correctAnswer}
-            tmiContent={tmiMessage}
+            correctAnswer={state.correctAnswer}
+            tmiContent={state.tmiMessage}
             character={correctUser?.character ?? 'bear'}
             onClose={handleCloseModal}
           />
