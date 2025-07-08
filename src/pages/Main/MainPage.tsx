@@ -12,6 +12,7 @@ import InprogresssModeBox from '@components/Main/InProgressMode';
 
 import { useNavigate } from 'react-router-dom';
 import { createRoom } from '@api/chatRoomCreated';
+import BalanceModeBox from '@components/Main/BalanceMode';
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ const MainPage = () => {
   const MAX = 7;
   const [empathyCount, setEmpathyCount] = useState(2);
   const [maxCount, setMaxCount] = useState(2);
+  const [problemCount, setProblemCount] = useState(2);
 
   const increaseEmpathy = () => {
     if (empathyCount < MAX) {
@@ -33,8 +35,16 @@ const MainPage = () => {
     if (empathyCount > MIN) setEmpathyCount(empathyCount - 1);
   };
 
-  const increaseMax = () => {
-    if (maxCount < MAX) setMaxCount(maxCount + 1);
+  const increaseValue = (
+    value: number,
+    setValue: React.Dispatch<React.SetStateAction<number>>,
+    MAX: number,
+  ) => {
+    if (value < MAX) setValue(value + 1);
+  };
+
+  const decreaseProblem = () => {
+    if (problemCount > MIN) setProblemCount(problemCount - 1);
   };
 
   const decreaseMax = () => {
@@ -97,10 +107,10 @@ const MainPage = () => {
     <MainContainer>
       <MainHeader>
         <Logo />
-        <IconStyle $visible={activeMode !== 2}>
+        <IconStyle $visible={activeMode !== 3}>
           <MainIcon />
         </IconStyle>
-        <IconStyle $visible={activeMode === 2}>
+        <IconStyle $visible={activeMode === 3}>
           <DevelopmentLogo />
         </IconStyle>
       </MainHeader>
@@ -126,7 +136,7 @@ const MainPage = () => {
                 timeLimit={timeLimit}
                 increaseEmpathy={increaseEmpathy}
                 decreaseEmpathy={decreaseEmpathy}
-                increaseMax={increaseMax}
+                increaseMax={() => increaseValue(maxCount, setMaxCount, MAX)}
                 decreaseMax={decreaseMax}
                 increaseTime={increaseTime}
                 decreaseTime={decreaseTime}
@@ -137,8 +147,20 @@ const MainPage = () => {
               {/* 두 번째 슬라이드: TMI 모드 */}
               <TmiModeBox
                 maxCount={maxCount}
-                increaseMax={increaseMax}
+                increaseMax={() => increaseValue(maxCount, setMaxCount, MAX)}
                 decreaseMax={decreaseMax}
+                onCreateRoom={handleCreateRoom}
+              />
+            </SlideBox>
+
+            <SlideBox>
+              <BalanceModeBox
+                maxCount={maxCount}
+                increaseMax={() => increaseValue(maxCount, setMaxCount, MAX)}
+                decreaseMax={decreaseMax}
+                problemCount={problemCount}
+                increaseProblem={() => increaseValue(problemCount, setProblemCount, MAX)}
+                decreaseProblem={decreaseProblem}
                 onCreateRoom={handleCreateRoom}
               />
             </SlideBox>
@@ -150,9 +172,9 @@ const MainPage = () => {
         </SliderWrapper>
 
         <ChevronRight
-          $isRightActive={activeMode === 2}
+          $isRightActive={activeMode === 3}
           onClick={() => {
-            if (activeMode < 2) {
+            if (activeMode < 3) {
               setActiveMode(activeMode + 1);
               setEmpathyCount(2);
               setMaxCount(2);
@@ -202,9 +224,9 @@ const SliderWrapper = styled.div`
 `;
 const SlideInner = styled.div<{ $activeIndex: number }>`
   display: flex;
-  width: 300%;
+  width: 400%;
   transition: transform 0.3s ease-in-out;
-  transform: translateX(${({ $activeIndex }) => `-${($activeIndex * 100) / 3}%`});
+  transform: translateX(${({ $activeIndex }) => `-${($activeIndex * 100) / 4}%`});
 `;
 const SlideBox = styled.div`
   width: 287px;
