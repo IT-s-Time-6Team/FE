@@ -37,6 +37,7 @@ function App() {
             <Route path='/tmi/:roomKey/load' element={<TMILoadPage />} />
             <Route path='/tmi/:roomKey/hint' element={<TMIHintPage />} />
             <Route path='/tmi/:roomKey/voteResult' element={<VoteResult />} />
+            <Route path='/tmi/exit' element={<TmiExitPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

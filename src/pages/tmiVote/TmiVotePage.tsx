@@ -73,6 +73,25 @@ const TmiVotePage = () => {
       throw error;
     }
   };
+  const fetchProcessRate = async () => {
+    try {
+      const res = await axios.get(`/api/tmi/rooms/${roomKey}/status`, {
+        withCredentials: true,
+      });
+      if (res.data) {
+        console.log('TMI 수집 상태:', res.data.data);
+        console.log('TMI 수집 진행률:', res.data.data.progress);
+      }
+    } catch (error) {
+      console.error('Error fetching process rate:', error);
+      navigate('/rooms/exit');
+    }
+  };
+  useEffect(() => {
+    if (roomKey) {
+      fetchProcessRate();
+    }
+  }, [roomKey]);
   return (
     <VoteRoomContainer>
       <ChatRoomHeader>
