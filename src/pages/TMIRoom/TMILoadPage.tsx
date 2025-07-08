@@ -1,7 +1,7 @@
 import CountUp from 'react-countup';
 import { ChatRoomContainer } from '../../styles/chatRoom/chatRoom';
 import { TMIdetail, TMIImg, TMItitle } from './TMIInputPage';
-import pan from '@assets/tmi/TMIPan.svg';
+import pan from '@assets/tmi/pan.svg';
 import styled from '@emotion/styled';
 import { Client } from '@stomp/stompjs';
 import { useEffect, useRef, useState } from 'react';
@@ -45,7 +45,10 @@ const TMILoadPage = () => {
         console.log('TMI 수집 상태:', res.data.data);
         console.log('TMI 수집 진행률:', res.data.data.progress);
         setProcessRate(res.data.data.progress);
-        if (res.data.data.progress === 100) {
+        if (
+          (res.data.data.currentStep == 'COLLECTING_TMI' && res.data.data.progress === 100) ||
+          res.data.data.currentStep == 'HINT'
+        ) {
           hasRoomEnded.current = true;
           setTimeout(() => {
             navigate(`/tmi/${roomKey}/hint`);

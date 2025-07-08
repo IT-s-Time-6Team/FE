@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ChatRoomContainer } from '../../styles/chatRoom/chatRoom';
 import { TMIdetail, TMIImg, TMItitle } from './TMIInputPage';
-import tmi from '@assets/tmi/TMI.svg';
+import tmi from '@assets/tmi/tmiLogo.svg';
 import styled from '@emotion/styled';
 import ForceCloseModal from './ForceCloseModal';
 import { useWebSocketStore } from '@store/useWebSocketStore';
@@ -33,7 +33,9 @@ const TMIHintPage = () => {
             if (data.type === 'TMI_HINT_TIME_REMAINING') {
               setRemainingTime(data.data || '00:00:00');
             } else if (data.type === 'TMI_HINT_ENDED') {
-              navigate(`/tmi/${roomKey}/vote`);
+              navigate(`/tmi/${roomKey}/vote`, {
+                state: { roomKey },
+              });
             }
           } catch (e) {
             console.error('메시지 파싱 오류:', e);

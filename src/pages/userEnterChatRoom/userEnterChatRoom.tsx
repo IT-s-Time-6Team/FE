@@ -45,6 +45,8 @@ const UserEnterChatRoom = () => {
 
   const { roomKey } = useParams();
   const navigate = useNavigate();
+  const prevRoomKey = useRoomUsersStore.getState().roomKey;
+  const setRoomKey = useRoomUsersStore.getState().setRoomKey;
   const addUser = useRoomUsersStore((state) => state.addUser);
   const resetUsers = useRoomUsersStore((state) => state.resetUsers);
   const setUser = useRoomUsersStore((state) => state.setUser);
@@ -53,20 +55,56 @@ const UserEnterChatRoom = () => {
 
   const { title, button } = MODE_CONFIG[gameMode];
 
+  const fetchCurrentStep = async () => {
+    if (!roomKey) return;
+    try {
+      const res = await axios.get(`/api/tmi/rooms/${roomKey}/status`, {
+        withCredentials: true,
+      });
+      if (res.data) {
+        console.log('진행 상태:', res.data.data);
+        console.log('진행률:', res.data.data.progress);
+        return res.data.data.currentStep;
+      }
+    } catch (error) {
+      console.error('Error fetching process rate:', error);
+      navigate('/rooms/exit');
+    }
+  };
+
   const handleJoin = async () => {
     if (!roomKey) return;
     try {
       const res = await joinRoom(roomKey, { nickname, password });
       console.log(res);
-      if (res.data.data.isLeader) {
-        resetUsers();
+
+      if (res.data.data.isLeader && roomKey !== prevRoomKey) {
+        resetUsers(); // 새로운 방이면 초기화
       }
+      setRoomKey(roomKey); // 무조건 현재 roomKey로 갱신
+
+      const currentUsers = useRoomUsersStore.getState().users;
+      const alreadyIn = currentUsers.some((user) => user.nickname === res.data.data.nickname);
+
       addUser(res.data.data);
-      setUser(res.data.data);
+      if (!alreadyIn) {
+        setUser(res.data.data);
+      }
       const updatedUsers = useRoomUsersStore.getState().users;
       console.log('전역 저장된 users:', updatedUsers);
       if (gameMode === 'TMI') {
-        navigate(`/tmi/${roomKey}/input`);
+        const currentStep = await fetchCurrentStep();
+        if (currentStep === 'COLLECTING_TMI') {
+          navigate(`/tmi/${roomKey}/input`);
+        } else if (currentStep === 'HINT') {
+          navigate(`/tmi/${roomKey}/load`);
+        } else if (currentStep === 'VOTING') {
+          navigate(`/tmi/${roomKey}/vote`, {
+            state: { roomKey },
+          });
+        } else if (currentStep === 'COMPLETED') {
+          // navigate(`/tmi/${roomKey}/result`);
+        }
         return;
       }
       navigate(`/rooms/${roomKey}/chat`);
