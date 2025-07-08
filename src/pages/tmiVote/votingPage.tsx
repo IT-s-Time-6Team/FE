@@ -82,10 +82,9 @@ const VotingPage = () => {
             if (data.type === 'TMI_VOTING_PROGRESS') {
               setProcessRate(data.data);
             } else if (data.type === 'TMI_ROUND_COMPLETED') {
-              // TMI 라운드 투표 완료 -> 투표 결과 확인 페이지로 이동
-              /* navigate(`/tmi/${roomKey}/voting`, {
+              navigate(`/tmi/${roomKey}/voteResult`, {
                 state: { roomKey },
-              }); */
+              });
             } else if (data.type === 'TMI_ALL_COMPLETED') {
               // 모든 TMI 투표 완료 -> 게임 결과 페이지로 이동
               /* navigate(`/tmi/${roomKey}/voting`, {

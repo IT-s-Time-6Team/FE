@@ -2,24 +2,26 @@ import styled from '@emotion/styled';
 import { Mask, ModalBody } from '@components/shared/ModalStyles';
 import { SubTitle } from '@components/shared/TextStyles';
 import { Header } from '@components/shared/UIStyles';
+import { CharacterMap, CharacterKey } from '@components/shared/CharacterMap';
 
 interface SummaryModalProps {
   onClose: () => void;
+  correctAnswer: string;
+  tmiContent: string;
+  character: string;
 }
 
-const SummaryModal = ({ onClose }: SummaryModalProps) => {
+const SummaryModal = ({ onClose, correctAnswer, tmiContent, character }: SummaryModalProps) => {
+  const charKey = character.toUpperCase() as CharacterKey;
+  const characterImg = CharacterMap[charKey];
   return (
     <Mask onClick={onClose}>
       <ModalBoddy>
-        <ModalTitle>정답은 두리 님이었습니다.</ModalTitle>
+        <ModalTitle>정답은 {correctAnswer} 님이었습니다.</ModalTitle>
         <MainContainer>
-          <CharacterImg />
+          <CharacterImg src={characterImg} />
           <Divider />
-          <TmiText>
-            “오늘 아침에 양치하다가 칫솔을
-            <br />
-            떨어뜨려서 새 칫솔로 교체했어요.”
-          </TmiText>
+          <TmiText>{tmiContent}</TmiText>
         </MainContainer>
       </ModalBoddy>
     </Mask>
