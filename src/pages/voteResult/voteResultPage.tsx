@@ -12,7 +12,6 @@ import { keyframes } from '@emotion/react';
 
 import { getTmiVoteResult } from '@api/voteResult';
 import { useNavigate, useParams } from 'react-router-dom';
-import useRoomUsersStore from '@store/useRoomUsersStore';
 import { CharacterMap, CharacterKey } from '@components/shared/CharacterMap';
 
 interface VoteCount {
@@ -24,7 +23,9 @@ type VoteResultState = {
   isCorrect: boolean | null;
   tmiMessage: string;
   myVote: string;
+  myCharacterType: string;
   correctAnswer: string;
+  answerMemberCharacterType?: string;
   voteCounts: VoteCount[];
   round: number;
 };
@@ -36,6 +37,8 @@ const VoteResult = () => {
     isCorrect: null,
     tmiMessage: '',
     myVote: '',
+    myCharacterType: '',
+    answerMemberCharacterType: '',
     correctAnswer: '',
     voteCounts: [],
     round: 0,
@@ -63,7 +66,9 @@ const VoteResult = () => {
           isCorrect: data.isCorrect,
           tmiMessage: data.tmiContent,
           myVote: data.myVote,
+          myCharacterType: data.myCharacterType,
           correctAnswer: data.correctAnswer,
+          answerMemberCharacterType: data.answerMemberCharacterType,
           voteCounts: counts,
           round: data.round,
         });
@@ -73,15 +78,12 @@ const VoteResult = () => {
     })();
   }, [roomKey]);
 
-  const users = useRoomUsersStore((state) => state.users);
-  const votedUser = users.find((user) => user.nickname === state.myVote);
-  const rawChar = votedUser?.character ?? 'rabbit';
+  const rawChar = state.myCharacterType ?? 'rabbit';
   const key = rawChar.toUpperCase() as CharacterKey;
   const characterImg = CharacterMap[key];
-  const correctUser = users.find((user) => user.nickname === state.correctAnswer);
 
   const handleNext = () => {
-    if (state.round === users.length - 1) {
+    if (state.round === 1) {
       navigate(`tmi/${roomKey}/result`);
     } else {
       navigate(`/tmi/${roomKey}/vote`);
@@ -143,7 +145,7 @@ const VoteResult = () => {
           <SummaryModal
             correctAnswer={state.correctAnswer}
             tmiContent={state.tmiMessage}
-            character={correctUser?.character ?? 'bear'}
+            character={state.answerMemberCharacterType ?? 'bear'}
             onClose={handleCloseModal}
           />
         </ModalPortal>

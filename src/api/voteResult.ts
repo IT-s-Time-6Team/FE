@@ -4,6 +4,8 @@ interface VotingResultsResponse {
   tmiContent: string;
   correctAnswer: string;
   myVote: string;
+  myCharacterType: string;
+  answerMemberCharacterType?: string;
   isCorrect: boolean;
   votingResults: Record<string, number>;
   round: number;
