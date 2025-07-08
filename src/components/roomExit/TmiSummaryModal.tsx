@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import { useRef } from 'react';
 import html2canvas from 'html2canvas';
 import { SubTitle, Title } from '@components/shared/TextStyles';
@@ -6,6 +5,16 @@ import { Mask, ModalBody } from '@components/shared/ModalStyles';
 import { RoomResult } from '@pages/tmiExit/tmiSummaryPage';
 import useRoomUsersStore from '@store/useRoomUsersStore';
 import CharacterIcons from '@components/shared/CharacterIcons';
+import {
+  ProfileContainer,
+  ProfileImage,
+  ProfileTextContainer,
+  Divider,
+  SaveInstruction,
+  InfoContainer,
+  KeywordContainer,
+  Keyword,
+} from '../../styles/roomExit/modalStyles';
 
 interface TmiSummaryModalProps {
   onClose: () => void;
@@ -91,50 +100,3 @@ const TmiSummaryModal = ({ onClose, data }: TmiSummaryModalProps) => {
   );
 };
 export default TmiSummaryModal;
-
-const ProfileContainer = styled.div`
-  display: flex;
-  gap: 14px;
-  align-items: center;
-`;
-
-const ProfileImage = styled.img`
-  background-color: #d9d9d9;
-  border-radius: 8px;
-`;
-
-const ProfileTextContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-`;
-
-const InfoContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-`;
-const KeywordContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-`;
-
-const Keyword = styled.p`
-  font-size: 18px;
-  font-weight: 600;
-`;
-
-const Divider = styled.div`
-  width: 257px;
-  height: 1px;
-  background-color: #f0f0f0;
-`;
-const SaveInstruction = styled.p`
-  font-size: 14px;
-  font-weight: 600;
-  color: white;
-  position: absolute;
-  bottom: -28px;
-  left: 64px;
-`;
