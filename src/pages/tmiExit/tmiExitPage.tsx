@@ -1,8 +1,8 @@
-import ChatRoomSummaryPage from './tmiSummaryPage';
+import TmiSummaryPage from './tmiSummaryPage';
 import { useState, useEffect } from 'react';
 import { useSearchParams, useLocation } from 'react-router-dom';
-import ChatRoomExpiredPage from './tmiExpiredPage';
-import { getTmiResult } from '@api/chatRoomResult';
+import TmiExpiredPage from './tmiExpiredPage';
+import { getTmiResult } from '@api/roomResult';
 import { RoomResult } from './tmiSummaryPage';
 // 채팅룸 종료 페이지
 const TmiExitPage = () => {
@@ -19,9 +19,9 @@ const TmiExitPage = () => {
     }
   }, [roomKey, isExpired]);
 
-  if (isExpired || !roomKey || roomResult === null) return <ChatRoomExpiredPage />;
+  if (isExpired || !roomKey || roomResult === null) return <TmiExpiredPage />;
 
   if (roomResult === undefined) return null;
-  return <ChatRoomSummaryPage roomResult={roomResult} />;
+  return <TmiSummaryPage roomResult={roomResult} />;
 };
 export default TmiExitPage;

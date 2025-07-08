@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Button from '@components/shared/Button';
 import { Container, Header, SkeletonBox } from '@components/shared/UIStyles';
 import { Title, SubTitle } from '@components/shared/TextStyles';
-import SummaryModal from '@components/chatRoomExit/SummaryModal';
+import SummaryModal from '@components/roomExit/SummaryModal';
 import { ModalPortal } from '@components/shared/ModalPortal';
 
 import DownloadIcon from '@assets/DownloadIcon.svg?react';

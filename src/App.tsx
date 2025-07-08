@@ -13,6 +13,7 @@ import VotingPage from '@pages/tmiVote/votingPage';
 import TMIInputPage from '@pages/TMIRoom/TMIInputPage';
 import TMILoadPage from '@pages/TMIRoom/TMILoadPage';
 import TMIHintPage from '@pages/TMIRoom/TMIHintPage';
+import TmiExitPage from '@pages/tmiExit/tmiExitPage';
 
 function App() {
   return (

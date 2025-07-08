@@ -2,9 +2,9 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '@components/shared/Button';
-import { Container, Header, SkeletonBox } from '@components/shared/UIStyles';
+import { Container, Header } from '@components/shared/UIStyles';
 import { Title, SubTitle } from '@components/shared/TextStyles';
-import SummaryModal from '@components/chatRoomExit/SummaryModal';
+import TmiSummaryModal from '@components/roomExit/TmiSummaryModal';
 import { ModalPortal } from '@components/shared/ModalPortal';
 
 import DownloadIcon from '@assets/DownloadIcon.svg?react';
@@ -43,41 +43,37 @@ const TmiSummaryPage = ({ roomResult }: { roomResult: RoomResult }) => {
         <SubTitle>대화는 즐거우셨나요? 요약 결과를 보여드릴게요.</SubTitle>
       </SummaryHeader>
       <StatsContainer>
-        {roomResult ? (
-          <Box>
-            <Wrapper>
-              <MainText>맞춘 TMI</MainText>
-              <Divider />
-              <TagWrapper>{roomResult.correctCount}개</TagWrapper>
-            </Wrapper>
-            <Wrapper>
-              <MainText>틀린 TMI</MainText>
-              <Divider />
-              <ResultText>{roomResult.incorrectCount}</ResultText>
-            </Wrapper>
-            <Wrapper>
-              <MainText>가장 TMI를 잘 맞춘 사람</MainText>
-              <Divider />
-              <ResultText>
-                1위:{' '}
-                {roomResult.topVoters?.length > 0 &&
-                  (roomResult.topVoters.length > 1
-                    ? `${roomResult.topVoters.map((voter) => `${voter.memberName}(${voter.correctCount}개)`).join(', ')}`
-                    : `${roomResult.topVoters[0].memberName}(${roomResult.topVoters[0].correctCount}개)`)}
-              </ResultText>
-            </Wrapper>
-            <Wrapper>
-              <MainText>가장 많은 사람이 틀린 TMI</MainText>
-              <Divider />
-              <ResultText>
-                {roomResult.mostIncorrectTmis?.length > 0 &&
-                  roomResult.mostIncorrectTmis[0].tmiContent}
-              </ResultText>
-            </Wrapper>
-          </Box>
-        ) : (
-          <SkeletonBox />
-        )}
+        <Box>
+          <Wrapper>
+            <MainText>맞춘 TMI</MainText>
+            <Divider />
+            <TagWrapper>{roomResult?.correctCount}개</TagWrapper>
+          </Wrapper>
+          <Wrapper>
+            <MainText>틀린 TMI</MainText>
+            <Divider />
+            <ResultText>{roomResult?.incorrectCount}</ResultText>
+          </Wrapper>
+          <Wrapper>
+            <MainText>가장 TMI를 잘 맞춘 사람</MainText>
+            <Divider />
+            <ResultText>
+              1위:{' '}
+              {roomResult?.topVoters?.length > 0 &&
+                (roomResult?.topVoters.length > 1
+                  ? `${roomResult?.topVoters.map((voter) => `${voter.memberName}(${voter.correctCount}개)`).join(', ')}`
+                  : `${roomResult?.topVoters[0].memberName}(${roomResult.topVoters[0].correctCount}개)`)}
+            </ResultText>
+          </Wrapper>
+          <Wrapper>
+            <MainText>가장 많은 사람이 틀린 TMI</MainText>
+            <Divider />
+            <ResultText>
+              {roomResult?.mostIncorrectTmis?.length > 0 &&
+                roomResult?.mostIncorrectTmis[0].tmiContent}
+            </ResultText>
+          </Wrapper>
+        </Box>
 
         <SaveWrapper onClick={handleOpenModal}>
           <Download />
@@ -98,7 +94,7 @@ const TmiSummaryPage = ({ roomResult }: { roomResult: RoomResult }) => {
       <Button text='메인으로 돌아가기' onClick={() => navigate('/rooms')} />
       {isOpen && roomResult && (
         <ModalPortal>
-          <SummaryModal onClose={handleCloseModal} data={roomResult} />
+          <TmiSummaryModal onClose={handleCloseModal} data={roomResult} />
         </ModalPortal>
       )}
     </Container>
