@@ -38,11 +38,9 @@ const CounterContainer = styled.div`
 
   display: flex;
   flex-direction: row;
-  gap: 53px;
+  justify-content: space-between;
 `;
-
 const InfoText = styled(Title)`
-  width: 80px;
   font-size: 14px;
   line-height: 140%;
 `;
