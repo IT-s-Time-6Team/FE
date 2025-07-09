@@ -21,7 +21,7 @@ const MainPage = () => {
   const MAX = 7;
   const [empathyCount, setEmpathyCount] = useState(2);
   const [maxCount, setMaxCount] = useState(2);
-  const [problemCount, setProblemCount] = useState(2);
+  const [problemCount, setProblemCount] = useState(1);
 
   const increaseEmpathy = () => {
     if (empathyCount < MAX) {
@@ -44,7 +44,7 @@ const MainPage = () => {
   };
 
   const decreaseProblem = () => {
-    if (problemCount > MIN) setProblemCount(problemCount - 1);
+    if (problemCount >= MIN) setProblemCount(problemCount - 1);
   };
 
   const decreaseMax = () => {
@@ -76,12 +76,26 @@ const MainPage = () => {
 
   const handleCreateRoom = async () => {
     try {
-      const gameMode = activeMode === 1 ? 'TMI' : activeMode === 2 ? 'INPROGRESS' : 'NORMAL';
+      const gameMode =
+        activeMode === 1
+          ? 'TMI'
+          : activeMode === 2
+            ? 'BALANCE'
+            : activeMode === 3
+              ? 'InProgress'
+              : 'NORMAL';
+
       let payload;
       if (gameMode === 'TMI') {
         payload = {
           maxMember: maxCount,
           gameMode: 'TMI',
+        };
+      } else if (gameMode === 'BALANCE') {
+        payload = {
+          maxMember: maxCount,
+          gameMode: 'BALANCE',
+          balanceQuestionCount: problemCount,
         };
       } else {
         payload = {

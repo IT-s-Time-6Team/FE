@@ -57,7 +57,7 @@ const BalanceModeBox = ({
           unit='개'
           onIncrease={increaseProblem}
           onDecrease={decreaseProblem}
-          isDownActive={problemCount < 3}
+          isDownActive={problemCount < 2}
           isUpActive={problemCount >= 7}
         />
       </BalanceBoxSelector>
