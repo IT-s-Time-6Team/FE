@@ -11,6 +11,7 @@ import searchIcon from '@assets/v2/search.svg';
 import Button from '@components/shared/Button';
 import { getVoteInfo } from '@api/voteInfo';
 import useRoomUsersStore from '@store/useRoomUsersStore';
+import { useWebSocketStore } from '@store/useWebSocketStore';
 import axios from 'axios';
 type VoteInfo = {
   tmiContent: string;
@@ -27,6 +28,7 @@ const TmiVotePage = () => {
   const navigate = useNavigate();
   const roomKey = location.state?.roomKey;
   const user = useRoomUsersStore((state) => state.user);
+  const { client } = useWebSocketStore();
   const filteredNicknames = useMemo(() => {
     return (
       voteInfo?.members.filter((nickname) =>
@@ -34,15 +36,30 @@ const TmiVotePage = () => {
       ) || []
     );
   }, [voteInfo, searchQuery]);
-
   useEffect(() => {
-    if (roomKey) {
-      getVoteInfo(roomKey)
-        .then((res) => setVoteInfo(res.data))
-        .catch(() => setVoteInfo(null));
+    if (!roomKey) return;
+
+    // 이미 연결된 client가 있으면 구독만 수행
+    if (client && client.connected) {
+      console.log('이미 연결된 웹소켓 사용');
+      console.log(`topic/room/${roomKey}/messages`);
+      const subscription = client.subscribe(`/topic/room/${roomKey}/messages`, async (message) => {
+        try {
+          console.log('시도함');
+          const data = JSON.parse(message.body);
+          console.log(data.type);
+          if (data.type === 'TMI_VOTING_STARTED') {
+            const res = await getVoteInfo(roomKey);
+            setVoteInfo(res.data);
+          }
+        } catch (e) {
+          console.error('메시지 파싱 오류:', e);
+        }
+      });
+
+      return () => subscription.unsubscribe(); // cleanup
     }
-    console.log(roomKey);
-  }, [roomKey]);
+  }, [client, roomKey]);
 
   const handleSubmit = async () => {
     if (!roomKey) {
@@ -73,25 +90,7 @@ const TmiVotePage = () => {
       throw error;
     }
   };
-  const fetchProcessRate = async () => {
-    try {
-      const res = await axios.get(`/api/tmi/rooms/${roomKey}/status`, {
-        withCredentials: true,
-      });
-      if (res.data) {
-        console.log('TMI 수집 상태:', res.data.data);
-        console.log('TMI 수집 진행률:', res.data.data.progress);
-      }
-    } catch (error) {
-      console.error('Error fetching process rate:', error);
-      navigate('/rooms/exit');
-    }
-  };
-  useEffect(() => {
-    if (roomKey) {
-      fetchProcessRate();
-    }
-  }, [roomKey]);
+
   return (
     <VoteRoomContainer>
       <ChatRoomHeader>

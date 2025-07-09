@@ -78,6 +78,7 @@ const TMILoadPage = () => {
           try {
             if (hasRoomEnded.current) return;
             const data = JSON.parse(message.body);
+            console.log('웹소켓', data);
             if (data.type === 'TMI_COLLECTION_PROGRESS') {
               console.log('TMI 수집 진행률:', data.data);
               setProcessRate(data.data);
