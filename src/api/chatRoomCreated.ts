@@ -4,6 +4,7 @@ import api from './api';
 export const createRoom = async (payload: {
   requiredAgreements?: number;
   maxMember: number;
+  balanceQuestionCount?: number;
   durationMinutes?: number;
   gameMode: string;
 }) => {
@@ -15,6 +16,12 @@ export const createRoom = async (payload: {
       dataToSend = {
         maxMember: payload.maxMember,
         gameMode: payload.gameMode,
+      };
+    } else if (payload.gameMode === 'BALANCE') {
+      dataToSend = {
+        maxMember: payload.maxMember,
+        gameMode: payload.gameMode,
+        balanceQuestionCount: payload.balanceQuestionCount,
       };
     } else {
       // 나머지 모드일 때: 전체 payload 전송
