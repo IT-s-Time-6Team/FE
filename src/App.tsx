@@ -13,6 +13,7 @@ import VotingPage from '@pages/tmiVote/votingPage';
 import TMIInputPage from '@pages/TMIRoom/TMIInputPage';
 import TMILoadPage from '@pages/TMIRoom/TMILoadPage';
 import TMIHintPage from '@pages/TMIRoom/TMIHintPage';
+import BalanceQuestionPage from '@pages/BalanceRoom/BalanceQuestionPage';
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
             <Route path='/tmi/:roomKey/load' element={<TMILoadPage />} />
             <Route path='/tmi/:roomKey/hint' element={<TMIHintPage />} />
             <Route path='/tmi/:roomKey/voteResult' element={<VoteResult />} />
+            <Route path='/balance/question' element={<BalanceQuestionPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
