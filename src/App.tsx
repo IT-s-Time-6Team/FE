@@ -14,6 +14,7 @@ import TMIInputPage from '@pages/TMIRoom/TMIInputPage';
 import TMILoadPage from '@pages/TMIRoom/TMILoadPage';
 import TMIHintPage from '@pages/TMIRoom/TMIHintPage';
 import BalanceQuestionPage from '@pages/BalanceRoom/BalanceQuestionPage';
+import BalanceDiscussionPage from '@pages/BalanceRoom/BalanceDiscussionPage';
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
             <Route path='/tmi/:roomKey/hint' element={<TMIHintPage />} />
             <Route path='/tmi/:roomKey/voteResult' element={<VoteResult />} />
             <Route path='/balance/question' element={<BalanceQuestionPage />} />
+            <Route path='/balance/discussion' element={<BalanceDiscussionPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
