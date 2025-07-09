@@ -39,8 +39,9 @@ function App() {
             <Route path='/tmi/:roomKey/load' element={<TMILoadPage />} />
             <Route path='/tmi/:roomKey/hint' element={<TMIHintPage />} />
             <Route path='/tmi/:roomKey/voteResult' element={<VoteResult />} />
-            <Route path='/balance/question' element={<BalanceQuestionPage />} />
-            <Route path='/balance/discussion' element={<BalanceDiscussionPage />} />
+            <Route path='/balance/:roomKey/load' element={<TMILoadPage />} />
+            <Route path='/balance/:roomKey/question' element={<BalanceQuestionPage />} />
+            <Route path='/balance/:roomKey/discussion' element={<BalanceDiscussionPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

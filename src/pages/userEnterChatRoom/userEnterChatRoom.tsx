@@ -62,7 +62,7 @@ const UserEnterChatRoom = () => {
   const fetchCurrentStep = async () => {
     if (!roomKey) return;
     try {
-      const res = await axios.get(`/api/tmi/rooms/${roomKey}/status`, {
+      const res = await axios.get(`/api/${gameMode.toLowerCase()}/rooms/${roomKey}/status`, {
         withCredentials: true,
       });
       if (res.data) {
@@ -96,6 +96,7 @@ const UserEnterChatRoom = () => {
       }
       const updatedUsers = useRoomUsersStore.getState().users;
       console.log('전역 저장된 users:', updatedUsers);
+
       if (gameMode === 'TMI') {
         const currentStep = await fetchCurrentStep();
         if (currentStep === 'COLLECTING_TMI') {
@@ -110,7 +111,20 @@ const UserEnterChatRoom = () => {
           // navigate(`/tmi/${roomKey}/result`);
         }
         return;
+      } else if (gameMode === 'BALANCE') {
+        const currentStep = await fetchCurrentStep();
+        if (currentStep === 'WAITING_FOR_MEMBERS') {
+          navigate(`/balance/${roomKey}/load`);
+        } else if (currentStep === 'QUESTION_REVEAL') {
+          navigate(`/balance/${roomKey}/question`);
+        } else if (currentStep === 'DISCUSSION') {
+          navigate(`/balance/${roomKey}/discussion`);
+        } else if (currentStep === 'VOTING') {
+          //navigate(`/balance/${roomKey}/vote`);
+        }
+        return;
       }
+
       navigate(`/rooms/${roomKey}/chat`);
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
