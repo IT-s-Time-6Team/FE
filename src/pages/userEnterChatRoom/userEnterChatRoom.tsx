@@ -22,7 +22,7 @@ import { joinRoom } from '@api/login';
 import useRoomUsersStore from '@store/useRoomUsersStore';
 import useGameModeStore from '@store/useGameModeStore';
 
-type GameMode = 'NORMAL' | 'TMI';
+type GameMode = 'NORMAL' | 'TMI' | 'BALANCE';
 
 interface ModeConfig {
   title: string;
@@ -36,6 +36,10 @@ const MODE_CONFIG: Record<GameMode, ModeConfig> = {
   TMI: {
     title: 'TMI를 입력하러 가 볼까요?',
     button: 'TMI 입력하러 가기',
+  },
+  BALANCE: {
+    title: '밸런스 게임을 즐기러 가볼까요?',
+    button: '밸런스 게임 시작하기',
   },
 };
 
