@@ -6,7 +6,7 @@ import { useState } from 'react';
 import useRoomUsersStore from '@store/useRoomUsersStore';
 import { ModalPortal } from '@components/shared/ModalPortal';
 import { SubTitle, Title } from '@components/shared/TextStyles';
-import { Container } from '@components/shared/UIStyles';
+import { Header } from '@components/shared/UIStyles';
 
 const BalanceQuestionPage = () => {
   const user = useRoomUsersStore((state) => state.user);
@@ -26,6 +26,11 @@ const BalanceQuestionPage = () => {
         <QuestionContainer>
           <QuestionSubContainer>
             <Circle>A</Circle>
+            <Question></Question>
+          </QuestionSubContainer>
+          <Divder>VS</Divder>
+          <QuestionSubContainer>
+            <Circle style={{ background: '#F06363' }}>B</Circle>
             <Question></Question>
           </QuestionSubContainer>
         </QuestionContainer>
@@ -52,6 +57,7 @@ const BalanceTitle = styled(Title)`
   text-align: center;
 `;
 const BalanceBoxSubTitle = styled(SubTitle)``;
+
 const Balancedetail = styled(SubTitle)`
   margin-top: 38px;
 `;
@@ -62,25 +68,29 @@ const HintTime = styled.h1`
   fonte-weitght: 600;
   color: #333;
 `;
-const QuestionContainer = styled(Container)`
-  margin: 22px 24px 0 24px;
+const QuestionContainer = styled(Header)`
+  margin-top: 22px;
   padding: 21px 16px 21px 16px;
+  height: fit-content;
   border-radius: 20px;
   background: #f7f7f7;
+  gap: 15px;
 `;
-const QuestionSubContainer = styled.div`
-  display: flex;
+const QuestionSubContainer = styled(Header)`
   flex-direction: row;
-  align-items: center;
   gap: 11px;
 `;
 
-const Circle = styled.div`
+const Circle = styled(Header)`
   width: 43px;
   height: 43px;
-  text-align: center;
-  background: #a3ee6a;
+  justify-content: center;
   border-radius: 50%;
+
+  background: #a3ee6a;
+  color: #fff;
+  font-size: 31px;
+  font-weight: 600;
 `;
 const Question = styled.div`
   padding: 31px 56px;
@@ -89,4 +99,11 @@ const Question = styled.div`
   border-radius: 11px;
   border: 2px solid #e4e4e4;
   background: #fff;
+`;
+const Divder = styled.p`
+  color: #3e3333;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 140%;
 `;
