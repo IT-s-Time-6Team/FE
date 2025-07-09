@@ -17,9 +17,10 @@ import {
 import ValidationMessage from '@components/chatRoomCreated/ValidationMessage';
 import Button from '@components/chatRoomCreated/LoginButton';
 import axios from 'axios';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { joinRoom } from '@api/login';
 import useRoomUsersStore from '@store/useRoomUsersStore';
+import useGameModeStore from '@store/useGameModeStore';
 
 type GameMode = 'NORMAL' | 'TMI';
 
@@ -50,8 +51,7 @@ const UserEnterChatRoom = () => {
   const addUser = useRoomUsersStore((state) => state.addUser);
   const resetUsers = useRoomUsersStore((state) => state.resetUsers);
   const setUser = useRoomUsersStore((state) => state.setUser);
-  const location = useLocation();
-  const gameMode = (location.state?.gameMode ?? 'TMI') as GameMode;
+  const gameMode = useGameModeStore((state) => state.gameMode as GameMode);
 
   const { title, button } = MODE_CONFIG[gameMode];
 
