@@ -154,8 +154,9 @@ const Circle = styled(Header)`
   font-size: 31px;
   font-weight: 600;
 `;
+
 const Question = styled.div`
-  padding: 31px 20px;
+  padding: 31px 30px;
   width: 253px;
   height: 84px;
 

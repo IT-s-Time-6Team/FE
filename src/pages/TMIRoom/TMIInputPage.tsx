@@ -88,12 +88,14 @@ export const TMIImg = styled.img`
   object-fit: cover;
 `;
 export const TMItitle = styled.h1`
+  white-space: pre-line;
   font-size: 24px;
   font-weight: 600;
   line-height: 32px;
   color: #3e3333;
 `;
 export const TMIdetail = styled.p`
+  white-space: pre-line;
   font-size: 16px;
   line-height: 24px;
   color: #7c7c7c;

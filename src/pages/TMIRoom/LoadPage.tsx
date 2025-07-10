@@ -30,7 +30,7 @@ const MODE_CONFIG: Record<GameMode, ModeConfig> = {
   },
 };
 
-const TMILoadPage = () => {
+const LoadPage = () => {
   const { setClient } = useWebSocketStore();
   const [processRate, setProcessRate] = useState<number>(0);
   const [roomData, setRoomData] = useState<RoomInfo>();
@@ -164,7 +164,7 @@ const TMILoadPage = () => {
   );
 };
 
-export default TMILoadPage;
+export default LoadPage;
 
 const Space = styled.div`
   height: 50px;
