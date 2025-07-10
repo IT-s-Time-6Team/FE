@@ -9,15 +9,33 @@ import { SubTitle, Title } from '@components/shared/TextStyles';
 import { Header } from '@components/shared/UIStyles';
 import { useWebSocketStore } from '@store/useWebSocketStore';
 import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 
 const BalanceQuestionPage = () => {
   const user = useRoomUsersStore((state) => state.user);
   const [isInviteOpen, setIsInviteOpen] = useState<boolean>(false);
   const [remainingTime, setRemainingTime] = useState<string>('00:00:00');
+  const [questionA, setQuestionA] = useState<string>('');
+  const [questionB, setQuestionB] = useState<string>('');
 
   const { roomKey } = useParams<{ roomKey: string }>();
   const { client } = useWebSocketStore();
   const navigate = useNavigate();
+
+  const fetchQuestion = async () => {
+    if (!roomKey) return;
+    try {
+      const res = await axios.get(`/api/balance/rooms/${roomKey}/votes`, {
+        withCredentials: true,
+      });
+      if (res.data && res.data.data) {
+        setQuestionA(res.data.data.questionA);
+        setQuestionB(res.data.data.questionB);
+      }
+    } catch (e) {
+      console.error('질문 불러오기 실패:', e);
+    }
+  };
 
   useEffect(() => {
     if (!client || !roomKey) {
@@ -35,6 +53,7 @@ const BalanceQuestionPage = () => {
           try {
             const data = JSON.parse(message.body);
             if (data.type === 'BALANCE_QUESTION_TIME_REMAINING') {
+              fetchQuestion();
               setRemainingTime(data.data || '00:00:00');
             } else if (data.type === 'BALANCE_QUESTION_ENDED') {
               navigate(`/balance/${roomKey}/discussion`, {
@@ -69,12 +88,12 @@ const BalanceQuestionPage = () => {
         <QuestionContainer>
           <QuestionSubContainer>
             <Circle>A</Circle>
-            <Question></Question>
+            <Question>{questionA}</Question>
           </QuestionSubContainer>
           <Divder>VS</Divder>
           <QuestionSubContainer>
             <Circle style={{ background: '#F06363' }}>B</Circle>
-            <Question></Question>
+            <Question>{questionB}</Question>
           </QuestionSubContainer>
         </QuestionContainer>
       </ChatRoomContainer>
@@ -136,9 +155,15 @@ const Circle = styled(Header)`
   font-weight: 600;
 `;
 const Question = styled.div`
-  padding: 31px 56px;
+  padding: 31px 20px;
   width: 253px;
   height: 84px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: 600;
   border-radius: 11px;
   border: 2px solid #e4e4e4;
   background: #fff;
@@ -147,6 +172,6 @@ const Divder = styled.p`
   color: #3e3333;
   text-align: center;
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 800;
   line-height: 140%;
 `;
