@@ -11,6 +11,24 @@ import { getRoom } from '@api/chatRoomCreated';
 import { RoomInfo } from 'src/types/chatRoom';
 import axios from 'axios';
 import { useWebSocketStore } from '@store/useWebSocketStore';
+import useGameModeStore from '@store/useGameModeStore';
+
+type GameMode = 'TMI' | 'BALANCE';
+
+interface ModeConfig {
+  title: string;
+  detail: string;
+}
+const MODE_CONFIG: Record<GameMode, ModeConfig> = {
+  TMI: {
+    title: 'TMI를 수집하는 중...',
+    detail: '다른 멤버들이 아직 TMI를 입력하고 있어요.',
+  },
+  BALANCE: {
+    title: '잠시만 기다려주세요!',
+    detail: '방을 생성하고 있어요. 조그만 기다려 주세요.',
+  },
+};
 
 const TMILoadPage = () => {
   const { setClient } = useWebSocketStore();
@@ -18,6 +36,8 @@ const TMILoadPage = () => {
   const [roomData, setRoomData] = useState<RoomInfo>();
   const { roomKey } = useParams();
   const hasRoomEnded = useRef(false);
+  const gameMode = useGameModeStore((state) => state.gameMode as GameMode);
+  const { title, detail } = MODE_CONFIG[gameMode];
 
   const navigate = useNavigate();
 
@@ -38,10 +58,12 @@ const TMILoadPage = () => {
   const fetchProcessRate = async () => {
     if (!roomKey) return;
     try {
-      const res = await axios.get(`/api/tmi/rooms/${roomKey}/status`, {
+      // 게임 모드에 따른 API 엔드포인트 설정
+      const res = await axios.get(`/api/${gameMode.toLowerCase()}/rooms/${roomKey}/status`, {
         withCredentials: true,
       });
-      if (res.data) {
+      //TMI 모드
+      if (res.data && gameMode === 'TMI') {
         console.log('TMI 수집 상태:', res.data.data);
         console.log('TMI 수집 진행률:', res.data.data.progress);
         setProcessRate(res.data.data.progress);
@@ -53,6 +75,15 @@ const TMILoadPage = () => {
           setTimeout(() => {
             navigate(`/tmi/${roomKey}/hint`);
           }, 5000);
+        }
+        //BALANCE 모드
+      } else if (res.data && gameMode === 'BALANCE') {
+        console.log('멤버 모집 상태:', res.data.data);
+        if (res.data.data.currentStep == 'QUESTION_REVEAL') {
+          hasRoomEnded.current = true;
+          setTimeout(() => {
+            navigate(`/balance/${roomKey}/question`);
+          }, 3000);
         }
       }
     } catch (error) {
@@ -76,8 +107,11 @@ const TMILoadPage = () => {
         setClient(client);
         client.subscribe(`/topic/room/${roomKey}/messages`, (message) => {
           try {
+            console.log('수신된 메시지:', message);
             if (hasRoomEnded.current) return;
             const data = JSON.parse(message.body);
+            console.log('수신된 데이터', data);
+            // TMI 모드 웹소켓 연결
             if (data.type === 'TMI_COLLECTION_PROGRESS') {
               console.log('TMI 수집 진행률:', data.data);
               setProcessRate(data.data);
@@ -86,6 +120,16 @@ const TMILoadPage = () => {
               setTimeout(() => {
                 navigate(`/tmi/${roomKey}/hint`);
               }, 5000);
+            }
+            // BALANCE 모드 웹소켓 연결
+            else if (data.type === 'BALANCE_GAME_READY') {
+              const process = (data.data.currentCount / data.data.totalCount) * 100;
+              setProcessRate(process);
+            } else if (data.type === 'BALANCE_ALL_MEMBERS_JOINED') {
+              setProcessRate(100);
+              setTimeout(() => {
+                navigate(`/balance/${roomKey}/question`);
+              }, 3000);
             }
           } catch (e) {
             console.error('메시지 파싱 오류:', e);
@@ -107,8 +151,8 @@ const TMILoadPage = () => {
     <ChatRoomContainer>
       <Space />
       <TMIImg src={pan} alt='pan' />
-      <TMItitle>TMI를 수집하는 중</TMItitle>
-      <TMIdetail>다른 멤버들이 아직 TMI를 입력하고 있어요.</TMIdetail>
+      <TMItitle>{title}</TMItitle>
+      <TMIdetail>{detail}</TMIdetail>
       <CountUp
         key={processRate}
         end={processRate}

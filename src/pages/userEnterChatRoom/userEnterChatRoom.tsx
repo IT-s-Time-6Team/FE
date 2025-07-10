@@ -62,12 +62,12 @@ const UserEnterChatRoom = () => {
   const fetchCurrentStep = async () => {
     if (!roomKey) return;
     try {
+      // 게임 모드에 따른 API 엔드포인트 설정
       const res = await axios.get(`/api/${gameMode.toLowerCase()}/rooms/${roomKey}/status`, {
         withCredentials: true,
       });
       if (res.data) {
         console.log('진행 상태:', res.data.data);
-        console.log('진행률:', res.data.data.progress);
         return res.data.data.currentStep;
       }
     } catch (error) {
@@ -96,7 +96,7 @@ const UserEnterChatRoom = () => {
       }
       const updatedUsers = useRoomUsersStore.getState().users;
       console.log('전역 저장된 users:', updatedUsers);
-
+      //TMI모드 방 참여
       if (gameMode === 'TMI') {
         const currentStep = await fetchCurrentStep();
         if (currentStep === 'COLLECTING_TMI') {
@@ -111,6 +111,7 @@ const UserEnterChatRoom = () => {
           // navigate(`/tmi/${roomKey}/result`);
         }
         return;
+        // BALANCE모드 방 참여
       } else if (gameMode === 'BALANCE') {
         const currentStep = await fetchCurrentStep();
         if (currentStep === 'WAITING_FOR_MEMBERS') {
@@ -124,7 +125,7 @@ const UserEnterChatRoom = () => {
         }
         return;
       }
-
+      // NORMAL모드 방 참여
       navigate(`/rooms/${roomKey}/chat`);
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
