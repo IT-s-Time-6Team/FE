@@ -2,15 +2,58 @@ import { ChatRoomContainer, ChatRoomHeader, CloseButton } from '../../styles/cha
 import styled from '@emotion/styled';
 import InfoIcon from '@assets/chatRoom/info.svg';
 import InviteModal from '@components/chatRoom/InviteModal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useRoomUsersStore from '@store/useRoomUsersStore';
 import { ModalPortal } from '@components/shared/ModalPortal';
 import { SubTitle, Title } from '@components/shared/TextStyles';
 import { Header } from '@components/shared/UIStyles';
+import { useWebSocketStore } from '@store/useWebSocketStore';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const BalanceQuestionPage = () => {
   const user = useRoomUsersStore((state) => state.user);
   const [isInviteOpen, setIsInviteOpen] = useState<boolean>(false);
+  const [remainingTime, setRemainingTime] = useState<string>('00:00:00');
+
+  const { roomKey } = useParams<{ roomKey: string }>();
+  const { client } = useWebSocketStore();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!client || !roomKey) {
+      console.log('WebSocket 클라이언트나 roomKey가 없습니다.');
+      console.log('클라이언트 상태:', client);
+
+      return;
+    }
+
+    const trySubscribe = () => {
+      if (client.connected) {
+        console.log('WebSocket 연결됨:', client.connected);
+
+        const sub = client.subscribe(`/topic/room/${roomKey}/messages`, (message) => {
+          try {
+            const data = JSON.parse(message.body);
+            if (data.type === 'BALANCE_QUESTION_TIME_REMAINING') {
+              setRemainingTime(data.data || '00:00:00');
+            } else if (data.type === 'BALANCE_QUESTION_ENDED') {
+              navigate(`/balance/${roomKey}/discussion`, {
+                state: { roomKey },
+              });
+            }
+          } catch (e) {
+            console.error('메시지 파싱 오류:', e);
+          }
+        });
+
+        clearInterval(interval); // 연결됐으면 반복 중단
+        return () => sub.unsubscribe();
+      }
+    };
+
+    const interval = setInterval(trySubscribe, 500);
+    return () => clearInterval(interval);
+  }, [client, roomKey]);
 
   return (
     <>
@@ -22,7 +65,7 @@ const BalanceQuestionPage = () => {
         <BalanceTitle>첫 번째 밸런스 문제 공개</BalanceTitle>
         <BalanceBoxSubTitle>30초 뒤에 화면이 자동으로 넘어가요.</BalanceBoxSubTitle>
         <Balancedetail>제한 시간</Balancedetail>
-        <HintTime>00:30:00</HintTime>
+        <HintTime>{remainingTime}</HintTime>
         <QuestionContainer>
           <QuestionSubContainer>
             <Circle>A</Circle>

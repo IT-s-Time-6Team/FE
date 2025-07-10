@@ -12,7 +12,7 @@ import { RoomInfo } from 'src/types/chatRoom';
 import axios from 'axios';
 import { useWebSocketStore } from '@store/useWebSocketStore';
 import useGameModeStore from '@store/useGameModeStore';
-
+// 게임 모드에 따른 로딩 페이지
 type GameMode = 'TMI' | 'BALANCE';
 
 interface ModeConfig {
