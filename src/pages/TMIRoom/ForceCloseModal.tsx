@@ -1,21 +1,49 @@
 import styled from '@emotion/styled';
 import { useNavigate, useParams } from 'react-router-dom';
-import { skipTMIHint } from '@api/skip';
+import { skipTMIHint } from '@api/hintSkip';
+import useGameModeStore from '@store/useGameModeStore';
+import { discussionSkip } from '@api/discussionSkip';
 
 interface ForceCloseModalProps {
   onClose: (open: boolean) => void;
   roomKey: string;
 }
+
+type GameMode = 'TMI' | 'BALANCE';
+
+interface ModeConfig {
+  detail: string;
+}
+const MODE_CONFIG: Record<GameMode, ModeConfig> = {
+  TMI: {
+    detail: '힌트 타임이 종료되고 \n다시 TMI 입력 화면으로 돌아갑니다.',
+  },
+  BALANCE: {
+    detail: '토론 타임이 종료되고 밸런스\n 투표 화면으로 돌아갑니다.',
+  },
+};
+
 const ForceCloseModal = ({ onClose }: ForceCloseModalProps) => {
   const navigate = useNavigate();
   const { roomKey } = useParams();
+  const gameMode = useGameModeStore((state) => state.gameMode as GameMode);
+  const { detail } = MODE_CONFIG[gameMode];
 
   const handleSkip = async () => {
     try {
       onClose(true);
-      const res = await skipTMIHint(roomKey as string);
-      if (res.code === 200) {
-        navigate('/tmi/:roomKey/vote');
+
+      let res;
+      if (gameMode === 'TMI') {
+        res = await skipTMIHint(roomKey as string);
+        if (res.code === 200) {
+          navigate('/tmi/:roomKey/vote');
+        }
+      } else if (gameMode === 'BALANCE') {
+        res = await discussionSkip(roomKey as string);
+        if (res.code === 200) {
+          navigate('/balance/:roomKey/vote');
+        }
       }
     } catch (error) {
       console.log(error);
@@ -26,10 +54,7 @@ const ForceCloseModal = ({ onClose }: ForceCloseModalProps) => {
     <OverLay onClick={() => onClose(false)}>
       <ModalContent>
         정말 종료하시겠어요?
-        <ModalDetail>
-          힌트 타임이 종료되고 <br />
-          다시 TMI 입력 화면으로 돌아갑니다.
-        </ModalDetail>
+        <ModalDetail>{detail}</ModalDetail>
         <Divider />
         <ButtonContainer>
           <Button onClick={() => onClose(false)}>아니요</Button>
@@ -94,6 +119,7 @@ const ModalContent = styled.div`
   position: relative;
 `;
 const ModalDetail = styled.div`
+  white-space: pre-line;
   font-size: 14px;
   margin-top: 10px;
   color: #7c7c7c;
