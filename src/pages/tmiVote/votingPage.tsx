@@ -29,7 +29,11 @@ const VotingPage = () => {
         console.log('투표 진행 상태:', res.data.data);
         console.log('투표 진행률:', res.data.data.progress);
         setProcessRate(res.data.data.progress);
-        if (res.data.data.currentStep == 'VOTING' && res.data.data.progress === 0) {
+        if (
+          (res.data.data.currentStep == 'VOTING' && res.data.data.progress === 0) ||
+          res.data.data.currentStep === 'COMPLETED'
+        ) {
+          setProcessRate(100);
           hasRoomEnded.current = true;
           setTimeout(() => {
             navigate(`/tmi/${roomKey}/voteResult`); // 투표 결과 확인 페이지로 이동
@@ -59,11 +63,15 @@ const VotingPage = () => {
           if (data.type === 'TMI_VOTING_PROGRESS') {
             setProcessRate(data.data);
           } else if (data.type === 'TMI_ROUND_COMPLETED') {
+            setProcessRate(100);
             setTimeout(() => {
               navigate(`/tmi/${roomKey}/voteResult`); // 투표 결과 확인 페이지로 이동
             }, 5000);
           } else if (data.type === 'TMI_ALL_COMPLETED') {
-            // navigate(`/tmi/${roomKey}/voting`);
+            setProcessRate(100);
+            setTimeout(() => {
+              navigate(`/tmi/${roomKey}/voteResult`); // 투표 결과 확인 페이지로 이동
+            }, 5000);
           }
         } catch (e) {
           console.error('메시지 파싱 오류:', e);
