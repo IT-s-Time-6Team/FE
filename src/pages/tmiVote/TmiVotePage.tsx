@@ -1,5 +1,5 @@
 import questionIcon from '@assets/v2/questionBubble.svg';
-import { ChatRoomContainer, ChatRoomHeader, CloseButton } from '../../styles/chatRoom/chatRoom';
+import { ChatRoomContainer, ChatRoomHeader } from '../../styles/chatRoom/chatRoom';
 import { Header } from '@components/shared/UIStyles';
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -12,8 +12,6 @@ import Button from '@components/shared/Button';
 import { getVoteInfo } from '@api/voteInfo';
 import useRoomUsersStore from '@store/useRoomUsersStore';
 import MessageModal from '@components/chatRoom/messageModal';
-import { expireRoom } from '@api/chatRoomCreated';
-import { useWebSocketStore } from '@store/useWebSocketStore';
 
 import axios from 'axios';
 export type VoteInfo = {
@@ -32,7 +30,6 @@ const TmiVotePage = () => {
   const navigate = useNavigate();
   const { roomKey } = useParams<{ roomKey: string }>();
   const user = useRoomUsersStore((state) => state.user);
-  const { client: stompClient } = useWebSocketStore();
   const filteredNicknames = useMemo(() => {
     return (
       voteInfo?.members?.filter((nickname) =>
@@ -88,27 +85,12 @@ const TmiVotePage = () => {
       throw error;
     }
   };
-  const disconnect = () => {
-    if (user?.isLeader) {
-      console.log('방장입니다. 방을 종료합니다.');
-      if (stompClient) {
-        if (roomKey) {
-          expireRoom(roomKey);
-          setIsClosedOpen(true);
-        }
-        stompClient.deactivate();
-      }
-    } else {
-      stompClient?.deactivate();
-      navigate('/rooms');
-    }
-  };
+
   return (
     <>
       <VoteRoomContainer>
-        <ChatRoomHeader>
-          <CloseButton onClick={disconnect}>{user?.isLeader ? '종료' : '나가기'}</CloseButton>
-        </ChatRoomHeader>
+        <ChatRoomHeader />
+
         <VoteBox>
           <Header>
             <Title>누구의 TMI일까?</Title>
