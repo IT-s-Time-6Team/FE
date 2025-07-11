@@ -53,9 +53,17 @@ const BalanceRankingPage = () => {
         state: { roomKey },
       });
     } else {
-      navigate(`/balance/${roomKey}/vote`, {
-        state: { roomKey },
-      });
+      readyToNext();
+    }
+  };
+  const readyToNext = async () => {
+    try {
+      const res = await axios.post(`/api/balance/rooms/${roomKey}/votes/ready`);
+      console.log(res);
+      return res.data;
+    } catch (error: unknown) {
+      console.error('error', error);
+      throw error;
     }
   };
   return (

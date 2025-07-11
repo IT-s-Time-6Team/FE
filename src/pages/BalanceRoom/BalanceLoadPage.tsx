@@ -29,7 +29,8 @@ const BalanceLoadPage = () => {
         console.log('투표 진행 상태:', res.data.data);
         console.log('투표 진행률:', res.data.data.progress);
         setProcessRate(res.data.data.progress);
-        if (res.data.data.progress === 100) {
+        if (res.data.data.currentStep == 'RESULT_VIEW') {
+          setProcessRate(100);
           hasRoomEnded.current = true;
           setTimeout(() => {
             navigate(`/balance/${roomKey}/result`, {
