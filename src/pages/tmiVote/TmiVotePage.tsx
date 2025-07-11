@@ -11,9 +11,9 @@ import searchIcon from '@assets/v2/search.svg';
 import Button from '@components/shared/Button';
 import { getVoteInfo } from '@api/voteInfo';
 import useRoomUsersStore from '@store/useRoomUsersStore';
-import { useWebSocketStore } from '@store/useWebSocketStore';
+
 import axios from 'axios';
-type VoteInfo = {
+export type VoteInfo = {
   tmiContent: string;
   round: number;
   members: string[];
@@ -28,38 +28,31 @@ const TmiVotePage = () => {
   const navigate = useNavigate();
   const roomKey = location.state?.roomKey;
   const user = useRoomUsersStore((state) => state.user);
-  const { client } = useWebSocketStore();
+
   const filteredNicknames = useMemo(() => {
     return (
-      voteInfo?.members.filter((nickname) =>
+      voteInfo?.members?.filter((nickname) =>
         nickname.toLowerCase().includes(searchQuery.toLowerCase()),
       ) || []
     );
   }, [voteInfo, searchQuery]);
+
   useEffect(() => {
-    if (!roomKey) return;
-
-    // 이미 연결된 client가 있으면 구독만 수행
-    if (client && client.connected) {
-      console.log('이미 연결된 웹소켓 사용');
-      console.log(`topic/room/${roomKey}/messages`);
-      const subscription = client.subscribe(`/topic/room/${roomKey}/messages`, async (message) => {
-        try {
-          console.log('시도함');
-          const data = JSON.parse(message.body);
-          console.log(data.type);
-          if (data.type === 'TMI_VOTING_STARTED') {
-            const res = await getVoteInfo(roomKey);
-            setVoteInfo(res.data);
-          }
-        } catch (e) {
-          console.error('메시지 파싱 오류:', e);
-        }
-      });
-
-      return () => subscription.unsubscribe(); // cleanup
+    if (!roomKey) {
+      console.warn('roomKey 없음');
+      return;
     }
-  }, [client, roomKey]);
+    const fetchVoteInfo = async () => {
+      try {
+        const res = await getVoteInfo(roomKey);
+        setVoteInfo(res.data);
+      } catch (err) {
+        console.error('voteInfo 가져오기 실패:', err);
+      }
+    };
+
+    fetchVoteInfo();
+  }, [roomKey]);
 
   const handleSubmit = async () => {
     if (!roomKey) {

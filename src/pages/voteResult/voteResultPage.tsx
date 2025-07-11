@@ -9,7 +9,7 @@ import { ModalPortal } from '@components/shared/ModalPortal';
 import SuccessStamp from '@assets/voteResult/success_stamp.png';
 import FailStamp from '@assets/voteResult/fail_stamp.png';
 import { keyframes } from '@emotion/react';
-
+import useRoomUsersStore from '@store/useRoomUsersStore';
 import { getTmiVoteResult } from '@api/voteResult';
 import { useNavigate, useParams } from 'react-router-dom';
 import { CharacterMap, CharacterKey } from '@components/shared/CharacterMap';
@@ -32,7 +32,7 @@ type VoteResultState = {
 
 const VoteResult = () => {
   const { roomKey } = useParams<{ roomKey: string }>();
-
+  const round = useRoomUsersStore((state) => state.round);
   const [state, setState] = useState<VoteResultState>({
     isCorrect: null,
     tmiMessage: '',
@@ -44,7 +44,6 @@ const VoteResult = () => {
     round: 0,
   });
   const navigate = useNavigate();
-
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const handleOpenModal = () => {
     setIsOpen(true);
@@ -83,10 +82,14 @@ const VoteResult = () => {
   const characterImg = CharacterMap[key];
 
   const handleNext = () => {
-    if (state.round === 1) {
-      navigate(`tmi/${roomKey}/result`);
+    if (state.round === round - 1) {
+      navigate(`/tmi/exit`, {
+        state: { roomKey },
+      });
     } else {
-      navigate(`/tmi/${roomKey}/vote`);
+      navigate(`/tmi/${roomKey}/vote`, {
+        state: { roomKey },
+      });
     }
   };
 

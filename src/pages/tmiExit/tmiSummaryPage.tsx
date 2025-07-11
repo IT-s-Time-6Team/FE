@@ -16,7 +16,6 @@ import {
   Box,
   Wrapper,
   Divider,
-  TagWrapper,
   SaveWrapper,
   SaveText,
   FeedbackBox,
@@ -61,12 +60,12 @@ const TmiSummaryPage = ({ roomResult }: { roomResult: RoomResult }) => {
           <Wrapper>
             <MainText>맞춘 TMI</MainText>
             <Divider />
-            <TagWrapper>{roomResult?.correctCount}개</TagWrapper>
+            <ResultText>{roomResult?.correctCount}개</ResultText>
           </Wrapper>
           <Wrapper>
             <MainText>틀린 TMI</MainText>
             <Divider />
-            <ResultText>{roomResult?.incorrectCount}</ResultText>
+            <ResultText>{roomResult?.incorrectCount}개</ResultText>
           </Wrapper>
           <Wrapper>
             <MainText>가장 TMI를 잘 맞춘 사람</MainText>

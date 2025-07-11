@@ -20,16 +20,18 @@ const SettingButton = ({
   onDecrease: () => void;
   isDownActive?: boolean;
   isUpActive?: boolean;
-}) => (
-  <CounterContainer>
-    <InfoText>{label}</InfoText>
-    <CounterControls>
-      <ChevronDown $isDownActive={isDownActive} onClick={onDecrease} />
-      <Counter>{Number(value) === 0 ? '없음' : `${value}${unit}`}</Counter>
-      <ChevronUp $isUpActive={isUpActive} onClick={onIncrease} />
-    </CounterControls>
-  </CounterContainer>
-);
+}) => {
+  return (
+    <CounterContainer>
+      <InfoText>{label}</InfoText>
+      <CounterControls>
+        <ChevronDown $isDownActive={isDownActive} onClick={onDecrease} />
+        <Counter>{Number(value) === 0 ? '없음' : `${value}${unit}`}</Counter>
+        <ChevronUp $isUpActive={isUpActive} onClick={onIncrease} />
+      </CounterControls>
+    </CounterContainer>
+  );
+};
 export default SettingButton;
 
 const CounterContainer = styled.div`

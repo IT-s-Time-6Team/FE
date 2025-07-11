@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import SettingButton from '@components/Main/SettingButton';
-
 import {
   Box,
   BoxHeader,
@@ -9,7 +8,7 @@ import {
   BoxSelector,
   BoxComplete,
 } from '@components/shared/ModeBox';
-
+import useRoomUsersStore from '@store/useRoomUsersStore';
 interface TmiModeBoxProps {
   maxCount: number;
   increaseMax: () => void;
@@ -19,6 +18,7 @@ interface TmiModeBoxProps {
 
 //키워드 모드 화면
 const TmiModeBox = ({ maxCount, increaseMax, decreaseMax, onCreateRoom }: TmiModeBoxProps) => {
+  const setRound = useRoomUsersStore((state) => state.setRound);
   return (
     <Box>
       <BoxHeader>
@@ -39,7 +39,14 @@ const TmiModeBox = ({ maxCount, increaseMax, decreaseMax, onCreateRoom }: TmiMod
           isUpActive={maxCount >= 7}
         />
       </TmiBoxSelector>
-      <BoxComplete text='방 생성하기' active={maxCount > 1} onClick={onCreateRoom} />
+      <BoxComplete
+        text='방 생성하기'
+        active={maxCount > 1}
+        onClick={() => {
+          setRound(maxCount);
+          onCreateRoom();
+        }}
+      />
     </Box>
   );
 };
