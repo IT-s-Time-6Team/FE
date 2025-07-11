@@ -11,6 +11,9 @@ import searchIcon from '@assets/v2/search.svg';
 import Button from '@components/shared/Button';
 import { getVoteInfo } from '@api/voteInfo';
 import useRoomUsersStore from '@store/useRoomUsersStore';
+import MessageModal from '@components/chatRoom/messageModal';
+import { expireRoom } from '@api/chatRoomCreated';
+import { useWebSocketStore } from '@store/useWebSocketStore';
 
 import axios from 'axios';
 export type VoteInfo = {
@@ -24,11 +27,12 @@ const TmiVotePage = () => {
   const [selectedMemberName, setSelectedMemberName] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [voteInfo, setVoteInfo] = useState<VoteInfo | null>(null);
+  const [isClosedOpen, setIsClosedOpen] = useState(false); // 방장 종료 메시지
   const location = useLocation();
   const navigate = useNavigate();
   const roomKey = location.state?.roomKey;
   const user = useRoomUsersStore((state) => state.user);
-
+  const { client: stompClient } = useWebSocketStore();
   const filteredNicknames = useMemo(() => {
     return (
       voteInfo?.members?.filter((nickname) =>
@@ -52,6 +56,7 @@ const TmiVotePage = () => {
     };
 
     fetchVoteInfo();
+    console.log(user);
   }, [roomKey]);
 
   const handleSubmit = async () => {
@@ -83,53 +88,74 @@ const TmiVotePage = () => {
       throw error;
     }
   };
-
+  const disconnect = () => {
+    if (user?.isLeader) {
+      console.log('방장입니다. 방을 종료합니다.');
+      if (stompClient) {
+        if (roomKey) {
+          expireRoom(roomKey);
+          setIsClosedOpen(true);
+        }
+        stompClient.deactivate();
+      }
+    } else {
+      stompClient?.deactivate();
+      navigate('/rooms');
+    }
+  };
   return (
-    <VoteRoomContainer>
-      <ChatRoomHeader>
-        <CloseButton>{user?.isLeader ? '종료' : '나가기'}</CloseButton>
-      </ChatRoomHeader>
-      <VoteBox>
-        <Header>
-          <Title>누구의 TMI일까?</Title>
-          <SubTitle>누가 TMI를 말했을지 맞춰보세요!</SubTitle>
-        </Header>
-        <img src={questionIcon} />
-        <GrayBox>
-          <TmiText>{voteInfo?.tmiContent}</TmiText>
-        </GrayBox>
-        <VoteBox gap='10px'>
-          <TmiText>TMI의 주인은 누구일까요?</TmiText>
-          <SearchBox>
-            <Input
-              placeholder='닉네임 검색하기'
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <img src={searchIcon} />
-          </SearchBox>
-          <NicknameBox>
-            {filteredNicknames?.map((item, idx) => (
-              <Nickname
-                key={idx}
-                isSelected={selectedMemberName === item}
-                onClick={() => setSelectedMemberName(item)}
-              >
-                <PersonText isClicked={selectedMemberName === item}>
-                  {item.length > 3 ? `${item.slice(0, MAX_NICKNAME_LENGTH)}...` : item}
-                </PersonText>
-              </Nickname>
-            ))}
-          </NicknameBox>
+    <>
+      <VoteRoomContainer>
+        <ChatRoomHeader>
+          <CloseButton onClick={disconnect}>{user?.isLeader ? '종료' : '나가기'}</CloseButton>
+        </ChatRoomHeader>
+        <VoteBox>
+          <Header>
+            <Title>누구의 TMI일까?</Title>
+            <SubTitle>누가 TMI를 말했을지 맞춰보세요!</SubTitle>
+          </Header>
+          <img src={questionIcon} />
+          <GrayBox>
+            <TmiText>{voteInfo?.tmiContent}</TmiText>
+          </GrayBox>
+          <VoteBox gap='10px'>
+            <TmiText>TMI의 주인은 누구일까요?</TmiText>
+            <SearchBox>
+              <Input
+                placeholder='닉네임 검색하기'
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <img src={searchIcon} />
+            </SearchBox>
+            <NicknameBox>
+              {filteredNicknames?.map((item, idx) => (
+                <Nickname
+                  key={idx}
+                  isSelected={selectedMemberName === item}
+                  onClick={() => setSelectedMemberName(item)}
+                >
+                  <PersonText isClicked={selectedMemberName === item}>
+                    {item.length > 3 ? `${item.slice(0, MAX_NICKNAME_LENGTH)}...` : item}
+                  </PersonText>
+                </Nickname>
+              ))}
+            </NicknameBox>
+          </VoteBox>
         </VoteBox>
-      </VoteBox>
-      <Button text='투표하기' onClick={handleSubmit} />
-      {isInviteOpen && (
+        <Button text='투표하기' onClick={handleSubmit} />
+        {isInviteOpen && (
+          <ModalPortal>
+            <InviteModal onClose={() => setIsInviteOpen(false)} roomId='sdfs3' />
+          </ModalPortal>
+        )}
+      </VoteRoomContainer>
+      {isClosedOpen && !user?.isLeader && (
         <ModalPortal>
-          <InviteModal onClose={() => setIsInviteOpen(false)} roomId='sdfs3' />
+          <MessageModal onClose={() => setIsClosedOpen(false)} kind='closed' roomkey={roomKey} />
         </ModalPortal>
       )}
-    </VoteRoomContainer>
+    </>
   );
 };
 export default TmiVotePage;
