@@ -11,9 +11,12 @@ import VoteResult from '@pages/voteResult/voteResultPage';
 import TmiVotePage from '@pages/tmiVote/TmiVotePage';
 import VotingPage from '@pages/tmiVote/votingPage';
 import TMIInputPage from '@pages/TMIRoom/TMIInputPage';
-import TMILoadPage from '@pages/TMIRoom/TMILoadPage';
-import TMIHintPage from '@pages/TMIRoom/TMIHintPage';
 import TmiExitPage from '@pages/tmiExit/tmiExitPage';
+import LoadPage from '@pages/TMIRoom/LoadPage';
+import HintAndDiscussionPage from '@pages/TMIRoom/HintAndDisscussionPage';
+import BalanceQuestionPage from '@pages/BalanceRoom/BalanceQuestionPage';
+import BalanceVotePage from '@pages/BalanceRoom/BalanceVotePage';
+import BalanceLoadPage from '@pages/BalanceRoom/BalanceLoadPage';
 
 function App() {
   return (
@@ -32,13 +35,20 @@ function App() {
             <Route path='/rooms/:roomKey/member' element={<UserEnterChatRoom />} />
             <Route path='/rooms/exit' element={<ChatRoomExitPage />} />
             <Route path='/rooms/:roomKey/chat' element={<ChatRoomPage />} />
+            {/* TMI Room Routes */}
             <Route path='/tmi/:roomKey/vote' element={<TmiVotePage />} />
             <Route path='/tmi/:roomKey/voting' element={<VotingPage />} />
             <Route path='/tmi/:roomKey/input' element={<TMIInputPage />} />
-            <Route path='/tmi/:roomKey/load' element={<TMILoadPage />} />
-            <Route path='/tmi/:roomKey/hint' element={<TMIHintPage />} />
+            <Route path='/tmi/:roomKey/load' element={<LoadPage />} />
+            <Route path='/tmi/:roomKey/hint' element={<HintAndDiscussionPage />} />
             <Route path='/tmi/:roomKey/voteResult' element={<VoteResult />} />
             <Route path='/tmi/exit' element={<TmiExitPage />} />
+            {/* Balance Room Routes */}
+            <Route path='/balance/:roomKey/load' element={<LoadPage />} />
+            <Route path='/balance/:roomKey/question' element={<BalanceQuestionPage />} />
+            <Route path='/balance/:roomKey/discussion' element={<HintAndDiscussionPage />} />
+            <Route path='/balance/:roomKey/vote' element={<BalanceVotePage />} />
+            <Route path='/balance/:roomKey/voteload' element={<BalanceLoadPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

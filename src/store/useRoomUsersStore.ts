@@ -41,7 +41,7 @@ const useRoomUsersStore = create<RoomUsersState>()(
         })),
       resetUsers: () => {
         set({ users: [] });
-        localStorage.clear();
+        localStorage.removeItem('room-users');
       },
       setUser: (user) => set({ user }), // 단일 유저 설정
     }),

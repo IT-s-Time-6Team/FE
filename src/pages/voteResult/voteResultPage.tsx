@@ -13,6 +13,7 @@ import useRoomUsersStore from '@store/useRoomUsersStore';
 import { getTmiVoteResult } from '@api/voteResult';
 import { useNavigate, useParams } from 'react-router-dom';
 import { CharacterMap, CharacterKey } from '@components/shared/CharacterMap';
+import { getVoteStatus } from '@api/voteStatus';
 
 interface VoteCount {
   nickname: string;
@@ -81,8 +82,10 @@ const VoteResult = () => {
   const key = rawChar.toUpperCase() as CharacterKey;
   const characterImg = CharacterMap[key];
 
-  const handleNext = () => {
-    if (state.round === round - 1) {
+  const handleNext = async () => {
+    const res = await getVoteStatus(roomKey as string);
+    console.log(res);
+    if (res.data.currentStep === 'COMPLETED' && state.round === round - 1) {
       navigate(`/tmi/exit`, {
         state: { roomKey },
       });
@@ -268,6 +271,7 @@ const VoteText = styled(SubTitle)`
 `;
 const VoteSubContainer = styled(Header)`
   gap: 14px;
+  align-items: flex-start;
 `;
 
 const ResultSubContainer = styled(VoteSubContainer)`
