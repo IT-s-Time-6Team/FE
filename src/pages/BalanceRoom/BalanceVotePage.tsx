@@ -36,7 +36,7 @@ const BalanceVotePage = () => {
       if (res.status === 200) {
         console.log('투표 제출 성공');
         navigate(`/balance/${roomKey}/voteload`, {
-          state: { roomKey },
+          state: { roomKey, questionA, questionB },
         });
       } else {
         console.error('투표 제출 실패:', res.data.message);
@@ -115,17 +115,18 @@ const SubmitButton = styled(Button)`
   position: absolute;
   bottom: 47px;
 `;
-const QuestionContainer = styled(Header)`
+export const QuestionContainer = styled(Header)`
   margin-top: 22px;
   height: fit-content;
   border-radius: 20px;
   flex-direction: row;
 `;
-const QuestionSubContainer = styled(Header)`
+export const QuestionSubContainer = styled(Header)`
   gap: 11px;
+  position: relative;
 `;
 
-const Circle = styled(Header)`
+export const Circle = styled(Header)`
   width: 43px;
   height: 43px;
   justify-content: center;
@@ -140,7 +141,7 @@ const Circle = styled(Header)`
   top: -20px;
 `;
 
-const Question = styled.div<{ isActive?: boolean }>`
+export const Question = styled.div<{ isActive?: boolean }>`
   padding: 65px 26px;
 
   padding: auto;

@@ -121,7 +121,7 @@ const UserEnterChatRoom = () => {
         } else if (currentStep === 'DISCUSSION') {
           navigate(`/balance/${roomKey}/discussion`);
         } else if (currentStep === 'VOTING') {
-          //navigate(`/balance/${roomKey}/vote`);
+          navigate(`/balance/${roomKey}/vote`);
         }
         return;
       }
