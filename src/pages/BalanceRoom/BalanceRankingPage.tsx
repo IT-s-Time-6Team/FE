@@ -1,7 +1,6 @@
-import { ChatRoomContainer, ChatRoomHeader, CloseButton } from '../../styles/chatRoom/chatRoom';
+import { ChatRoomContainer, ChatRoomHeader } from '../../styles/chatRoom/chatRoom';
 import styled from '@emotion/styled';
 import InviteModal from '@components/chatRoom/InviteModal';
-import useRoomUsersStore from '@store/useRoomUsersStore';
 import { useEffect, useState } from 'react';
 import { Header } from '@components/shared/UIStyles';
 import { ResultText } from '../../styles/roomExit/exitPageStyles';
@@ -17,7 +16,7 @@ import axios from 'axios';
 const BalanceRankingPage = () => {
   const [isInviteOpen, setIsInviteOpen] = useState<boolean>(false);
   const [totalRound, setTotalRound] = useState<number>(0);
-  const user = useRoomUsersStore((state) => state.user);
+
   const navigate = useNavigate();
   const location = useLocation();
   const result = location.state?.result;
@@ -74,7 +73,6 @@ const BalanceRankingPage = () => {
       <ChatRoomContainer>
         <ChatRoomHeader>
           <InfoButton onClick={() => setIsInviteOpen(true)} src={InfoIcon} alt='info' />
-          <CloseButton>{user?.isLeader ? '종료' : '나가기'}</CloseButton>
         </ChatRoomHeader>
         <Header>
           <ResultText>점수공개</ResultText>

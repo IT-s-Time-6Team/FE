@@ -1,9 +1,8 @@
-import { ChatRoomContainer, ChatRoomHeader, CloseButton } from '../../styles/chatRoom/chatRoom';
+import { ChatRoomContainer, ChatRoomHeader } from '../../styles/chatRoom/chatRoom';
 import styled from '@emotion/styled';
 import InfoIcon from '@assets/chatRoom/info.svg';
 import InviteModal from '@components/chatRoom/InviteModal';
 import { useEffect, useState } from 'react';
-import useRoomUsersStore from '@store/useRoomUsersStore';
 import { ModalPortal } from '@components/shared/ModalPortal';
 import { SubTitle, Title } from '@components/shared/TextStyles';
 import { Header } from '@components/shared/UIStyles';
@@ -13,7 +12,6 @@ import cat from '@assets/balance/BalanceCat.svg'; // Assuming you have an image 
 import Button from '@components/chatRoomCreated/LoginButton';
 
 const BalanceVotePage = () => {
-  const user = useRoomUsersStore((state) => state.user);
   const [isInviteOpen, setIsInviteOpen] = useState<boolean>(false);
   const [questionA, setQuestionA] = useState<string>('');
   const [questionB, setQuestionB] = useState<string>('');
@@ -67,7 +65,6 @@ const BalanceVotePage = () => {
       <ChatRoomContainer>
         <ChatRoomHeader>
           <InfoButton onClick={() => setIsInviteOpen(true)} src={InfoIcon} alt='info' />
-          <CloseButton>{user?.isLeader ? '종료' : '나가기'}</CloseButton>
         </ChatRoomHeader>
         <BalanceTitle>밸런스 투표 타임</BalanceTitle>
         <BalanceBoxSubTitle>둘 중 어떤 상황이 더 나은지 투표해주세요!</BalanceBoxSubTitle>
