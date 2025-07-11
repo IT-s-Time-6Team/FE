@@ -29,10 +29,10 @@ const VotingPage = () => {
         console.log('투표 진행 상태:', res.data.data);
         console.log('투표 진행률:', res.data.data.progress);
         setProcessRate(res.data.data.progress);
-        if (res.data.data.currentStep == 'VOTING' && res.data.data.progress === 100) {
+        if (res.data.data.currentStep == 'VOTING' && res.data.data.progress === 0) {
           hasRoomEnded.current = true;
           setTimeout(() => {
-            //navigate(`/tmi/${roomKey}/result`); // 투표 결과 확인 페이지로 이동
+            navigate(`/tmi/${roomKey}/voteResult`); // 투표 결과 확인 페이지로 이동
           }, 5000);
         }
       }
@@ -52,13 +52,16 @@ const VotingPage = () => {
     if (client && client.connected) {
       console.log('이미 연결된 웹소켓 사용');
       const subscription = client.subscribe(`/topic/room/${roomKey}/messages`, (message) => {
+        console.log(message);
         try {
           if (hasRoomEnded.current) return;
           const data = JSON.parse(message.body);
           if (data.type === 'TMI_VOTING_PROGRESS') {
             setProcessRate(data.data);
           } else if (data.type === 'TMI_ROUND_COMPLETED') {
-            // navigate(`/tmi/${roomKey}/voting`);
+            setTimeout(() => {
+              navigate(`/tmi/${roomKey}/voteResult`); // 투표 결과 확인 페이지로 이동
+            }, 5000);
           } else if (data.type === 'TMI_ALL_COMPLETED') {
             // navigate(`/tmi/${roomKey}/voting`);
           }
@@ -81,6 +84,7 @@ const VotingPage = () => {
             const data = JSON.parse(message.body);
             if (data.type === 'TMI_VOTING_PROGRESS') {
               setProcessRate(data.data);
+              console.log(data.data);
             } else if (data.type === 'TMI_ROUND_COMPLETED') {
               navigate(`/tmi/${roomKey}/voteResult`, {
                 state: { roomKey },

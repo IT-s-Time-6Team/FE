@@ -265,6 +265,7 @@ const VoteText = styled(SubTitle)`
 `;
 const VoteSubContainer = styled(Header)`
   gap: 14px;
+  align-items: flex-start;
 `;
 
 const ResultSubContainer = styled(VoteSubContainer)`
