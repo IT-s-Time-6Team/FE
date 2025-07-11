@@ -11,7 +11,7 @@ import { ResultText } from '../../styles/roomExit/exitPageStyles';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { getBalanceVoteResult } from '@api/voteResult';
 import { BalanceVotingResultsResponse } from '@api/voteResult';
-
+import axios from 'axios';
 import Button from '@components/shared/Button';
 const BalanceResultPage = () => {
   const [isInviteOpen, setIsInviteOpen] = useState<boolean>(false);
@@ -38,8 +38,19 @@ const BalanceResultPage = () => {
     };
 
     fetchVoteInfo();
+    readyToNext();
     console.log(user);
   }, [roomKey]);
+  const readyToNext = async () => {
+    try {
+      const res = await axios.post(`/api/balance/rooms/${roomKey}/votes/ready`);
+      console.log(res);
+      return res.data;
+    } catch (error: unknown) {
+      console.error('error', error);
+      throw error;
+    }
+  };
 
   return (
     <>
@@ -98,9 +109,9 @@ const BalanceResultPage = () => {
           text='다음으로'
         />
       </ChatRoomContainer>
-      {isInviteOpen && (
+      {isInviteOpen && roomKey && (
         <ModalPortal>
-          <InviteModal onClose={() => setIsInviteOpen(false)} roomId={''} />
+          <InviteModal onClose={() => setIsInviteOpen(false)} roomId={roomKey} />
         </ModalPortal>
       )}
     </>

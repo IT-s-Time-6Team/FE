@@ -97,9 +97,9 @@ const BalanceQuestionPage = () => {
           </QuestionSubContainer>
         </QuestionContainer>
       </ChatRoomContainer>
-      {isInviteOpen && (
+      {isInviteOpen && roomKey && (
         <ModalPortal>
-          <InviteModal onClose={() => setIsInviteOpen(false)} roomId={''} />
+          <InviteModal onClose={() => setIsInviteOpen(false)} roomId={roomKey} />
         </ModalPortal>
       )}
     </>

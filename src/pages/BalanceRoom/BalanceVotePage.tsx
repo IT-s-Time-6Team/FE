@@ -89,9 +89,9 @@ const BalanceVotePage = () => {
         </QuestionContainer>
         <SubmitButton text='제출하기' active={selected !== null} onClick={handleSubmit} />
       </ChatRoomContainer>
-      {isInviteOpen && (
+      {isInviteOpen && roomKey && (
         <ModalPortal>
-          <InviteModal onClose={() => setIsInviteOpen(false)} roomId={''} />
+          <InviteModal onClose={() => setIsInviteOpen(false)} roomId={roomKey} />
         </ModalPortal>
       )}
     </>
