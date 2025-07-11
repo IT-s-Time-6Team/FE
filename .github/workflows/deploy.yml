@@ -2,22 +2,11 @@ name: Deploy React to Mac mini
 on:
   push:
     branches: [main, develop]
-<<<<<<< HEAD
-
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-
-    env:
-      TARGET_DIR: ${{ github.ref == 'refs/heads/main' && secrets.MACMINI_TARGET_PROD_DIR || secrets.MACMINI_TARGET_DEV_DIR }}
-
-=======
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
       TARGET_DIR: ${{ github.ref == 'refs/heads/main' && secrets.MACMINI_TARGET_PROD_DIR || secrets.MACMINI_TARGET_DEV_DIR }}
->>>>>>> d20e4470b6bec9f0cb3ef6457ffb71472b0f9f36
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -31,10 +20,6 @@ jobs:
           else
             echo "VITE_API_URL=${{ secrets.VITE_API_URL_DEV }}" > .env
           fi
-<<<<<<< HEAD
-
-=======
->>>>>>> d20e4470b6bec9f0cb3ef6457ffb71472b0f9f36
       - name: Build React
         run: yarn build
       - name: Setup SSH Key
@@ -51,8 +36,4 @@ jobs:
       - name: Fix permissions on Mac mini
         run: |
           ssh -p ${{ secrets.MACMINI_PORT }} ${{ secrets.MACMINI_USER }}@${{ secrets.MACMINI_HOST }} "chmod -R 755 ${{ env.TARGET_DIR }}"
-<<<<<<< HEAD
-          ssh -p ${{ secrets.MACMINI_PORT }} ${{ secrets.MACMINI_USER }}@${{ secrets.MACMINI_HOST }} "chown -R ${{ secrets.MACMINI_USER }}:${{ secrets.MACMINI_USER }} ${{ env.TARGET_DIR }}"
-=======
           ssh -p ${{ secrets.MACMINI_PORT }} ${{ secrets.MACMINI_USER }}@${{ secrets.MACMINI_HOST }} "chown -R ${{ secrets.MACMINI_USER }} ${{ env.TARGET_DIR }}"
->>>>>>> d20e4470b6bec9f0cb3ef6457ffb71472b0f9f36
