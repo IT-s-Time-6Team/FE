@@ -200,7 +200,7 @@ const MainPage = () => {
         />
       </ModeContainer>
 
-      <Footer>버전 정보 v1.0.0</Footer>
+      <Footer>버전 정보 v3.0.0</Footer>
     </MainContainer>
   );
 };

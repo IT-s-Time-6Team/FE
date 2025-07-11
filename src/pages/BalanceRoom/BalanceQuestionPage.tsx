@@ -81,7 +81,7 @@ const BalanceQuestionPage = () => {
           <InfoButton onClick={() => setIsInviteOpen(true)} src={InfoIcon} alt='info' />
           <CloseButton>{user?.isLeader ? '종료' : '나가기'}</CloseButton>
         </ChatRoomHeader>
-        <BalanceTitle>첫 번째 밸런스 문제 공개</BalanceTitle>
+        <BalanceTitle>밸런스 문제 공개</BalanceTitle>
         <BalanceBoxSubTitle>30초 뒤에 화면이 자동으로 넘어가요.</BalanceBoxSubTitle>
         <Balancedetail>제한 시간</Balancedetail>
         <HintTime>{remainingTime}</HintTime>

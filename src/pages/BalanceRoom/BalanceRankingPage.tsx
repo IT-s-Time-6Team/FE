@@ -54,6 +54,9 @@ const BalanceRankingPage = () => {
       });
     } else {
       readyToNext();
+      navigate(`/balance/${roomKey}/question`, {
+        state: { roomKey },
+      });
     }
   };
   const readyToNext = async () => {
