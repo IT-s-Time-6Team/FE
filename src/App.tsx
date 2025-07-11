@@ -11,6 +11,7 @@ import VoteResult from '@pages/voteResult/voteResultPage';
 import TmiVotePage from '@pages/tmiVote/TmiVotePage';
 import VotingPage from '@pages/tmiVote/votingPage';
 import TMIInputPage from '@pages/TMIRoom/TMIInputPage';
+import TmiExitPage from '@pages/tmiExit/tmiExitPage';
 import LoadPage from '@pages/TMIRoom/LoadPage';
 import HintAndDiscussionPage from '@pages/TMIRoom/HintAndDisscussionPage';
 import BalanceQuestionPage from '@pages/BalanceRoom/BalanceQuestionPage';
@@ -41,6 +42,7 @@ function App() {
             <Route path='/tmi/:roomKey/load' element={<LoadPage />} />
             <Route path='/tmi/:roomKey/hint' element={<HintAndDiscussionPage />} />
             <Route path='/tmi/:roomKey/voteResult' element={<VoteResult />} />
+            <Route path='/tmi/exit' element={<TmiExitPage />} />
             {/* Balance Room Routes */}
             <Route path='/balance/:roomKey/load' element={<LoadPage />} />
             <Route path='/balance/:roomKey/question' element={<BalanceQuestionPage />} />

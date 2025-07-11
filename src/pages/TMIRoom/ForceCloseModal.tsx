@@ -1,12 +1,12 @@
 import styled from '@emotion/styled';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { skipTMIHint } from '@api/hintSkip';
 import useGameModeStore from '@store/useGameModeStore';
 import { discussionSkip } from '@api/discussionSkip';
 
 interface ForceCloseModalProps {
   onClose: (open: boolean) => void;
-  roomKey: string;
+  roomKey: string | undefined;
 }
 
 type GameMode = 'TMI' | 'BALANCE';
@@ -23,9 +23,8 @@ const MODE_CONFIG: Record<GameMode, ModeConfig> = {
   },
 };
 
-const ForceCloseModal = ({ onClose }: ForceCloseModalProps) => {
+const ForceCloseModal = ({ onClose, roomKey }: ForceCloseModalProps) => {
   const navigate = useNavigate();
-  const { roomKey } = useParams();
   const gameMode = useGameModeStore((state) => state.gameMode as GameMode);
   const { detail } = MODE_CONFIG[gameMode];
 

@@ -1,4 +1,4 @@
-import { ChatRoomContainer, ChatRoomHeader, CloseButton } from '../../styles/chatRoom/chatRoom';
+import { ChatRoomContainer, ChatRoomHeader } from '../../styles/chatRoom/chatRoom';
 import styled from '@emotion/styled';
 import InfoIcon from '@assets/chatRoom/info.svg';
 import useRoomUsersStore from '@store/useRoomUsersStore';
@@ -49,7 +49,6 @@ const TMIInputPage = () => {
       <ChatRoomContainer>
         <ChatRoomHeader>
           <InfoButton onClick={() => setIsInviteOpen(true)} src={InfoIcon} alt='info' />
-          <CloseButton>{user?.isLeader ? '종료' : '나가기'}</CloseButton>
         </ChatRoomHeader>
         <TMItitle>당신의 TMI가 궁금해요!</TMItitle>
         <TMIdetail>오늘의 TMI를 저희에게만 살짝 알려주세요.</TMIdetail>

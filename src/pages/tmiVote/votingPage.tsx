@@ -29,6 +29,7 @@ const VotingPage = () => {
         console.log('투표 진행 상태:', res.data.data);
         console.log('투표 진행률:', res.data.data.progress);
         setProcessRate(res.data.data.progress);
+
         if (
           (res.data.data.currentStep == 'VOTING' && res.data.data.progress === 0) ||
           res.data.data.currentStep === 'COMPLETED'
@@ -36,7 +37,9 @@ const VotingPage = () => {
           setProcessRate(100);
           hasRoomEnded.current = true;
           setTimeout(() => {
-            navigate(`/tmi/${roomKey}/voteResult`); // 투표 결과 확인 페이지로 이동
+            navigate(`/tmi/${roomKey}/voteResult`, {
+              state: { roomKey },
+            }); // 투표 결과 확인 페이지로 이동
           }, 5000);
         }
       }

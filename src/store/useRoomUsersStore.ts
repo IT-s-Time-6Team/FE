@@ -11,7 +11,9 @@ interface RoomUsersState {
   user: UserInfo | null;
   users: UserInfo[];
   roomKey: string;
+  round: number;
   setRoomKey: (key: string) => void;
+  setRound: (round: number) => void;
   addUser: (user: UserInfo) => void;
   removeUser: (nickname: string) => void;
   resetUsers: () => void;
@@ -24,7 +26,9 @@ const useRoomUsersStore = create<RoomUsersState>()(
       users: [],
       user: null,
       roomKey: '',
+      round: 0,
       setRoomKey: (key) => set({ roomKey: key }),
+      setRound: (round) => set({ round: round }),
       addUser: (user) =>
         set((state) => {
           const alreadyExists = state.users.some((u) => u.nickname === user.nickname);
