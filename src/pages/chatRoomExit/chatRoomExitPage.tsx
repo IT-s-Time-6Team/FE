@@ -2,7 +2,7 @@ import ChatRoomSummaryPage from './chatRoomSummaryPage';
 import { useState, useEffect } from 'react';
 import { useSearchParams, useLocation } from 'react-router-dom';
 import ChatRoomExpiredPage from './chatRoomExpiredPage';
-import { getRoomResult } from '@api/chatRoomResult';
+import { getRoomResult } from '@api/roomResult';
 import { RoomResult } from './chatRoomSummaryPage';
 // 채팅룸 종료 페이지
 const ChatRoomExitPage = () => {

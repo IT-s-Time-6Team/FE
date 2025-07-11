@@ -1,8 +1,12 @@
-import styled from '@emotion/styled';
-import { Title, SubTitle } from '@components/shared/TextStyles';
-import { Header, Container } from '@components/shared/UIStyles';
 import SettingButton from '@components/Main/SettingButton';
-import Button from '@components/chatRoomCreated/LoginButton';
+import {
+  Box,
+  BoxHeader,
+  BoxTitle,
+  BoxSubTitle,
+  BoxSelector,
+  BoxComplete,
+} from '@components/shared/ModeBox';
 
 interface KeywordModeBoxProps {
   empathyCount: number;
@@ -31,22 +35,20 @@ const KeywordModeBox = ({
   onCreateRoom,
 }: KeywordModeBoxProps) => {
   return (
-    <KeyWordBox>
-      <KeyWordHeader>
-        <KeyWordTitle>공감 키워드 찾기</KeyWordTitle>
-        <KeyWordSubTitle>
-          사람들과의 공통 관심사를 찾아 더 재미있는 대화를 시작하세요!
-        </KeyWordSubTitle>
-      </KeyWordHeader>
+    <Box>
+      <BoxHeader>
+        <BoxTitle>키워드 모드</BoxTitle>
+        <BoxSubTitle>사람들과의 공통 관심사를 찾아 더 재미있는 대화를 시작하세요!</BoxSubTitle>
+      </BoxHeader>
 
-      <Selector>
+      <BoxSelector>
         <SettingButton
           label='공감 기준 인원'
           value={empathyCount}
           onIncrease={increaseEmpathy}
           onDecrease={decreaseEmpathy}
           isDownActive={empathyCount < 3}
-          isUpActive={empathyCount >= 20}
+          isUpActive={empathyCount >= 7}
         />
         <SettingButton
           label='최대 입장 인원'
@@ -54,7 +56,7 @@ const KeywordModeBox = ({
           onIncrease={increaseMax}
           onDecrease={decreaseMax}
           isDownActive={maxCount < 3}
-          isUpActive={maxCount >= 20}
+          isUpActive={maxCount >= 7}
         />
         <SettingButton
           label='시간 제한'
@@ -63,54 +65,13 @@ const KeywordModeBox = ({
           onIncrease={increaseTime}
           onDecrease={decreaseTime}
           isDownActive={timeLimit <= 0}
-          isUpActive={timeLimit > 360}
+          isUpActive={timeLimit >= 360}
         />
-      </Selector>
+      </BoxSelector>
 
-      <Complete text='방 생성하기' active={timeLimit > 0} onClick={onCreateRoom} />
-    </KeyWordBox>
+      <BoxComplete text='방 생성하기' active={timeLimit > 0} onClick={onCreateRoom} />
+    </Box>
   );
 };
 
 export default KeywordModeBox;
-
-// 스타일 컴포넌트
-const KeyWordBox = styled(Container)`
-  width: 287px;
-  min-height: 343px;
-  gap: 15px;
-  border-radius: 18px;
-  border: 1px solid #e4e4e4;
-`;
-
-const KeyWordHeader = styled(Header)`
-  margin: 0 26px;
-  gap: 15px;
-  border-bottom: 1px solid #e4e4e4;
-  text-align: center;
-`;
-
-const KeyWordTitle = styled(Title)`
-  margin-top: 21px;
-`;
-
-const KeyWordSubTitle = styled(SubTitle)`
-  padding: 0px 40px;
-  margin-bottom: 15px;
-  font-size: 12px;
-  line-height: 140%;
-`;
-
-const Selector = styled(Container)`
-  margin-top: 9px;
-  gap: 17px;
-  min-height: 90px;
-`;
-
-const Complete = styled(Button)`
-  position: absolute;
-  bottom: 18px;
-
-  width: 253px;
-  height: 57px;
-`;
