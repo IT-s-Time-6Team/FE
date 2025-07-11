@@ -19,6 +19,7 @@ import BalanceVotePage from '@pages/BalanceRoom/BalanceVotePage';
 import BalanceLoadPage from '@pages/BalanceRoom/BalanceLoadPage';
 import BalanceResultPage from '@pages/BalanceRoom/BalanceResultPage';
 import BalanceRankingPage from '@pages/BalanceRoom/BalanceRankingPage';
+import BalanceExitPage from '@pages/balanceExit/balanceExitPage';
 
 function App() {
   return (
@@ -53,6 +54,7 @@ function App() {
             <Route path='/balance/:roomKey/voteload' element={<BalanceLoadPage />} />
             <Route path='/balance/:roomKey/result' element={<BalanceResultPage />} />
             <Route path='/balance/:roomKey/rank' element={<BalanceRankingPage />} />
+            <Route path='/balance/exit' element={<BalanceExitPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

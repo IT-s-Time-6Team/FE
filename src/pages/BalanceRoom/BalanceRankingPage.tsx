@@ -108,7 +108,7 @@ const BalanceRankingPage = () => {
       </ChatRoomContainer>
       {isInviteOpen && (
         <ModalPortal>
-          <InviteModal onClose={() => setIsInviteOpen(false)} roomId={''} />
+          <InviteModal onClose={() => setIsInviteOpen(false)} roomId={roomKey} />
         </ModalPortal>
       )}
     </>
