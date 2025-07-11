@@ -26,7 +26,7 @@ const MODE_CONFIG: Record<GameMode, ModeConfig> = {
   },
   BALANCE: {
     title: '잠시만 기다려주세요!',
-    detail: '방을 생성하고 있어요. 조그만 기다려 주세요.',
+    detail: '방을 생성하고 있어요. 조금만 기다려 주세요.',
   },
 };
 
