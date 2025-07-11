@@ -66,7 +66,7 @@ const HintAndDiscussionPage = () => {
             else if (data.type === 'BALANCE_DISCUSSION_TIME_REMAINING') {
               setRemainingTime(data.data || '00:00:00');
             } else if (data.type === 'BALANCE_DISCUSSION_ENDED') {
-              navigate(`/balnce/${roomKey}/vote`, {
+              navigate(`/balance/${roomKey}/vote`, {
                 state: { roomKey },
               });
             }
