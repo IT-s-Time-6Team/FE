@@ -141,15 +141,21 @@ const Circle = styled(Header)`
 `;
 
 const Question = styled.div<{ isActive?: boolean }>`
-  padding: 31px 30px;
-  width: 100%;
-  height: 84px;
+  padding: 65px 26px;
+
+  padding: auto;
+
+  width: 158px;
+  height: 185px;
 
   position: relative;
 
   display: flex;
   align-items: center;
   justify-content: center;
+
+  text-align: center;
+  white-space: normal;
 
   font-weight: 600;
   border-radius: 11px;
