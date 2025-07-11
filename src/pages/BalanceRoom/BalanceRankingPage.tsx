@@ -52,22 +52,12 @@ const BalanceRankingPage = () => {
         state: { roomKey },
       });
     } else {
-      readyToNext();
-      navigate(`/balance/${roomKey}/question`, {
+      navigate(`/balance/${roomKey}/ready`, {
         state: { roomKey },
       });
     }
   };
-  const readyToNext = async () => {
-    try {
-      const res = await axios.post(`/api/balance/rooms/${roomKey}/votes/ready`);
-      console.log(res);
-      return res.data;
-    } catch (error: unknown) {
-      console.error('error', error);
-      throw error;
-    }
-  };
+
   return (
     <>
       <ChatRoomContainer>
