@@ -84,13 +84,19 @@ const BalanceResultPage = () => {
             </Circle>
             <PercentBox>
               <Percent>
-                {' '}
                 {result?.myChoice === 'A' ? questionA : result?.myChoice === 'B' ? questionB : ''}
               </Percent>
             </PercentBox>
           </ResultBox>
         </div>
-        <Button onClick={() => navigate('/rooms')} text='다음으로' />
+        <Button
+          onClick={() =>
+            navigate(`/balance/${roomKey}/rank`, {
+              state: { result, roomKey },
+            })
+          }
+          text='다음으로'
+        />
       </ChatRoomContainer>
       {isInviteOpen && (
         <ModalPortal>
@@ -134,7 +140,7 @@ const CircleBox = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  padding-right: 18px;
+  padding-right: 13px;
   box-sizing: border-box;
   z-index: 15;
   top: -20px;

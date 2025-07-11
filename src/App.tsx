@@ -18,6 +18,7 @@ import BalanceQuestionPage from '@pages/BalanceRoom/BalanceQuestionPage';
 import BalanceVotePage from '@pages/BalanceRoom/BalanceVotePage';
 import BalanceLoadPage from '@pages/BalanceRoom/BalanceLoadPage';
 import BalanceResultPage from '@pages/BalanceRoom/BalanceResultPage';
+import BalanceRankingPage from '@pages/BalanceRoom/BalanceRankingPage';
 
 function App() {
   return (
@@ -51,6 +52,7 @@ function App() {
             <Route path='/balance/:roomKey/vote' element={<BalanceVotePage />} />
             <Route path='/balance/:roomKey/voteload' element={<BalanceLoadPage />} />
             <Route path='/balance/:roomKey/result' element={<BalanceResultPage />} />
+            <Route path='/balance/:roomKey/rank' element={<BalanceRankingPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
