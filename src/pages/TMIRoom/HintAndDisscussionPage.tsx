@@ -29,7 +29,7 @@ const MODE_CONFIG: Record<GameMode, ModeConfig> = {
   },
 };
 
-const HintAndDiscussionPage = () => {
+const TMIHintPage = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [remainingTime, setRemainingTime] = useState<string>('00:00:00');
   const gameMode = useGameModeStore((state) => state.gameMode as GameMode);
@@ -93,12 +93,12 @@ const HintAndDiscussionPage = () => {
       <HintTime>{remainingTime}</HintTime>
       <TMITips>{tips}</TMITips>
       <Close onClick={() => setIsModalOpen(true)}>강제 종료</Close>
-      {isModalOpen && <ForceCloseModal onClose={setIsModalOpen} />}
+      {isModalOpen && <ForceCloseModal onClose={setIsModalOpen} roomKey={roomKey as string} />}
     </ChatRoomContainer>
   );
 };
 
-export default HintAndDiscussionPage;
+export default TMIHintPage;
 
 const Close = styled.button`
   position: absolute;
