@@ -9,6 +9,7 @@ import ChevronRightIcon from '@assets/Main/chevronright_icon.svg?react';
 import KeywordModeBox from '@components/Main/KeyWordMode';
 import TmiModeBox from '@components/Main/TmiMode';
 import InprogresssModeBox from '@components/Main/InProgressMode';
+import useGameModeStore from '@store/useGameModeStore';
 
 import { useNavigate } from 'react-router-dom';
 import { createRoom } from '@api/chatRoomCreated';
@@ -85,6 +86,9 @@ const MainPage = () => {
               ? 'InProgress'
               : 'NORMAL';
 
+      const setGameMode = useGameModeStore.getState().setGameMode;
+      setGameMode(gameMode);
+
       let payload;
       if (gameMode === 'TMI') {
         payload = {
@@ -108,9 +112,7 @@ const MainPage = () => {
 
       const res = await createRoom(payload);
       console.log('방 생성 성공:', res);
-      navigate(`/rooms/${res.data.roomKey}/member`, {
-        state: { gameMode: gameMode },
-      });
+      navigate(`/rooms/${res.data.roomKey}/member`);
     } catch (err: unknown) {
       console.error('방 생성 실패:', err);
       alert('방 생성에 실패했습니다.');
