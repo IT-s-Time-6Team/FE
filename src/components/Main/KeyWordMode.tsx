@@ -37,7 +37,7 @@ const KeywordModeBox = ({
   return (
     <Box>
       <BoxHeader>
-        <BoxTitle>공감 키워드 찾기</BoxTitle>
+        <BoxTitle>키워드 모드</BoxTitle>
         <BoxSubTitle>사람들과의 공통 관심사를 찾아 더 재미있는 대화를 시작하세요!</BoxSubTitle>
       </BoxHeader>
 
