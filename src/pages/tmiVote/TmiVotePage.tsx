@@ -2,7 +2,7 @@ import questionIcon from '@assets/v2/questionBubble.svg';
 import { ChatRoomContainer, ChatRoomHeader, CloseButton } from '../../styles/chatRoom/chatRoom';
 import { Header } from '@components/shared/UIStyles';
 import { useState, useEffect, useMemo } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ModalPortal } from '@components/shared/ModalPortal';
 import InviteModal from '@components/chatRoom/InviteModal';
 import { Title, SubTitle } from '@components/shared/TextStyles';
@@ -23,9 +23,8 @@ const TmiVotePage = () => {
   const [selectedMemberName, setSelectedMemberName] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [voteInfo, setVoteInfo] = useState<VoteInfo | null>(null);
-  const location = useLocation();
   const navigate = useNavigate();
-  const roomKey = location.state?.roomKey;
+  const { roomKey } = useParams<{ roomKey: string }>();
   const user = useRoomUsersStore((state) => state.user);
   const filteredNicknames = useMemo(() => {
     return (

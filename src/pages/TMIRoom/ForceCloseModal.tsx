@@ -1,10 +1,27 @@
 import styled from '@emotion/styled';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { skipTMIHint } from '@api/skip';
+
 interface ForceCloseModalProps {
   onClose: (open: boolean) => void;
+  roomKey: string;
 }
 const ForceCloseModal = ({ onClose }: ForceCloseModalProps) => {
   const navigate = useNavigate();
+  const { roomKey } = useParams();
+
+  const handleSkip = async () => {
+    try {
+      onClose(true);
+      const res = await skipTMIHint(roomKey as string);
+      if (res.code === 200) {
+        navigate('/tmi/:roomKey/vote');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <OverLay onClick={() => onClose(false)}>
       <ModalContent>
@@ -17,7 +34,7 @@ const ForceCloseModal = ({ onClose }: ForceCloseModalProps) => {
         <ButtonContainer>
           <Button onClick={() => onClose(false)}>아니요</Button>
           <ButtonDivider />
-          <Button onClick={() => (onClose(true), navigate('/'))} active={true}>
+          <Button onClick={handleSkip} active={true}>
             예
           </Button>
         </ButtonContainer>
