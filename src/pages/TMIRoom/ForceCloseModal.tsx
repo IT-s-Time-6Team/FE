@@ -16,10 +16,10 @@ interface ModeConfig {
 }
 const MODE_CONFIG: Record<GameMode, ModeConfig> = {
   TMI: {
-    detail: '힌트 타임이 종료되고 \n다시 TMI 입력 화면으로 돌아갑니다.',
+    detail: '힌트 타임이 종료되고 \nTMI 투표 화면으로 넘어갑니다.',
   },
   BALANCE: {
-    detail: '토론 타임이 종료되고 밸런스\n 투표 화면으로 돌아갑니다.',
+    detail: '토론 타임이 종료되고 밸런스\n 투표 화면으로 넘어갑니다.',
   },
 };
 
