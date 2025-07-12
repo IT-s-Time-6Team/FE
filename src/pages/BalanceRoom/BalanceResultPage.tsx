@@ -62,7 +62,7 @@ const BalanceResultPage = () => {
           </QuestionSubContainer>
 
           <QuestionSubContainer>
-            <GaugeBackground percentage={result?.choiceAPercentage || 0} />
+            <GaugeBackground percentage={result?.choiceBPercentage || 0} />
             <CircleBox>
               <Circle style={{ background: '#F06363' }}>B</Circle>
               <Percent>{result?.choiceBPercentage}%</Percent>

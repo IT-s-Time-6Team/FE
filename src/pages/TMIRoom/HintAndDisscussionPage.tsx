@@ -7,6 +7,7 @@ import ForceCloseModal from './ForceCloseModal';
 import { useWebSocketStore } from '@store/useWebSocketStore';
 import { useNavigate, useParams } from 'react-router-dom';
 import useGameModeStore from '@store/useGameModeStore';
+import useRoomUsersStore from '@store/useRoomUsersStore';
 
 // 게임 모드에 따라 조건부 적용
 type GameMode = 'TMI' | 'BALANCE';
@@ -28,6 +29,8 @@ const MODE_CONFIG: Record<GameMode, ModeConfig> = {
     tips: 'Tip: 내가 A라고 생각해도, 전략적으로 점수를 \n더 잘 받기 위해서 다른 선택지를 골라도 좋아요.',
   },
 };
+
+const isLeader = useRoomUsersStore.getState().users[0]?.isLeader;
 
 const TMIHintPage = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -92,8 +95,12 @@ const TMIHintPage = () => {
       <TMIdetail>제한 시간</TMIdetail>
       <HintTime>{remainingTime}</HintTime>
       <TMITips>{tips}</TMITips>
-      <Close onClick={() => setIsModalOpen(true)}>강제 종료</Close>
-      {isModalOpen && <ForceCloseModal onClose={setIsModalOpen} roomKey={roomKey as string} />}
+      {isLeader && (
+        <>
+          <Close onClick={() => setIsModalOpen(true)}>강제 종료</Close>
+          {isModalOpen && <ForceCloseModal onClose={setIsModalOpen} roomKey={roomKey as string} />}
+        </>
+      )}
     </ChatRoomContainer>
   );
 };
