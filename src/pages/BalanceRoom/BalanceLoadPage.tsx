@@ -69,6 +69,16 @@ const BalanceLoadPage = () => {
             } else if (data.type === 'BALANCE_VOTING_PROGRESS') {
               console.log('투표 진행률 업데이트:', data.data);
               setProcessRate(data.data.data || 0);
+            } else if (
+              data.type === 'BALANCE_ROUND_COMPLETED' ||
+              data.type === 'BALANCE_GAME_COMPLETED'
+            ) {
+              setProcessRate(100);
+              setTimeout(() => {
+                navigate(`/balance/${roomKey}/result`, {
+                  state: { roomKey, questionA, questionB },
+                }); // 투표 결과 확인 페이지로 이동
+              }, 5000);
             }
           } catch (e) {
             console.error('메시지 파싱 오류:', e);
