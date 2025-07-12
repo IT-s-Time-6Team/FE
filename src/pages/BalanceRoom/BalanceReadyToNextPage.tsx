@@ -1,6 +1,6 @@
-import styled from '@emotion/styled';
 import CountUp from 'react-countup';
-import voteIcon from '@assets/v2/Voting.svg';
+import pig from '@assets/balance/userWaiting.svg';
+import { TMIImg } from '@pages/TMIRoom/TMIInputPage';
 import { Title, SubTitle } from '@components/shared/TextStyles';
 import { Container } from '@components/shared/UIStyles';
 import { useWebSocketStore } from '@store/useWebSocketStore';
@@ -9,15 +9,13 @@ import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 
 import { useLocation } from 'react-router-dom';
-const BalanceLoadPage = () => {
+const BalanceReadyToNextPage = () => {
   const { client } = useWebSocketStore();
   const [processRate, setProcessRate] = useState<number>(0);
   const location = useLocation();
   const hasRoomEnded = useRef(false);
   const navigate = useNavigate();
   const roomKey = location.state?.roomKey;
-  const questionA = location.state?.questionA;
-  const questionB = location.state?.questionB;
 
   const fetchProcessRate = async () => {
     if (!roomKey) return;
@@ -26,19 +24,16 @@ const BalanceLoadPage = () => {
         withCredentials: true,
       });
       if (res.data) {
-        console.log('투표 진행 상태:', res.data.data);
-        console.log('투표 진행률:', res.data.data.progress);
+        console.log('진행 상태:', res.data.data);
+        console.log('진행률:', res.data.data.progress);
         setProcessRate(res.data.data.progress);
-        if (
-          res.data.data.currentStep == 'RESULT_VIEW' ||
-          res.data.data.currentStep === 'COMPLETED'
-        ) {
+        if (res.data.data.currentStep == 'RESULT_VIEW') {
           setProcessRate(100);
           hasRoomEnded.current = true;
           setTimeout(() => {
-            navigate(`/balance/${roomKey}/result`, {
-              state: { roomKey, questionA, questionB },
-            }); // 투표 결과 확인 페이지로 이동
+            navigate(`/balance/${roomKey}/question`, {
+              state: { roomKey },
+            });
           }, 5000);
         }
       }
@@ -49,6 +44,7 @@ const BalanceLoadPage = () => {
   };
   useEffect(() => {
     if (!roomKey) return;
+    readyToNext();
     fetchProcessRate();
   }, []);
 
@@ -67,21 +63,14 @@ const BalanceLoadPage = () => {
         const sub = client.subscribe(`/topic/room/${roomKey}/messages`, (message) => {
           try {
             const data = JSON.parse(message.body);
-
             if (data.type === '') {
               setProcessRate(0);
-            } else if (data.type === 'BALANCE_VOTING_PROGRESS') {
-              console.log('투표 진행률 업데이트:', data.data);
-              setProcessRate(data.data.data || 0);
-            } else if (
-              data.type === 'BALANCE_ROUND_COMPLETED' ||
-              data.type === 'BALANCE_GAME_COMPLETED'
-            ) {
+            } else if (data.type === 'BALANCE_ALL_MEMBERS_JOINED') {
               setProcessRate(100);
               setTimeout(() => {
-                navigate(`/balance/${roomKey}/result`, {
-                  state: { roomKey, questionA, questionB },
-                }); // 투표 결과 확인 페이지로 이동
+                navigate(`/balance/${roomKey}/question`, {
+                  state: { roomKey },
+                });
               }, 5000);
             }
           } catch (e) {
@@ -96,12 +85,21 @@ const BalanceLoadPage = () => {
 
     trySubscribe();
   }, [client, roomKey, navigate]);
-
+  const readyToNext = async () => {
+    try {
+      const res = await axios.post(`/api/balance/rooms/${roomKey}/votes/ready`);
+      console.log(res);
+      return res.data;
+    } catch (error: unknown) {
+      console.error('error', error);
+      throw error;
+    }
+  };
   return (
-    <Container gap='7px'>
-      <ProfileImage src={voteIcon} />
-      <Title>투표가 진행중이에요!</Title>
-      <SubTitle>멤버들이 투표를 하고 있어요. 조금만 기다려주세요!</SubTitle>
+    <Container gap='10px'>
+      <TMIImg src={pig} alt='pan' style={{ marginTop: '200px' }} />
+      <Title>잠시만 기다려주세요!</Title>
+      <SubTitle>다음 라운드를 준비하고 있어요. 조금만 기다려 주세요.</SubTitle>
       <CountUp
         key={processRate}
         end={processRate}
@@ -112,10 +110,4 @@ const BalanceLoadPage = () => {
     </Container>
   );
 };
-export default BalanceLoadPage;
-
-const ProfileImage = styled.img`
-  margin-top: 150px;
-  margin-bottom: 23px;
-  justify-self: center;
-`;
+export default BalanceReadyToNextPage;

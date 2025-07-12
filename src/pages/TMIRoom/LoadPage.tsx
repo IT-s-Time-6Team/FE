@@ -1,5 +1,5 @@
 import CountUp from 'react-countup';
-import { ChatRoomContainer } from '../../styles/chatRoom/chatRoom';
+import { ChatRoomContainer, ChatRoomHeader } from '../../styles/chatRoom/chatRoom';
 import { TMIdetail, TMIImg, TMItitle } from './TMIInputPage';
 import pan from '@assets/tmi/pan.svg';
 import styled from '@emotion/styled';
@@ -12,6 +12,9 @@ import { RoomInfo } from 'src/types/chatRoom';
 import axios from 'axios';
 import { useWebSocketStore } from '@store/useWebSocketStore';
 import useGameModeStore from '@store/useGameModeStore';
+import InfoIcon from '@assets/chatRoom/info.svg';
+import InviteModal from '@components/chatRoom/InviteModal';
+import { ModalPortal } from '@components/shared/ModalPortal';
 // 게임 모드에 따른 로딩 페이지
 type GameMode = 'TMI' | 'BALANCE';
 
@@ -26,7 +29,7 @@ const MODE_CONFIG: Record<GameMode, ModeConfig> = {
   },
   BALANCE: {
     title: '잠시만 기다려주세요!',
-    detail: '방을 생성하고 있어요. 조그만 기다려 주세요.',
+    detail: '방을 생성하고 있어요. 조금만 기다려 주세요.',
   },
 };
 
@@ -38,7 +41,7 @@ const LoadPage = () => {
   const hasRoomEnded = useRef(false);
   const gameMode = useGameModeStore((state) => state.gameMode as GameMode);
   const { title, detail } = MODE_CONFIG[gameMode];
-
+  const [isInviteOpen, setIsInviteOpen] = useState<boolean>(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -148,19 +151,29 @@ const LoadPage = () => {
   }, [roomData, roomKey]);
 
   return (
-    <ChatRoomContainer>
-      <Space />
-      <TMIImg src={pan} alt='pan' />
-      <TMItitle>{title}</TMItitle>
-      <TMIdetail>{detail}</TMIdetail>
-      <CountUp
-        key={processRate}
-        end={processRate}
-        duration={3}
-        suffix='%'
-        style={{ fontSize: '30px', color: '#000', fontWeight: '600' }}
-      />
-    </ChatRoomContainer>
+    <>
+      <ChatRoomContainer>
+        <ChatRoomHeader>
+          <InfoButton onClick={() => setIsInviteOpen(true)} src={InfoIcon} alt='info' />
+        </ChatRoomHeader>
+        <Space />
+        <TMIImg src={pan} alt='pan' />
+        <TMItitle>{title}</TMItitle>
+        <TMIdetail>{detail}</TMIdetail>
+        <CountUp
+          key={processRate}
+          end={processRate}
+          duration={3}
+          suffix='%'
+          style={{ fontSize: '30px', color: '#000', fontWeight: '600' }}
+        />
+      </ChatRoomContainer>
+      {isInviteOpen && (
+        <ModalPortal>
+          <InviteModal onClose={() => setIsInviteOpen(false)} roomId={roomKey ?? ''} />
+        </ModalPortal>
+      )}
+    </>
   );
 };
 
@@ -168,4 +181,9 @@ export default LoadPage;
 
 const Space = styled.div`
   height: 50px;
+`;
+const InfoButton = styled.img`
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
 `;

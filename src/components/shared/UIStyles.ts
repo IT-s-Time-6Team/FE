@@ -12,7 +12,7 @@ export const Header = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 10px;
 `;
 
 export const SkeletonBox = styled.div`
