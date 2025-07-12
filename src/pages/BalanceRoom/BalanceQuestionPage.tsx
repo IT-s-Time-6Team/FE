@@ -1,9 +1,9 @@
-import { ChatRoomContainer, ChatRoomHeader, CloseButton } from '../../styles/chatRoom/chatRoom';
+import { ChatRoomContainer, ChatRoomHeader } from '../../styles/chatRoom/chatRoom';
 import styled from '@emotion/styled';
 import InfoIcon from '@assets/chatRoom/info.svg';
 import InviteModal from '@components/chatRoom/InviteModal';
 import { useEffect, useState } from 'react';
-import useRoomUsersStore from '@store/useRoomUsersStore';
+
 import { ModalPortal } from '@components/shared/ModalPortal';
 import { SubTitle, Title } from '@components/shared/TextStyles';
 import { Header } from '@components/shared/UIStyles';
@@ -12,7 +12,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 
 const BalanceQuestionPage = () => {
-  const user = useRoomUsersStore((state) => state.user);
   const [isInviteOpen, setIsInviteOpen] = useState<boolean>(false);
   const [remainingTime, setRemainingTime] = useState<string>('00:00:00');
   const [questionA, setQuestionA] = useState<string>('');
@@ -79,9 +78,8 @@ const BalanceQuestionPage = () => {
       <ChatRoomContainer>
         <ChatRoomHeader>
           <InfoButton onClick={() => setIsInviteOpen(true)} src={InfoIcon} alt='info' />
-          <CloseButton>{user?.isLeader ? '종료' : '나가기'}</CloseButton>
         </ChatRoomHeader>
-        <BalanceTitle>첫 번째 밸런스 문제 공개</BalanceTitle>
+        <BalanceTitle>밸런스 문제 공개</BalanceTitle>
         <BalanceBoxSubTitle>30초 뒤에 화면이 자동으로 넘어가요.</BalanceBoxSubTitle>
         <Balancedetail>제한 시간</Balancedetail>
         <HintTime>{remainingTime}</HintTime>
@@ -97,9 +95,9 @@ const BalanceQuestionPage = () => {
           </QuestionSubContainer>
         </QuestionContainer>
       </ChatRoomContainer>
-      {isInviteOpen && (
+      {isInviteOpen && roomKey && (
         <ModalPortal>
-          <InviteModal onClose={() => setIsInviteOpen(false)} roomId={''} />
+          <InviteModal onClose={() => setIsInviteOpen(false)} roomId={roomKey} />
         </ModalPortal>
       )}
     </>

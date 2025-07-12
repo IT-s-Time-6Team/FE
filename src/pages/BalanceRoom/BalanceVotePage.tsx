@@ -1,9 +1,8 @@
-import { ChatRoomContainer, ChatRoomHeader, CloseButton } from '../../styles/chatRoom/chatRoom';
+import { ChatRoomContainer, ChatRoomHeader } from '../../styles/chatRoom/chatRoom';
 import styled from '@emotion/styled';
 import InfoIcon from '@assets/chatRoom/info.svg';
 import InviteModal from '@components/chatRoom/InviteModal';
 import { useEffect, useState } from 'react';
-import useRoomUsersStore from '@store/useRoomUsersStore';
 import { ModalPortal } from '@components/shared/ModalPortal';
 import { SubTitle, Title } from '@components/shared/TextStyles';
 import { Header } from '@components/shared/UIStyles';
@@ -13,7 +12,6 @@ import cat from '@assets/balance/BalanceCat.svg'; // Assuming you have an image 
 import Button from '@components/chatRoomCreated/LoginButton';
 
 const BalanceVotePage = () => {
-  const user = useRoomUsersStore((state) => state.user);
   const [isInviteOpen, setIsInviteOpen] = useState<boolean>(false);
   const [questionA, setQuestionA] = useState<string>('');
   const [questionB, setQuestionB] = useState<string>('');
@@ -36,7 +34,7 @@ const BalanceVotePage = () => {
       if (res.status === 200) {
         console.log('투표 제출 성공');
         navigate(`/balance/${roomKey}/voteload`, {
-          state: { roomKey },
+          state: { roomKey, questionA, questionB },
         });
       } else {
         console.error('투표 제출 실패:', res.data.message);
@@ -67,7 +65,6 @@ const BalanceVotePage = () => {
       <ChatRoomContainer>
         <ChatRoomHeader>
           <InfoButton onClick={() => setIsInviteOpen(true)} src={InfoIcon} alt='info' />
-          <CloseButton>{user?.isLeader ? '종료' : '나가기'}</CloseButton>
         </ChatRoomHeader>
         <BalanceTitle>밸런스 투표 타임</BalanceTitle>
         <BalanceBoxSubTitle>둘 중 어떤 상황이 더 나은지 투표해주세요!</BalanceBoxSubTitle>
@@ -89,9 +86,9 @@ const BalanceVotePage = () => {
         </QuestionContainer>
         <SubmitButton text='제출하기' active={selected !== null} onClick={handleSubmit} />
       </ChatRoomContainer>
-      {isInviteOpen && (
+      {isInviteOpen && roomKey && (
         <ModalPortal>
-          <InviteModal onClose={() => setIsInviteOpen(false)} roomId={''} />
+          <InviteModal onClose={() => setIsInviteOpen(false)} roomId={roomKey} />
         </ModalPortal>
       )}
     </>
@@ -115,17 +112,18 @@ const SubmitButton = styled(Button)`
   position: absolute;
   bottom: 47px;
 `;
-const QuestionContainer = styled(Header)`
+export const QuestionContainer = styled(Header)`
   margin-top: 22px;
   height: fit-content;
   border-radius: 20px;
   flex-direction: row;
 `;
-const QuestionSubContainer = styled(Header)`
+export const QuestionSubContainer = styled(Header)`
   gap: 11px;
+  position: relative;
 `;
 
-const Circle = styled(Header)`
+export const Circle = styled(Header)`
   width: 43px;
   height: 43px;
   justify-content: center;
@@ -140,7 +138,7 @@ const Circle = styled(Header)`
   top: -20px;
 `;
 
-const Question = styled.div<{ isActive?: boolean }>`
+export const Question = styled.div<{ isActive?: boolean }>`
   padding: 65px 26px;
 
   padding: auto;
