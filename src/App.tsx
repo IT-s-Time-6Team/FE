@@ -20,6 +20,7 @@ import BalanceLoadPage from '@pages/BalanceRoom/BalanceLoadPage';
 import BalanceResultPage from '@pages/BalanceRoom/BalanceResultPage';
 import BalanceRankingPage from '@pages/BalanceRoom/BalanceRankingPage';
 import BalanceExitPage from '@pages/balanceExit/balanceExitPage';
+import BalanceReadyToNextPage from '@pages/BalanceRoom/BalanceReadyToNextPage';
 
 function App() {
   return (
@@ -55,6 +56,7 @@ function App() {
             <Route path='/balance/:roomKey/result' element={<BalanceResultPage />} />
             <Route path='/balance/:roomKey/rank' element={<BalanceRankingPage />} />
             <Route path='/balance/exit' element={<BalanceExitPage />} />
+            <Route path='/balance/:roomKey/ready' element={<BalanceReadyToNextPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
