@@ -65,9 +65,13 @@ const BalanceReadyToNextPage = () => {
             const data = JSON.parse(message.body);
             if (data.type === '') {
               setProcessRate(0);
-            } else if (data.type === 'BALANCE_VOTING_PROGRESS') {
-              console.log('진행률 업데이트:', data.data);
-              setProcessRate(data.data.data || 0);
+            } else if (data.type === 'BALANCE_ALL_MEMBERS_JOINED') {
+              setProcessRate(100);
+              setTimeout(() => {
+                navigate(`/balance/${roomKey}/question`, {
+                  state: { roomKey },
+                });
+              }, 5000);
             }
           } catch (e) {
             console.error('메시지 파싱 오류:', e);
