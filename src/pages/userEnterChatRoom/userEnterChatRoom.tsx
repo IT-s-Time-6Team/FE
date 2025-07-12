@@ -21,6 +21,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { joinRoom } from '@api/login';
 import useRoomUsersStore from '@store/useRoomUsersStore';
 import useGameModeStore from '@store/useGameModeStore';
+import { gameModeStatus } from '@api/roomStatus';
 
 type GameMode = 'NORMAL' | 'TMI' | 'BALANCE';
 
@@ -60,10 +61,12 @@ const UserEnterChatRoom = () => {
   const { title, button } = MODE_CONFIG[gameMode];
 
   const fetchCurrentStep = async () => {
+    const gameModes = await gameModeStatus(roomKey as string);
+    const gameModess = gameModes.data.gameMode;
     if (!roomKey) return;
     try {
       // 게임 모드에 따른 API 엔드포인트 설정
-      const res = await axios.get(`/api/${gameMode.toLowerCase()}/rooms/${roomKey}/status`, {
+      const res = await axios.get(`/api/${gameModess.toLowerCase()}/rooms/${roomKey}/status`, {
         withCredentials: true,
       });
       if (res.data) {
