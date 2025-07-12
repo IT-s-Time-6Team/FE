@@ -1,10 +1,13 @@
 import CountUp from 'react-countup';
-import { ChatRoomContainer } from '../../styles/chatRoom/chatRoom';
+import { ChatRoomContainer, ChatRoomHeader } from '../../styles/chatRoom/chatRoom';
 import { TMIdetail, TMIImg, TMItitle } from './TMIInputPage';
 import pan from '@assets/tmi/pan.svg';
 import styled from '@emotion/styled';
 import { Client } from '@stomp/stompjs';
 import { useEffect, useRef, useState } from 'react';
+import InfoIcon from '@assets/chatRoom/info.svg';
+import InviteModal from '@components/chatRoom/InviteModal';
+import { ModalPortal } from '@components/shared/ModalPortal';
 import { useNavigate, useParams } from 'react-router-dom';
 import SockJS from 'sockjs-client';
 import { getRoom } from '@api/chatRoomCreated';
@@ -18,6 +21,7 @@ const TMILoadPage = () => {
   const [roomData, setRoomData] = useState<RoomInfo>();
   const { roomKey } = useParams();
   const hasRoomEnded = useRef(false);
+  const [isInviteOpen, setIsInviteOpen] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -105,19 +109,29 @@ const TMILoadPage = () => {
   }, [roomData, roomKey]);
 
   return (
-    <ChatRoomContainer>
-      <Space />
-      <TMIImg src={pan} alt='pan' />
-      <TMItitle>TMI를 수집하는 중</TMItitle>
-      <TMIdetail>다른 멤버들이 아직 TMI를 입력하고 있어요.</TMIdetail>
-      <CountUp
-        key={processRate}
-        end={processRate}
-        duration={3}
-        suffix='%'
-        style={{ fontSize: '30px', color: '#000', fontWeight: '600' }}
-      />
-    </ChatRoomContainer>
+    <>
+      <ChatRoomContainer>
+        <ChatRoomHeader>
+          <InfoButton onClick={() => setIsInviteOpen(true)} src={InfoIcon} alt='info' />
+        </ChatRoomHeader>
+        <Space />
+        <TMIImg src={pan} alt='pan' />
+        <TMItitle>TMI를 수집하는 중</TMItitle>
+        <TMIdetail>다른 멤버들이 아직 TMI를 입력하고 있어요.</TMIdetail>
+        <CountUp
+          key={processRate}
+          end={processRate}
+          duration={3}
+          suffix='%'
+          style={{ fontSize: '30px', color: '#000', fontWeight: '600' }}
+        />
+      </ChatRoomContainer>
+      {isInviteOpen && roomKey && (
+        <ModalPortal>
+          <InviteModal onClose={() => setIsInviteOpen(false)} roomId={roomKey} />
+        </ModalPortal>
+      )}
+    </>
   );
 };
 
@@ -125,4 +139,9 @@ export default TMILoadPage;
 
 const Space = styled.div`
   height: 50px;
+`;
+const InfoButton = styled.img`
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
 `;
