@@ -20,8 +20,9 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { joinRoom } from '@api/login';
 import useRoomUsersStore from '@store/useRoomUsersStore';
+import { gameModeStatus } from '@api/roomStatus';
+import { useEffect, useState } from 'react';
 import useGameModeStore from '@store/useGameModeStore';
-
 type GameMode = 'NORMAL' | 'TMI' | 'BALANCE';
 
 interface ModeConfig {
@@ -47,7 +48,7 @@ const UserEnterChatRoom = () => {
   const { nickname, isNicknameValid, handleNicknameChange } = useNicknameValidation();
   const { password, isPasswordValid, handlePasswordChange } = usePasswordValidation();
   const isFormValid = isNicknameValid === true && isPasswordValid === true;
-
+  const [gamesMode, setGamesMode] = useState<GameMode | null>(null);
   const { roomKey } = useParams();
   const navigate = useNavigate();
   const prevRoomKey = useRoomUsersStore.getState().roomKey;
@@ -55,15 +56,39 @@ const UserEnterChatRoom = () => {
   const addUser = useRoomUsersStore((state) => state.addUser);
   const resetUsers = useRoomUsersStore((state) => state.resetUsers);
   const setUser = useRoomUsersStore((state) => state.setUser);
-  const gameMode = useGameModeStore((state) => state.gameMode as GameMode);
+  const setGameMode = useGameModeStore.getState().setGameMode;
 
-  const { title, button } = MODE_CONFIG[gameMode];
+  const title = gamesMode ? MODE_CONFIG[gamesMode].title : '';
+  const button = gamesMode ? MODE_CONFIG[gamesMode].button : '';
+
+  useEffect(() => {
+    console.log('현재 gameMode:', gamesMode);
+  }, [gamesMode]);
+  useEffect(() => {
+    const fetchGameMode = async () => {
+      if (!roomKey) return;
+      try {
+        const res = await gameModeStatus(roomKey);
+        console.log(res);
+        const modeFromApi = res.data.gameMode as GameMode;
+        setGamesMode(modeFromApi);
+        setGameMode(modeFromApi);
+
+        console.log('API로 불러온 gameMode:', modeFromApi);
+      } catch (error) {
+        console.error('gameMode 불러오기 실패:', error);
+      }
+    };
+
+    fetchGameMode();
+  }, [roomKey]);
 
   const fetchCurrentStep = async () => {
-    if (!roomKey) return;
+    if (!roomKey || !gamesMode) return;
+
     try {
       // 게임 모드에 따른 API 엔드포인트 설정
-      const res = await axios.get(`/api/${gameMode.toLowerCase()}/rooms/${roomKey}/status`, {
+      const res = await axios.get(`/api/${gamesMode.toLowerCase()}/rooms/${roomKey}/status`, {
         withCredentials: true,
       });
       if (res.data) {
@@ -97,7 +122,7 @@ const UserEnterChatRoom = () => {
       const updatedUsers = useRoomUsersStore.getState().users;
       console.log('전역 저장된 users:', updatedUsers);
       //TMI모드 방 참여
-      if (gameMode === 'TMI') {
+      if (gamesMode === 'TMI') {
         const currentStep = await fetchCurrentStep();
         if (currentStep === 'COLLECTING_TMI') {
           navigate(`/tmi/${roomKey}/input`);
@@ -112,7 +137,7 @@ const UserEnterChatRoom = () => {
         }
         return;
         // BALANCE모드 방 참여
-      } else if (gameMode === 'BALANCE') {
+      } else if (gamesMode === 'BALANCE') {
         const currentStep = await fetchCurrentStep();
         if (currentStep === 'WAITING_FOR_MEMBERS') {
           navigate(`/balance/${roomKey}/load`);
