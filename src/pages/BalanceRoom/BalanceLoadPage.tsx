@@ -29,7 +29,10 @@ const BalanceLoadPage = () => {
         console.log('투표 진행 상태:', res.data.data);
         console.log('투표 진행률:', res.data.data.progress);
         setProcessRate(res.data.data.progress);
-        if (res.data.data.currentStep == 'RESULT_VIEW') {
+        if (
+          res.data.data.currentStep == 'RESULT_VIEW' ||
+          res.data.data.currentStep === 'COMPLETED'
+        ) {
           setProcessRate(100);
           hasRoomEnded.current = true;
           setTimeout(() => {
@@ -64,6 +67,7 @@ const BalanceLoadPage = () => {
         const sub = client.subscribe(`/topic/room/${roomKey}/messages`, (message) => {
           try {
             const data = JSON.parse(message.body);
+
             if (data.type === '') {
               setProcessRate(0);
             } else if (data.type === 'BALANCE_VOTING_PROGRESS') {
