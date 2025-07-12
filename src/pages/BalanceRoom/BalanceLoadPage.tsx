@@ -29,7 +29,10 @@ const BalanceLoadPage = () => {
         console.log('투표 진행 상태:', res.data.data);
         console.log('투표 진행률:', res.data.data.progress);
         setProcessRate(res.data.data.progress);
-        if (res.data.data.currentStep == 'RESULT_VIEW') {
+        if (
+          res.data.data.currentStep == 'RESULT_VIEW' ||
+          res.data.data.currentStep === 'COMPLETED'
+        ) {
           setProcessRate(100);
           hasRoomEnded.current = true;
           setTimeout(() => {
@@ -64,11 +67,22 @@ const BalanceLoadPage = () => {
         const sub = client.subscribe(`/topic/room/${roomKey}/messages`, (message) => {
           try {
             const data = JSON.parse(message.body);
+
             if (data.type === '') {
               setProcessRate(0);
             } else if (data.type === 'BALANCE_VOTING_PROGRESS') {
               console.log('투표 진행률 업데이트:', data.data);
               setProcessRate(data.data.data || 0);
+            } else if (
+              data.type === 'BALANCE_ROUND_COMPLETED' ||
+              data.type === 'BALANCE_GAME_COMPLETED'
+            ) {
+              setProcessRate(100);
+              setTimeout(() => {
+                navigate(`/balance/${roomKey}/result`, {
+                  state: { roomKey, questionA, questionB },
+                }); // 투표 결과 확인 페이지로 이동
+              }, 5000);
             }
           } catch (e) {
             console.error('메시지 파싱 오류:', e);
