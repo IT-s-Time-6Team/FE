@@ -2,9 +2,7 @@
 
 ![Okii 서비스 대표 이미지](docs/images/okii-cover.png)
 
-키워드로 공통 관심사를 찾고, TMI 퀴즈와 밸런스 게임으로 대화를 이어가는 아이스브레이킹 웹 서비스입니다. 방을 생성한 뒤 링크 또는 QR 코드로 참여자를 초대하며, 서버가 전달하는 게임 진행 이벤트에 따라 화면을 갱신합니다.
-
-React + TypeScript + Vite를 기반으로 구현했습니다. 아래 내용은 이 저장소의 프런트엔드 구현을 기준으로 정리했으며, 기존 Vite 템플릿 설명은 문서 하단에 보존했습니다.
+키워드로 공통 관심사를 찾고, TMI 퀴즈와 밸런스 게임으로 대화를 이어가는 아이스브레이킹 웹 서비스입니다.
 
 ## 주요 기능
 
@@ -19,8 +17,6 @@ React + TypeScript + Vite를 기반으로 구현했습니다. 아래 내용은 �
 ![Okii 키워드·TMI·밸런스 모드의 주요 화면과 서비스 흐름](docs/images/okii-service-flow.png)
 
 ## 기술 스택
-
-버전은 `package.json`에 선언된 기준입니다.
 
 | 구분 | 기술 | 프로젝트에서의 사용 |
 | --- | --- | --- |
@@ -55,7 +51,7 @@ React + TypeScript + Vite를 기반으로 구현했습니다. 아래 내용은 �
 | `BALANCE_QUESTION_ENDED`, `BALANCE_DISCUSSION_ENDED` | 질문 → 토론 → 투표 단계 전환 |
 | `BALANCE_ROUND_COMPLETED`, `BALANCE_GAME_COMPLETED` | 투표 완료 후 결과 화면 이동 |
 
-힌트·토론 시간은 클라이언트가 독립적으로 감소시키는 대신 서버 이벤트의 시간 문자열을 표시합니다. 게임 규칙과 진행 상태는 서버에서 전달하고, 프런트엔드는 이를 사용자 화면에 반영하는 역할을 맡습니다.
+힌트·토론의 남은 시간은 서버 이벤트로 수신해 표시합니다.
 
 **관련 코드:** [공통 대기 화면](src/pages/TMIRoom/LoadPage.tsx), [힌트·토론 화면](src/pages/TMIRoom/HintAndDisscussionPage.tsx), [TMI 투표 대기](src/pages/tmiVote/votingPage.tsx), [밸런스 질문 화면](src/pages/BalanceRoom/BalanceQuestionPage.tsx)
 
@@ -69,9 +65,7 @@ React + TypeScript + Vite를 기반으로 구현했습니다. 아래 내용은 �
 - **대화 확장:** 공개된 키워드를 선택하면 `/api/questions?keyword=...`로 관련 질문을 조회하고 Swiper의 카드 효과로 탐색합니다.
 - **한글 입력 처리:** Enter 전송 시 `KeyboardEvent.isComposing`을 확인해 한글 조합 중 전송을 방지합니다.
 
-예를 들어 공감 기준이 3명인 방에서는 서버 분석 결과의 `count`가 3 이상인 키워드만 공개합니다. 키워드 분석 자체는 서버의 역할이며, 이 저장소는 분석 결과를 수신해 공개 여부와 표시 목록을 결정합니다.
-
-전송 후 개인 목록 갱신은 낙관적으로 처리하며, 서버 거절 시 목록을 되돌리는 로직은 현재 구현되어 있지 않습니다.
+키워드 분석은 서버에서 수행하고, 프런트엔드는 분석 결과에 공개 기준을 적용합니다.
 
 **관련 코드:** [전송 유틸리티](src/utils/SendKeywords.ts), [분석 결과 반영](src/pages/chatRoom/ChatRoomPage.tsx), [입력 컴포넌트](src/components/chatRoom/ChatInputComponents.tsx), [질문 카드](src/components/chatRoom/keywordModal.tsx)
 
@@ -87,7 +81,7 @@ Zustand 저장소를 데이터의 성격에 따라 나누었습니다.
 
 참여자 추가 시 닉네임을 기준으로 기존 목록과 중복되는지 검사합니다. TMI·밸런스 화면에서는 공유된 클라이언트로 방 토픽을 구독하고, TMI 투표 대기 화면은 연결된 클라이언트가 있으면 재사용하고 없으면 새로 연결합니다.
 
-입장 화면은 서버의 `currentStep`에 따라 TMI 입력·투표 또는 밸런스 질문·토론 등으로 진입 경로를 나눕니다. 저장된 사용자 정보는 화면 상태 유지에 사용하며, 실제 참여 요청과 게임 상태 확인은 API를 통해 수행합니다. localStorage가 유지되더라도 WebSocket 연결까지 복원되는 것은 아닙니다.
+입장 시 서버의 `currentStep`에 따라 TMI 입력·투표 또는 밸런스 질문·토론 화면으로 이동합니다. 사용자 정보는 localStorage에 유지되지만, WebSocket 연결은 별도로 생성해야 합니다.
 
 **관련 코드:** [참여자 저장소](src/store/useRoomUsersStore.ts), [게임 모드 저장소](src/store/useGameModeStore.ts), [연결 저장소](src/store/useWebSocketStore.ts), [방 입장](src/pages/userEnterChatRoom/userEnterChatRoom.tsx)
 
@@ -147,14 +141,14 @@ src/
 
 ## 로컬 실행
 
-배포 워크플로와 동일하게 Yarn을 기준으로 안내합니다. Node.js와 Yarn이 설치된 환경에서 실행합니다.
+필수 환경: Node.js, Yarn, 백엔드 연결
 
 ```bash
 yarn install
 yarn dev
 ```
 
-개발 서버의 설정 포트는 `8080`입니다. 기본 접속 주소는 `http://localhost:8080`이며, 실제 사용 포트는 Vite 실행 출력을 확인합니다. 방 생성·참여·게임 진행에는 백엔드 연결이 필요합니다.
+개발 서버: `http://localhost:8080` (포트 사용 중이면 Vite 실행 출력 확인)
 
 | 명령 | 동작 |
 | --- | --- |
@@ -176,71 +170,3 @@ yarn dev
 - ESLint는 TypeScript·React Hooks·React Refresh 규칙과 Prettier 검사를 적용합니다.
 - Husky의 `pre-commit`은 `npm run lint`, `commit-msg`는 Conventional Commits 기반 Commitlint를 실행하도록 설정되어 있습니다.
 - GitHub Actions는 `main`·`develop` push를 대상으로 의존성 설치 → 브랜치별 환경변수 설정 → 타입 검사·빌드 → SSH/SCP를 통한 Mac mini 배포를 수행하도록 구성되어 있습니다. 브랜치에 따라 운영·개발 배포 디렉터리를 구분합니다.
-
-### 현재 구현 범위
-
-위 설명은 코드에 구현된 처리 흐름을 정리한 것으로, 모든 단계의 재입장이나 연결 복구를 보장하지는 않습니다. TMI의 `COMPLETED` 입장 분기는 이동이 주석 처리되어 있고, 일부 화면은 `location.state`와 메모리의 STOMP 클라이언트에 의존합니다. 밸런스의 일부 상태 조회 URL에는 `${roomKey}` 대신 `{roomKey}`가 들어가 있으며, 힌트·토론 강제 종료 후 이동 경로에도 `:roomKey`가 문자열로 남아 있습니다. 구독 해제 처리도 화면별로 차이가 있어 전체 연결 수명 주기가 일관되게 관리되는 구조는 아닙니다.
-
-현재 `package.json`에는 자동화 테스트 스크립트가 없습니다. 빌드·lint 명령과 배포 워크플로는 정의되어 있으며, 실제 통과 여부와 운영 동작은 실행 환경에서 별도 확인이 필요합니다.
-
----
-
-<details>
-<summary>기존 README: React + TypeScript + Vite 템플릿 안내</summary>
-
-# React + TypeScript + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-});
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x';
-import reactDom from 'eslint-plugin-react-dom';
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-});
-```
-
-</details>
